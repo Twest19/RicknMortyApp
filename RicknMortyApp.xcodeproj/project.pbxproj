@@ -15,7 +15,10 @@
 		F903C22928656B5D00BDC01C /* RickMortyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903C22828656B5C00BDC01C /* RickMortyModel.swift */; };
 		F903C22B28656D8B00BDC01C /* UIView-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903C22A28656D8B00BDC01C /* UIView-Extension.swift */; };
 		F903C22D28656E8A00BDC01C /* RMCharacterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903C22C28656E8A00BDC01C /* RMCharacterCell.swift */; };
+		F91F4B092867F12100043A0D /* CharDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91F4B082867F12100043A0D /* CharDetailVC.swift */; };
 		F93CAB492866469700C94382 /* UIImageView-Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93CAB482866469700C94382 /* UIImageView-Ext.swift */; };
+		F949DB9B2868F07200547ABC /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F949DB9A2868F07200547ABC /* LoadingCell.swift */; };
+		F949DB9D28690DD200547ABC /* ApiCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = F949DB9C28690DD200547ABC /* ApiCaller.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +32,10 @@
 		F903C22828656B5C00BDC01C /* RickMortyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RickMortyModel.swift; sourceTree = "<group>"; };
 		F903C22A28656D8B00BDC01C /* UIView-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView-Extension.swift"; sourceTree = "<group>"; };
 		F903C22C28656E8A00BDC01C /* RMCharacterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterCell.swift; sourceTree = "<group>"; };
+		F91F4B082867F12100043A0D /* CharDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharDetailVC.swift; sourceTree = "<group>"; };
 		F93CAB482866469700C94382 /* UIImageView-Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView-Ext.swift"; sourceTree = "<group>"; };
+		F949DB9A2868F07200547ABC /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		F949DB9C28690DD200547ABC /* ApiCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCaller.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,9 @@
 				F903C21E2865696100BDC01C /* Info.plist */,
 				F903C22C28656E8A00BDC01C /* RMCharacterCell.swift */,
 				F93CAB482866469700C94382 /* UIImageView-Ext.swift */,
+				F91F4B082867F12100043A0D /* CharDetailVC.swift */,
+				F949DB9A2868F07200547ABC /* LoadingCell.swift */,
+				F949DB9C28690DD200547ABC /* ApiCaller.swift */,
 			);
 			path = RicknMortyApp;
 			sourceTree = "<group>";
@@ -152,7 +161,10 @@
 				F93CAB492866469700C94382 /* UIImageView-Ext.swift in Sources */,
 				F903C22728656AC500BDC01C /* CharacterVC.swift in Sources */,
 				F903C22B28656D8B00BDC01C /* UIView-Extension.swift in Sources */,
+				F949DB9B2868F07200547ABC /* LoadingCell.swift in Sources */,
 				F903C2132865695F00BDC01C /* SceneDelegate.swift in Sources */,
+				F91F4B092867F12100043A0D /* CharDetailVC.swift in Sources */,
+				F949DB9D28690DD200547ABC /* ApiCaller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
