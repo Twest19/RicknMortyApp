@@ -12,58 +12,46 @@ class CharacterVC: UIViewController {
     private var collectionView: UICollectionView!
     var charResults: RMResults?
     
+    let networker = NetworkManager.shared
+    
     var totalPages = 1
     var currentPages = 1
-    var character: [RMCharacter] = [RMCharacter]()
+    var character: [RMCharacter] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         title = "Characters"
-        fetch(page: 1)
+        
+        networker.fetchCharacter(pageNum: 1) { [weak self] character, error in
+            
+            if let error = error {
+                print("Error: ", error)
+                return
+            }
+            
+            if let charArray = character?.results {
+                print(charArray)
+                self?.character.append(contentsOf: charArray)
+            }
+            
+            if let totalPages = character?.info?.pages {
+                self?.totalPages = totalPages
+            }
+            
+            self?.charResults = character
+            
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+            
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-    }
-    
-    func fetch(page: Int, refresh: Bool = false) {
-            
-            guard let url = URL(string: "https://rickandmortyapi.com/api/character/?page=\(page)") else { return }
-            
-            let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                
-                if refresh {
-                    self?.character.removeAll()
-                    
-                }
-                
-                
-                guard let data = data, error == nil else { return }
-                
-                guard let _ = response else { return }
-                
-                // convert to JSON
-                do {
-                    let characters = try JSONDecoder().decode(RMResults.self, from: data)
-                    
-                    self?.totalPages = characters.info?.pages ?? 1
-                    self?.character.append(contentsOf: characters.results!)
-                    self?.charResults = characters
-                    
-                    DispatchQueue.main.async {
-                        self?.collectionView.reloadData()
-                    }
-                    
-                } catch {
-                    print(error)
-                }
-                
-                
-            }
-            task.resume()
-            
     }
     
     func configureCollectionView() {
@@ -79,6 +67,7 @@ class CharacterVC: UIViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         collectionView.frame = view.bounds
+        collectionView.backgroundView?.alpha = 0
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
@@ -104,7 +93,9 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
         
         if currentPages < totalPages && indexPath.row == character.count - 1 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadingCell.identifier, for: indexPath) as? LoadingCell else { return UICollectionViewCell() }
-            cell.activityIndicator.startAnimating()
+            DispatchQueue.main.async {
+                cell.activityIndicator.startAnimating()
+            }
             
             return cell
             
@@ -116,37 +107,53 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
             let representedIdentifier = model
             cell.representedIdentifier = representedIdentifier
             
-            cell.configure(with: character[indexPath.row])
+            cell.rmImageView.image = nil
             
-            
-            
-            if let url = URL(string: character[indexPath.row].image ?? "90-90") {
+            if let image = character[indexPath.row].image {
                 
-                DispatchQueue.main.async {
-                    if (cell.representedIdentifier == representedIdentifier) {
-                        cell.rmImageView.load(url: url)
+                // Calls the networkers download image method:
+                networker.downloadCharImage(character: image) { data, error in
+                    
+                    if let data = data {
+                        let charImage = UIImage(data: data)
+                        DispatchQueue.main.async {
+                            if (cell.representedIdentifier == representedIdentifier){
+                                cell.rmImageView.image = charImage
+                            }
+                        }
+                    } else {
+                        if (cell.representedIdentifier == representedIdentifier){
+                            DispatchQueue.main.async {
+                                cell.rmImageView.image = UIImage(named: "defaultRMImage")
+                            }
+                        }
+                        
                     }
                 }
-            
-            } else {
-                cell.rmImageView.image = UIImage(named: "90-90")
             }
             
-            if let status = character[indexPath.row].status {
-                var statusSymbol: String
+            
                 
-                switch status {
-                case "Alive":
-                    statusSymbol = "🟢"
-                case "Dead":
-                    statusSymbol = "🔴"
-                default:
-                    statusSymbol = "⚪️"
+                // Name Label:
+                cell.rmNameLabel.text = self.character[indexPath.row].name
+                
+                // Status Label, IE: Dead, Alive, Unknown
+                if let status = self.character[indexPath.row].status {
+                    var statusSymbol: String
+                    
+                    switch status {
+                    case "Alive":
+                        statusSymbol = "🟢"
+                    case "Dead":
+                        statusSymbol = "🔴"
+                    default:
+                        statusSymbol = "⚪️"
+                    }
+                    cell.rmStatusLabel.text = "Status: \(status) \(statusSymbol)"
+                } else {
+                    cell.rmStatusLabel.text = "Status: N/A"
                 }
-                cell.rmStatusLabel.text = "Status: \(status) \(statusSymbol)"
-            } else {
-                cell.rmStatusLabel.text = "Status: N/A"
-            }
+            
             
             return cell
         }
@@ -158,8 +165,33 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
 
         if currentPages < totalPages && indexPath.row == character.count - 1 {
             currentPages = currentPages + 1
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.fetch(page: self.currentPages)
+            DispatchQueue.main.async {
+
+                self.networker.fetchCharacter(pageNum: self.currentPages) { [weak self] character, error in
+
+                    if let error = error {
+                        print("Error: ", error)
+                        return
+                    }
+
+                    if let charArray = character?.results {
+                        self?.character.append(contentsOf: charArray)
+                    }
+
+                    if let totalPages = character?.info?.pages {
+                        self?.totalPages = totalPages
+                    }
+
+                    self?.charResults = character
+                    
+                    DispatchQueue.main.async {
+                        self?.collectionView.reloadData()
+                        
+                    }
+
+                }
+
+
             }
         }
 
@@ -169,13 +201,11 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         print("Prefetching...")
         
-        for indexPath in indexPaths {
-            let viewModel = character[indexPath.row]
-            viewModel.down
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
         print("...Cancel prefetch")
+       
     }
+    
 }

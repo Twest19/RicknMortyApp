@@ -14,6 +14,8 @@ class RMCharacterCell: UICollectionViewCell {
     var rmStatusLabel = UILabel()
     
     static let identifier = "RMCharCell"
+    
+    // Used to prevent incorrect images in cells
     var representedIdentifier: String = ""
     
     override init(frame: CGRect) {
