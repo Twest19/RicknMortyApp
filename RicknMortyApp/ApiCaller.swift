@@ -10,11 +10,9 @@ import UIKit
 let myCollectionView = CharacterVC()
 
 enum NetworkManagerError: Error {
-    
     case badResponse(URLResponse?)
     case badData
     case badLocalUrl
-    
 }
 
 
@@ -22,7 +20,7 @@ class NetworkManager {
     
     static var shared = NetworkManager()
     
-    var session: URLSession
+    private var session: URLSession
     
     private var images = NSCache<NSString, NSData>()
     
@@ -31,25 +29,36 @@ class NetworkManager {
         session = URLSession(configuration: config)
     }
     
-    func components() -> URLComponents {
+    private func components() -> URLComponents {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "rickandmortyapi.com"
         return components
     }
-
-    func fetchCharacter(pageNum: Int, refersh: Bool = false, completion: @escaping (RMResults?, Error?) -> Void) {
+    
+    private func characterComponents() -> URLComponents {
         var components = components()
         components.path = "/api/character/"
-        components.queryItems = [
-            URLQueryItem(name: "page", value: String(pageNum))
-        ]
+        return components
+    }
+
+    func fetchCharacter(pageNum: Int, searchBarText: String = "", completion: @escaping (RMResults?, Error?) -> Void) {
+        var components = characterComponents()
+        let pages = URLQueryItem(name: "page", value: String(pageNum))
+        let userCharacterSearch = URLQueryItem(name: "name", value: searchBarText)
         
+        // Provides proper query items for URL
+        if searchBarText == "" {
+            components.queryItems = [pages]
+        } else {
+            components.queryItems = [pages, userCharacterSearch]
+        }
+        
+        // Checks URL
         guard let url = components.url else {
             print("Error: BAD URL, check URL...")
             return
         }
-        
         
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -89,21 +98,17 @@ class NetworkManager {
     }
     
     
-    func downloadCharImage(character: String, completion: @escaping (Data?, Error?) -> (Void)) {
+    func downloadCharImage(character: URL, completion: @escaping (Data?, Error?) -> (Void)) {
         
-        guard let url = URL(string: character) else {
-            print("Error getting image URL")
-            return
-        }
-            
-        if let imageData = images.object(forKey: url.absoluteString as NSString) {
+        // Checks if Image has been cached and passes it back if so...
+        if let imageData = images.object(forKey: character.absoluteString as NSString) {
             print("using cached image...")
             completion(imageData as Data, nil)
             return
         }
         
-        let task = session.downloadTask(with: url) { localurl, urlresponse, error in
-            
+        let task = session.downloadTask(with: character) { localurl, urlresponse, error in
+            print("...Not a cached Image")
             // Handle any errors here:
             if let error = error {
                 print("Error retrieving data, error: \(String(describing: error))")
@@ -124,10 +129,10 @@ class NetworkManager {
                 return
             }
             
-            // Add the image to the NSCache and call the completion handler and pass the data.
+            // Add the image to the NSCache and call the completion handler to pass the data.
             do {
                 let myData = try Data(contentsOf: localurl)
-                self.images.setObject(myData as NSData, forKey: url.absoluteString as NSString)
+                self.images.setObject(myData as NSData, forKey: character.absoluteString as NSString)
                 completion(myData, nil)
             } catch let error {
                 completion(nil, error)
@@ -135,6 +140,12 @@ class NetworkManager {
         
         }
         task.resume()
+        
+    }
+    
+    func image(name: RMCharacter, completion: @escaping (Data?, Error?) -> (Void)) {
+        let url = URL(string: name.image!)
+        downloadCharImage(character: url!, completion: completion)
         
     }
     

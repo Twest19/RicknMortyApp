@@ -36,7 +36,27 @@ class RMCharacterCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        rmImageView.image = nil
+        rmImageView.image = UIImage(systemName: "defaultRMImage")
+    }
+    
+    
+    func setCharacterStatus(status: String?) -> String {
+        if let status = status {
+            var statusSymbol: String
+            
+            switch status {
+            case "Alive":
+                statusSymbol = "🟢"
+            case "Dead":
+                statusSymbol = "🔴"
+            default:
+                statusSymbol = "⚪️"
+            }
+            return "Status: \(status) \(statusSymbol)"
+        } else {
+            return "Status: N/A"
+        }
+        
     }
     
     

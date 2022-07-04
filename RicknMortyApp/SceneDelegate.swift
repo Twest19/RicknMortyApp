@@ -21,12 +21,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         window?.makeKeyAndVisible()
+        window?.rootViewController = createTabBar()
         
-        let navController = UINavigationController(rootViewController: CharacterVC())
-        navController.navigationBar.prefersLargeTitles = true
+    }
+    
+    func configCharVCTab() -> UINavigationController {
+        let charVC = CharacterVC()
+        charVC.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 0)
         
-        window?.rootViewController = navController
         
+        return UINavigationController(rootViewController: charVC)
+    }
+    
+    func createTabBar() -> UITabBarController {
+        let tabBarVC = TabBarController()
+        UITabBar.appearance().tintColor = .systemGreen
+        tabBarVC.setViewControllers([configCharVCTab()], animated: false)
+        
+        return tabBarVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

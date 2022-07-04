@@ -32,6 +32,7 @@ struct RMCharacter: Decodable {
     var origin: Origin?
     var location: Location?
     var image: String?
+    var episode: [String]?
     
 }
 
@@ -44,4 +45,5 @@ struct Location: Decodable {
     var name: String?
     var url: String?
 }
+
 
