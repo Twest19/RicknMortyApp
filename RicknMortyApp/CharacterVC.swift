@@ -135,6 +135,9 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
             
             
 //            cell.rmImageView.image = UIImage(systemName: "defaultRMImage")
+            DispatchQueue.main.async {
+                cell.imageIncomingIndicator.startAnimating()
+            }
             
             // ID used to prevent wrong picture in wrong cell
             let model = String(describing: character[indexPath.row].id)
@@ -147,6 +150,7 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
                 DispatchQueue.main.async {
                     if (cell.representedIdentifier == representedIdentifier) {
                         cell.rmImageView.image = img
+                        cell.imageIncomingIndicator.stopAnimating()
                     }
                     
                 }

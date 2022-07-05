@@ -42,13 +42,13 @@ class NetworkManager {
         return components
     }
 
-    func fetchCharacter(pageNum: Int, searchBarText: String = "", completion: @escaping (RMResults?, Error?) -> Void) {
+    public func fetchCharacter(pageNum: Int, searchBarText: String = "", completion: @escaping (RMResults?, Error?) -> Void) {
         var components = characterComponents()
         let pages = URLQueryItem(name: "page", value: String(pageNum))
         let userCharacterSearch = URLQueryItem(name: "name", value: searchBarText)
         
         // Provides proper query items for URL
-        if searchBarText == "" {
+        if searchBarText == "" || searchBarText == " " {
             components.queryItems = [pages]
         } else {
             components.queryItems = [pages, userCharacterSearch]
@@ -98,7 +98,7 @@ class NetworkManager {
     }
     
     
-    func downloadCharImage(character: URL, completion: @escaping (Data?, Error?) -> (Void)) {
+    public func downloadCharImage(character: URL, completion: @escaping (Data?, Error?) -> (Void)) {
         
         // Checks if Image has been cached and passes it back if so...
         if let imageData = images.object(forKey: character.absoluteString as NSString) {
@@ -143,7 +143,7 @@ class NetworkManager {
         
     }
     
-    func image(name: RMCharacter, completion: @escaping (Data?, Error?) -> (Void)) {
+    public func image(name: RMCharacter, completion: @escaping (Data?, Error?) -> (Void)) {
         let url = URL(string: name.image!)
         downloadCharImage(character: url!, completion: completion)
         

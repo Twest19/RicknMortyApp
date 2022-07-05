@@ -13,6 +13,8 @@ class RMCharacterCell: UICollectionViewCell {
     var rmNameLabel = UILabel()
     var rmStatusLabel = UILabel()
     
+    var imageIncomingIndicator = UIActivityIndicatorView()
+    
     static let identifier = "RMCharCell"
     
     // Used to prevent incorrect images in cells
@@ -21,10 +23,13 @@ class RMCharacterCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         //contentView.backgroundColor = .black
+        contentView.addSubview(imageIncomingIndicator)
         contentView.addSubview(rmNameLabel)
         contentView.addSubview(rmImageView)
         contentView.addSubview(rmStatusLabel)
+        
         contentView.clipsToBounds = true
+        configureActivityIndicator()
         configureNameLabel()
         configureRMImage()
         configureStatusLabel()
@@ -59,6 +64,19 @@ class RMCharacterCell: UICollectionViewCell {
         
     }
     
+    
+    func configureActivityIndicator() {
+        
+        imageIncomingIndicator.hidesWhenStopped = true
+        imageIncomingIndicator.clipsToBounds = true
+        imageIncomingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageIncomingIndicator.leadingAnchor.constraint(equalTo: rmImageView.leadingAnchor).isActive = true
+        imageIncomingIndicator.centerXAnchor.constraint(equalTo: rmImageView.centerXAnchor).isActive = true
+        imageIncomingIndicator.topAnchor.constraint(equalTo: rmImageView.topAnchor).isActive = true
+        imageIncomingIndicator.centerYAnchor.constraint(equalTo: rmImageView.centerYAnchor).isActive = true
+    
+    }
     
     
     func configureRMImage() {

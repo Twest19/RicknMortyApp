@@ -22,12 +22,14 @@ class CharDetailVC: UIViewController {
         configuCharStatus()
     }
     
+    
     func configNavBar() {
         
         let backButton = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(dismissSelf))
         backButton.tintColor = .systemGreen
         navigationItem.leftBarButtonItem = backButton
     }
+    
     
     @objc func dismissSelf() {
         dismiss(animated: true, completion: nil)
