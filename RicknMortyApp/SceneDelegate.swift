@@ -20,25 +20,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
+        window?.rootViewController = RMTabBarController()
         window?.makeKeyAndVisible()
-        window?.rootViewController = createTabBar()
         
+        configureNavigationBar()
     }
     
-    func configCharVCTab() -> UINavigationController {
-        let charVC = CharacterVC()
-        charVC.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 0)
-        
-        
-        return UINavigationController(rootViewController: charVC)
-    }
     
-    func createTabBar() -> UITabBarController {
-        let tabBarVC = TabBarController()
-        UITabBar.appearance().tintColor = .systemGreen
-        tabBarVC.setViewControllers([configCharVCTab()], animated: false)
-        
-        return tabBarVC
+    func configureNavigationBar() {
+        UINavigationBar.appearance().tintColor = .systemGreen
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

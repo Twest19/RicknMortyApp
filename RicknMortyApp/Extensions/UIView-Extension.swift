@@ -7,14 +7,35 @@
 
 import UIKit
 
-
 extension UIView {
     
-    func pin(to superview: UIView) {
+    func pinToEdges(of superview: UIView) {
         translatesAutoresizingMaskIntoConstraints = false
-       topAnchor.constraint(equalTo: superview.topAnchor).isActive = true
-        leadingAnchor.constraint(equalTo: superview.leadingAnchor).isActive = true
-        trailingAnchor.constraint(equalTo: superview.trailingAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: superview.bottomAnchor).isActive = true
+        
+        NSLayoutConstraint.activate([
+            topAnchor.constraint(equalTo: superview.topAnchor),
+            leadingAnchor.constraint(equalTo: superview.leadingAnchor),
+            trailingAnchor.constraint(equalTo: superview.trailingAnchor),
+            bottomAnchor.constraint(equalTo: superview.bottomAnchor)
+        ])
+    }
+    
+    
+    func pinToCenter(of superview: UIView) {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            centerXAnchor.constraint(equalTo: superview.centerXAnchor),
+            centerYAnchor.constraint(equalTo: superview.centerYAnchor),
+            heightAnchor.constraint(equalTo: superview.heightAnchor),
+            widthAnchor.constraint(equalTo: superview.widthAnchor)
+        ])
+    }
+    
+    
+    func addSubviews(_ views: UIView...) {
+        for view in views {
+            addSubview(view)
+        }
     }
 }

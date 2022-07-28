@@ -9,7 +9,7 @@ import UIKit
 
 class CharacterVC: UIViewController {
     
-    private var collectionView: UICollectionView!
+    private var collectionView: RMCharCollectionView!
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
     private let searchSpinner = UIActivityIndicatorView()
@@ -21,6 +21,7 @@ class CharacterVC: UIViewController {
     
     private var totalPages = 1
     private var currentPages = 1
+    var currentPage = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,13 +30,14 @@ class CharacterVC: UIViewController {
         configureSearchBar()
         configureSearchSpinner()
         title = "Characters"
-        getCharacterData(pageNum: 1)
-        
+        getCharacterData(pageNum: currentPage)
     }
     
     
-    private func getCharacterData(pageNum: Int = 1, searchBarText: String = "") {
+    private func getCharacterData(pageNum: Int, searchBarText: String = "") {
         networker.fetchCharacter(pageNum: pageNum, searchBarText: searchBarText) { [weak self] character, error in
+            
+            guard let self = self else { return }
 
             if let error = error {
                 print("Error: ", error)
@@ -43,54 +45,37 @@ class CharacterVC: UIViewController {
             }
 
             if let charArray = character?.results {
-                self?.character.append(contentsOf: charArray)
+                self.character.append(contentsOf: charArray)
             }
 
-            if let totalPages = character?.info?.pages {
-                self?.totalPages = totalPages
+            if let totalPages = character?.info.pages {
+                self.totalPages = totalPages
             }
 
-            self?.charResults = character
+            self.charResults = character
 
             DispatchQueue.main.async {
-                if self?.searchSpinner.isAnimating == true {
-                    self?.searchSpinner.stopAnimating()
+                if self.searchSpinner.isAnimating == true {
+                    self.searchSpinner.stopAnimating()
                 }
                 
-                self?.collectionView.reloadData()
+                self.collectionView.reloadData()
             }
-
         }
     }
     
     
     private func configureCollectionView() {
-        let width = (view.frame.size.width/3)-8
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: width, height: width+30)
-        layout.minimumLineSpacing = 5
-        layout.minimumInteritemSpacing = 5
-        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        
-        
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-        collectionView.frame = view.bounds
-        collectionView.backgroundView?.alpha = 0
+        collectionView = RMCharCollectionView(frame: view.bounds, collectionViewLayout: Helper.threeColumnCollectionView(in: view))
+        view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
-        
-        // Register Cells
-        collectionView.register(RMCharacterCell.self, forCellWithReuseIdentifier: RMCharacterCell.identifier)
-        view.addSubview(collectionView)
-        collectionView.register(LoadingCell.self, forCellWithReuseIdentifier: LoadingCell.identifier)
+        collectionView.backgroundColor = .systemBackground
     }
     
     
     private func configureNavBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
-        navBar.tintColor = .black
         showSearchBarButton(shouldShow: true)
     }
 
@@ -99,17 +84,11 @@ class CharacterVC: UIViewController {
         search(shouldShow: true)
         searchBar.becomeFirstResponder()
     }
-    
-    private func image(data: Data?) -> UIImage? {
-        if let data = data {
-            return UIImage(data: data)
-        }
-        return UIImage(systemName: "defaultRMImage")
-    }
-    
 }
 
+
 extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return character.count
@@ -121,52 +100,21 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
         if currentPages < totalPages && indexPath.row == character.count - 1 {
             // for the loading cell w/activity spinner
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadingCell.identifier, for: indexPath) as? LoadingCell else { return UICollectionViewCell() }
-            
-            DispatchQueue.main.async {
-                cell.activityIndicator.startAnimating()
-            }
+            cell.beginActivityIndicator()
             
             return cell
             
         } else {
             // Cell that displays pictures, name, status
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCell.identifier,
-                                                                for: indexPath) as? RMCharacterCell else { return UICollectionViewCell()}
-            
-            
-//            cell.rmImageView.image = UIImage(systemName: "defaultRMImage")
-            DispatchQueue.main.async {
-                cell.imageIncomingIndicator.startAnimating()
-            }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCell.identifier, for: indexPath) as? RMCharacterCell else { return UICollectionViewCell()}
             
             // ID used to prevent wrong picture in wrong cell
-            let model = String(describing: character[indexPath.row].id)
-            let representedIdentifier = model
-            cell.representedIdentifier = representedIdentifier
-            
-            // Set cell's image, also caches
-            networker.image(name: character[indexPath.row]) { data, error in
-                let img = self.image(data: data)
-                DispatchQueue.main.async {
-                    if (cell.representedIdentifier == representedIdentifier) {
-                        cell.rmImageView.image = img
-                        cell.imageIncomingIndicator.stopAnimating()
-                    }
-                    
-                }
-                
-            }
-            
-            // Name Label:
-            cell.rmNameLabel.text = self.character[indexPath.row].name
-            
-            // Status Label, IE: Dead, Alive, Unknown
-            cell.rmStatusLabel.text = cell.setCharacterStatus(status: self.character[indexPath.row].status)
+            let character = character[indexPath.item]
+            cell.cellRepresentedIdentifier = character.id
+            cell.set(character: character, representedIdentifier: character.id)
             
             return cell
         }
-        
-
     }
     
     
@@ -176,35 +124,24 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
             
             if let searchBarText = searchBar.text {
                 print("Search bar text: \(searchBarText)")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1){
                     self.getCharacterData(pageNum: self.currentPages, searchBarText: searchBarText)
                 }
             }
         }
-
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedCharacter = character[indexPath.item]
         
-        let detailVC = CharDetailVC()
-        networker.image(name: character[indexPath.row]) { data, error in
-
-            let img = self.image(data: data)
-            DispatchQueue.main.async {
-                detailVC.charImageView.image = img
-                detailVC.charNameLabel.text = self.character[indexPath.row].name
-                detailVC.charStatus.text = self.character[indexPath.row].status
-            }
-
-        }
+        let detailVC = RMCharDetailVC()
+        detailVC.setUIElements(for: selectedCharacter)
         
         let navController = UINavigationController(rootViewController: detailVC)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: false)
-        
+        navController.modalPresentationStyle = .popover
+        present(navController, animated: true)
     }
-
 }
 
 
@@ -236,7 +173,6 @@ extension CharacterVC: UISearchBarDelegate {
         case false:
             navigationItem.rightBarButtonItem = nil
         }
-        
     }
     
     
@@ -266,7 +202,7 @@ extension CharacterVC: UISearchBarDelegate {
         
         if let searchedItem = searchBar.text {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-                self.getCharacterData(searchBarText: searchedItem)
+                self.getCharacterData(pageNum: self.currentPage, searchBarText: searchedItem)
             }
         }
         search(shouldShow: false)

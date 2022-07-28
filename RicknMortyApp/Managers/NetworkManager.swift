@@ -24,7 +24,7 @@ class NetworkManager {
     
     private var images = NSCache<NSString, NSData>()
     
-    init()  {
+    private init()  {
         let config = URLSessionConfiguration.default
         session = URLSession(configuration: config)
     }
@@ -98,6 +98,9 @@ class NetworkManager {
     }
     
     
+//    public func getEpisodeInfo(for episode: )
+    
+    
     public func downloadCharImage(character: URL, completion: @escaping (Data?, Error?) -> (Void)) {
         
         // Checks if Image has been cached and passes it back if so...
@@ -143,10 +146,11 @@ class NetworkManager {
         
     }
     
-    public func image(name: RMCharacter, completion: @escaping (Data?, Error?) -> (Void)) {
-        let url = URL(string: name.image!)
-        downloadCharImage(character: url!, completion: completion)
-        
+    public func image(name: String, completion: @escaping (Data?, Error?) -> (Void)) {
+
+        if let url = URL(string: name) {
+            downloadCharImage(character: url, completion: completion)
+        }
     }
     
     
