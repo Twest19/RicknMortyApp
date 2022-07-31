@@ -7,10 +7,6 @@
 
 import UIKit
 
-enum DescriptorType {
-    case location, firstEpisode, lastEpisode, origin
-}
-
 class RMDescriptorView: UIView {
     
     let descriptorLabel = RMSecondaryLabel(fontSize: 14)
@@ -29,26 +25,9 @@ class RMDescriptorView: UIView {
     }
     
     
-    func setInfo(for character: RMCharacter, type: DescriptorType) {
-        switch type {
-        case .location:
-            descriptorLabel.text = "Last known location:"
-            infoLabel.text = character.location.name
-            print()
-            print(character.episode.suffix(1))
-            print()
-        case .firstEpisode:
-            descriptorLabel.text = "First seen in:"
-            print(character.episode[0])
-            infoLabel.text = "N/A"
-        case .lastEpisode:
-            descriptorLabel.text = "Last seen in:"
-            print(character.episode.suffix(1))
-            infoLabel.text = "N/A"
-        case .origin:
-            descriptorLabel.text = "Origin:"
-            infoLabel.text = character.origin.name
-        }
+    func setUp(description: String, info: String) {
+        descriptorLabel.text = description
+        infoLabel.text = info
     }
     
     

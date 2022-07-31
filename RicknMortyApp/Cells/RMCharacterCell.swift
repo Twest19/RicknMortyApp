@@ -11,7 +11,7 @@ class RMCharacterCell: UICollectionViewCell {
     
     var characterImageView = RMCharacterImageView(frame: .zero)
     var characterNameLabel = RMPrimaryLabel(textAlignment: .center, fontSize: 16, weight: .bold)
-    var statusImageView = UIImageView()
+    var statusImageView = RMStatusImageView(frame: .zero)
     var statusLabel = RMSecondaryLabel(fontSize: 14)
     var imageIncomingIndicator = UIActivityIndicatorView()
     
@@ -45,26 +45,12 @@ class RMCharacterCell: UICollectionViewCell {
     }
     
     
-    func setStatus(for status: String) {
-        
-        switch status {
-        case "Alive":
-            statusImageView.tintColor = .systemGreen
-        case "Dead":
-            statusImageView.tintColor = .systemRed
-        default:
-            statusImageView.tintColor = .secondaryLabel
-        }
-        
-        statusLabel.text = status
-    }
-    
-    
     func set(character: RMCharacter, representedIdentifier: Int) {
         startIndicator()
         downloadCharacterImage(from: character.image, id: representedIdentifier)
         characterNameLabel.text = character.name
-        setStatus(for: character.status)
+        statusImageView.setStatus(for: character.status)
+        statusLabel.text = character.status
         stopIndicator()
     }
     
@@ -132,14 +118,12 @@ class RMCharacterCell: UICollectionViewCell {
     
     
     private func configureStatusImageView() {
-        statusImageView.image = SFSymbols.circle
-        statusImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             statusImageView.leadingAnchor.constraint(equalTo: characterNameLabel.leadingAnchor, constant: 2),
             statusImageView.topAnchor.constraint(equalTo: characterNameLabel.bottomAnchor, constant: 2),
-            statusImageView.heightAnchor.constraint(equalToConstant: 18),
-            statusImageView.widthAnchor.constraint(equalToConstant: 18)
+            statusImageView.heightAnchor.constraint(equalToConstant: 14),
+            statusImageView.widthAnchor.constraint(equalToConstant: 14)
         ])
     }
     
@@ -147,10 +131,10 @@ class RMCharacterCell: UICollectionViewCell {
     private func configureStatusLabel() {
         
         NSLayoutConstraint.activate([
-            statusLabel.topAnchor.constraint(equalTo: characterNameLabel.bottomAnchor, constant: 2),
+            statusLabel.centerYAnchor.constraint(equalTo: statusImageView.centerYAnchor),
             statusLabel.leadingAnchor.constraint(equalTo: statusImageView.trailingAnchor, constant: padding),
             statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            statusLabel.heightAnchor.constraint(equalToConstant: 18)
+            statusLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
     }
 }
