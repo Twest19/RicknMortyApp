@@ -44,13 +44,9 @@ class CharacterVC: UIViewController {
                 return
             }
 
-            if let charArray = character?.results {
-                self.character.append(contentsOf: charArray)
-            }
+            if let charArray = character?.results { self.character.append(contentsOf: charArray) }
 
-            if let totalPages = character?.info.pages {
-                self.totalPages = totalPages
-            }
+            if let totalPages = character?.info.pages { self.totalPages = totalPages }
 
             self.charResults = character
 
@@ -124,7 +120,7 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
             
             if let searchBarText = searchBar.text {
                 print("Search bar text: \(searchBarText)")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                DispatchQueue.main.async {
                     self.getCharacterData(pageNum: self.currentPages, searchBarText: searchBarText)
                 }
             }
@@ -161,7 +157,7 @@ extension CharacterVC: UISearchBarDelegate {
         searchBar.delegate = self
         searchBar.sizeToFit()
         searchBar.placeholder = "Search Characters Here..."
-        searchBar.tintColor = .black
+        searchBar.tintColor = .label
         searchBar.searchBarStyle = .minimal
     }
     

@@ -13,10 +13,11 @@ class RMCharDetailVC: UIViewController {
     let statusImageView = RMStatusImageView(sfSymbol: SFSymbols.circle)
     let nameLabel = RMPrimaryLabel(textAlignment: .left, fontSize: 20, weight: .bold)
     let statusSpeciesGenderLabel = RMPrimaryLabel(textAlignment: .left, fontSize: 14, weight: .medium)
-    
-    let stackView = UIStackView()
     let lastLocationLabel = RMDescriptorView()
     let originLabel = RMDescriptorView()
+    
+    let stackView = UIStackView()
+    
     let firstEpisodeLabel = RMDescriptorView()
     let lastEpisodeLabel = RMDescriptorView()
     
@@ -34,6 +35,8 @@ class RMCharDetailVC: UIViewController {
         configureNameLabel()
         configureStatusImageView()
         configureStatusSpeciesGenderLabel()
+        configureOriginLabel()
+        configureLastLocationLabel()
         configureStackView()
     }
     
@@ -43,7 +46,7 @@ class RMCharDetailVC: UIViewController {
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        let descriptorViews = [lastLocationLabel, originLabel, firstEpisodeLabel, lastEpisodeLabel]
+        let descriptorViews = [firstEpisodeLabel, lastEpisodeLabel]
         for view in descriptorViews {
             stackView.addArrangedSubview(view)
         }
@@ -58,7 +61,7 @@ class RMCharDetailVC: UIViewController {
     
     
     func addingSubViews() {
-        view.addSubviews(characterImageView, nameLabel, statusImageView, statusSpeciesGenderLabel, stackView)
+        view.addSubviews(characterImageView, nameLabel, statusImageView, statusSpeciesGenderLabel, originLabel, lastLocationLabel, stackView)
     }
     
     
@@ -75,7 +78,7 @@ class RMCharDetailVC: UIViewController {
         lastLocationLabel.setUp(description: DescriptorType.location, info: character.location.name)
         originLabel.setUp(description: DescriptorType.origin, info: character.origin.name)
         firstEpisodeLabel.setUp(description: DescriptorType.firstEpisode, info: character.episode.first ?? "N/A")
-        lastEpisodeLabel.setUp(description: DescriptorType.lastEpisode, info: "\(character.episode.suffix(1))")
+        lastEpisodeLabel.setUp(description: DescriptorType.lastEpisode, info: character.episode.last ?? "N/A")
     }
     
     
@@ -119,6 +122,30 @@ class RMCharDetailVC: UIViewController {
             statusSpeciesGenderLabel.leadingAnchor.constraint(equalTo: statusImageView.trailingAnchor, constant: padding),
             statusSpeciesGenderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             statusSpeciesGenderLabel.heightAnchor.constraint(equalToConstant: 16)
+        ])
+    }
+    
+    
+    private func configureOriginLabel() {
+        originLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            originLabel.topAnchor.constraint(equalTo: statusSpeciesGenderLabel.bottomAnchor, constant: padding),
+            originLabel.leadingAnchor.constraint(equalTo: characterImageView.trailingAnchor, constant: 8),
+            originLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            originLabel.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    
+    private func configureLastLocationLabel() {
+        lastLocationLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            lastLocationLabel.topAnchor.constraint(equalTo: originLabel.bottomAnchor, constant: padding),
+            lastLocationLabel.leadingAnchor.constraint(equalTo: characterImageView.trailingAnchor, constant: 8),
+            lastLocationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            lastLocationLabel.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     

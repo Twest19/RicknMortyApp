@@ -15,7 +15,6 @@ class RMDescriptorView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .blue
         configure()
     }
     
@@ -37,7 +36,7 @@ class RMDescriptorView: UIView {
         descriptorLabel.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let padding: CGFloat = 5
+        let padding: CGFloat = 3
         
         NSLayoutConstraint.activate([
             descriptorLabel.topAnchor.constraint(equalTo: self.topAnchor),
