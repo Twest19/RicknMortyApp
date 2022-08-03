@@ -7,7 +7,7 @@
 
 import UIKit
 
-let myCollectionView = CharacterVC()
+let myCollectionView = RMSearchVC()
 
 enum NetworkManagerError: Error {
     case badResponse(URLResponse?)
@@ -24,10 +24,12 @@ class NetworkManager {
     
     private var images = NSCache<NSString, NSData>()
     
+    
     private init()  {
         let config = URLSessionConfiguration.default
         session = URLSession(configuration: config)
     }
+    
     
     private func components() -> URLComponents {
         var components = URLComponents()
@@ -36,12 +38,21 @@ class NetworkManager {
         return components
     }
     
+    
     private func characterComponents() -> URLComponents {
         var components = components()
         components.path = "/api/character/"
         return components
     }
+    
+    
+    private func episodeComponents(episodeNum: String) -> URLComponents {
+        var components = components()
+        components.path = "/api/episode/\(episodeNum)"
+        return components
+    }
 
+    
     public func fetchCharacter(pageNum: Int, searchBarText: String = "", completion: @escaping (RMResults?, Error?) -> Void) {
         var components = characterComponents()
         let pages = URLQueryItem(name: "page", value: String(pageNum))
@@ -60,6 +71,7 @@ class NetworkManager {
             return
         }
         
+        print(url)
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             
@@ -97,8 +109,63 @@ class NetworkManager {
         
     }
     
+    public func testEpisodeURL(episodes: String) {
+        let components = episodeComponents(episodeNum: episodes)
+        
+        guard let url = components.url else {
+            print("BAD EPISODE URL")
+            return
+        }
+        
+        print(url)
+    }
     
-//    public func getEpisodeInfo(for episode: )
+    public func getEpisodeData(episodes: String, completion: @escaping ([Episode]?, Error?) -> (Void)) {
+        let components = episodeComponents(episodeNum: episodes)
+
+        // Checks URL
+        guard let url = components.url else {
+            print("Error: BAD URL, check URL...")
+            return
+        }
+
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+
+            // Handle any errors here:
+            if let error = error {
+                print("Error retrieving data, error: \(String(describing: error))")
+                completion(nil, error)
+                return
+            }
+
+            // Handle response errors here:
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                print("http response error \(String(describing: response))")
+                completion(nil, NetworkManagerError.badResponse(response))
+                return
+            }
+
+            // Handle data errors here:
+            guard let data = data else {
+                completion(nil, NetworkManagerError.badData)
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+
+            // Decode JSON into Episode Model
+            do {
+                let response = try decoder.decode([Episode].self, from: data)
+                completion(response, nil)
+            } catch let error {
+                print(error)
+                completion(nil, error)
+            }
+        }
+        task.resume()
+    }
     
     
     public func downloadCharImage(character: URL, completion: @escaping (Data?, Error?) -> (Void)) {
