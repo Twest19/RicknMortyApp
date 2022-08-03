@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CharacterVC: UIViewController {
+class RMSearchVC: UIViewController {
     
     private var collectionView: RMCharCollectionView!
     private let navBar = UINavigationBar()
@@ -22,6 +22,7 @@ class CharacterVC: UIViewController {
     private var totalPages = 1
     private var currentPages = 1
     var currentPage = 1
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,8 +84,7 @@ class CharacterVC: UIViewController {
 }
 
 
-extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    
+extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return character.count
@@ -131,8 +131,7 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedCharacter = character[indexPath.item]
         
-        let detailVC = RMCharDetailVC()
-        detailVC.setUIElements(for: selectedCharacter)
+        let detailVC = RMCharacterDetailVC(for: selectedCharacter)
         
         let navController = UINavigationController(rootViewController: detailVC)
         navController.modalPresentationStyle = .popover
@@ -142,14 +141,13 @@ extension CharacterVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
 
 // MARK: SearchBar Stuff
-extension CharacterVC: UISearchBarDelegate {
+extension RMSearchVC: UISearchBarDelegate {
     
     private func configureSearchSpinner() {
         view.addSubview(searchSpinner)
         searchSpinner.hidesWhenStopped = true
         searchSpinner.style = .large
         searchSpinner.center = collectionView.center
-        
     }
     
     
@@ -216,5 +214,4 @@ extension CharacterVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 //        print("Search text is \(searchText)")
     }
-    
 }

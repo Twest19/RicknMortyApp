@@ -132,7 +132,7 @@ class RMCharacterCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             statusLabel.centerYAnchor.constraint(equalTo: statusImageView.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: statusImageView.trailingAnchor, constant: padding),
+            statusLabel.leadingAnchor.constraint(equalTo: statusImageView.trailingAnchor, constant: 2),
             statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             statusLabel.heightAnchor.constraint(equalToConstant: 16)
         ])

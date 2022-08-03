@@ -22,7 +22,6 @@ struct RMResults: Decodable {
 }
 
 struct RMCharacter: Decodable {
-    
     var id: Int
     var name: String
     var status: String
@@ -33,6 +32,7 @@ struct RMCharacter: Decodable {
     var location: Location
     var image: String
     var episode: [String]
+    
 }
 
 struct Origin: Decodable {

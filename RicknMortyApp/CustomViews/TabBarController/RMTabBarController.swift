@@ -17,7 +17,7 @@ class RMTabBarController: UITabBarController {
     
     
     func configCharVCTab() -> UINavigationController {
-        let charVC = CharacterVC()
+        let charVC = RMSearchVC()
         charVC.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 0)
         
         return UINavigationController(rootViewController: charVC)
