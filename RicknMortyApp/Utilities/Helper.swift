@@ -22,4 +22,19 @@ enum Helper {
         
         return flowLayout
     }
+    
+    
+    static func getEpisodeNumber(from episodeURLs: String...) -> String {
+        var justNumbers: [String] = []
+        
+        for url in episodeURLs {
+            let splitString = url.split(whereSeparator: { $0 == "/"} )
+            
+            if let new = splitString.last {
+                justNumbers.append(String(new))
+            }
+        }
+        
+        return justNumbers.joined(separator: ",")
+    }
 }
