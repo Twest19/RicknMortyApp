@@ -33,8 +33,7 @@ class RMDescriptorView: UIView {
     private func configure() {
         addSubviews(descriptorLabel, infoLabel)
         
-        descriptorLabel.translatesAutoresizingMaskIntoConstraints = false
-        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
         
         let padding: CGFloat = 3
         
