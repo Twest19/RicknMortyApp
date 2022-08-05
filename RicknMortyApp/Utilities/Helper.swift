@@ -24,7 +24,7 @@ enum Helper {
     }
     
     
-    static func getEpisodeNumber(from episodeURLs: String...) -> String {
+    static func getEpisodeNumber(from episodeURLs: [String]) -> String {
         var justNumbers: [String] = []
         
         for url in episodeURLs {
