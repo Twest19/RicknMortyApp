@@ -35,17 +35,15 @@ class RMDescriptorView: UIView {
         
         translatesAutoresizingMaskIntoConstraints = false
         
-        let padding: CGFloat = 3
-        
         NSLayoutConstraint.activate([
             descriptorLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            descriptorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            descriptorLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            descriptorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            descriptorLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             descriptorLabel.heightAnchor.constraint(equalToConstant: 18),
             
-            infoLabel.topAnchor.constraint(equalTo: descriptorLabel.bottomAnchor, constant: padding),
-            infoLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            infoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
+            infoLabel.topAnchor.constraint(equalTo: descriptorLabel.bottomAnchor),
+            infoLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            infoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             infoLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
