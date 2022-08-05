@@ -16,7 +16,6 @@ class RMSearchVC: UIViewController {
     
     let networker = NetworkManager.shared
     
-    var charResults: RMResults?
     var character: [RMCharacter] = []
     
     private var totalPages = 1
@@ -44,12 +43,16 @@ class RMSearchVC: UIViewController {
                 print("Error: ", error)
                 return
             }
+            
+            if let character = character {
+                self.character.append(contentsOf: character)
+            }
 
-            if let charArray = character?.results { self.character.append(contentsOf: charArray) }
-
-            if let totalPages = character?.info.pages { self.totalPages = totalPages }
-
-            self.charResults = character
+//            if let charArray = character?.results { self.character.append(contentsOf: charArray) }
+//
+//            if let totalPages = character?.info.pages { self.totalPages = totalPages }
+//
+//            self.charResults = character
 
             DispatchQueue.main.async {
                 if self.searchSpinner.isAnimating == true {

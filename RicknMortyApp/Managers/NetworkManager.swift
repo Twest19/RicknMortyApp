@@ -53,7 +53,7 @@ class NetworkManager {
     }
 
     
-    public func fetchCharacter(pageNum: Int, searchBarText: String = "", completion: @escaping (RMResults?, Error?) -> Void) {
+    public func fetchCharacter(pageNum: Int, searchBarText: String = "", completion: @escaping ([RMCharacter]?, Error?) -> Void) {
         var components = characterComponents()
         let pages = URLQueryItem(name: "page", value: String(pageNum))
         let userCharacterSearch = URLQueryItem(name: "name", value: searchBarText)
@@ -98,7 +98,7 @@ class NetworkManager {
             
             // Decode JSON into Model
             do {
-                let response = try JSONDecoder().decode(RMResults.self, from: data)
+                let response = try JSONDecoder().decode([RMCharacter].self, from: data)
                 completion(response, nil)
             } catch let error {
                 print(error)

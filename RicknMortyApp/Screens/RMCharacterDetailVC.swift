@@ -7,18 +7,22 @@
 
 import UIKit
 
+protocol RMCharacterDetailVCDelegate: AnyObject {
+    func didRequestEpisodeCharacters(for episode: String)
+}
+
 class RMCharacterDetailVC: UIViewController {
     
     let headerView = UIView()
+    let episodeOneView = UIView()
+    let episodeTwoView = UIView()
     let stackView = UIStackView()
-    
-    let firstEpisodeLabel = RMDescriptorView()
-    let lastEpisodeLabel = RMDescriptorView()
     
     var views: [RMDescriptorView] = []
     
     var character: RMCharacter!
     
+    weak var delegate: RMCharacterDetailVCDelegate!
     private let padding: CGFloat = 10
     
     
@@ -27,9 +31,11 @@ class RMCharacterDetailVC: UIViewController {
         self.character = character
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +44,48 @@ class RMCharacterDetailVC: UIViewController {
         configNavBar()
         configureHeaderView()
         configureStackView()
-        setUIElements()
+        getEpisodeInfo(episodes: Helper.getEpisodeNumber(from: character.episode.first!, character.episode.last!))
+    }
+    
+    
+    func getEpisodeInfo(episodes: String) {
+        NetworkManager.shared.getEpisodeData(episodes: episodes) { [weak self] episode, error in
+            guard let self = self else { return }
+
+            if let error = error {
+                print("Error: ", error)
+                return
+            }
+            
+            if let episode = episode {
+                DispatchQueue.main.async {
+                    self.setUIElements(with: episode)
+    //                self.firstEpisodeLabel.setUp(description: DescriptorType.firstEpisode, info: episode?.first?.name ?? "N/A")
+    //                self.lastEpisodeLabel.setUp(description: DescriptorType.lastEpisode, info: episode?.last?.name ?? "N/A")
+                }
+            }
+        }
+    }
+    
+    
+    func setUIElements(with episode: [Episode]) {
+        DispatchQueue.main.async {
+            self.add(childVC: RMDetailHeaderVC(character: self.character), to: self.headerView)
+            self.add(childVC: FirstEpisodeVC(episode: episode.first!, delegate: self), to: self.episodeOneView)
+        }
+    }
+    
+    
+    private func configureHeaderView() {
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.backgroundColor = .systemPink
+        
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 170)
+        ])
     }
     
     
@@ -61,47 +108,6 @@ class RMCharacterDetailVC: UIViewController {
     }
     
     
-    func setUIElements() {
-        DispatchQueue.main.async {
-            self.add(childVC: RMDetailHeaderVC(character: self.character), to: self.headerView)
-        }
-        
-        firstEpisodeLabel.setUp(description: DescriptorType.firstEpisode, info: character.episode.first ?? "N/A")
-        lastEpisodeLabel.setUp(description: DescriptorType.lastEpisode, info: character.episode.last ?? "N/A")
-        
-        getEpisodeInfo(episodes: Helper.getEpisodeNumber(from: character.episode.first!, character.episode.last!))
-    }
-    
-    
-    private func configureHeaderView() {
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.backgroundColor = .systemPink
-        
-        NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 180)
-        ])
-    }
-    
-    
-    func getEpisodeInfo(episodes: String) {
-        NetworkManager.shared.getEpisodeData(episodes: episodes) { [weak self] episode, error in
-            guard let self = self else { return }
-
-            if let error = error {
-                print("Error: ", error)
-                return
-            }
-            
-            print()
-            print(episode)
-            print()
-        }
-    }
-    
-    
     func add(childVC: UIViewController, to containerView: UIView) {
         addChild(childVC)
         containerView.addSubview(childVC.view)
@@ -118,6 +124,19 @@ class RMCharacterDetailVC: UIViewController {
     
     
     @objc func dismissSelf() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
+
+extension RMCharacterDetailVC: FirstEpisodeVCDelegate {
+    
+    func didTapSeeCharactersButton(for episode: Episode) {
+        guard episode.characters.count != 0 else {
+            return
+        }
+        
+        delegate.didRequestEpisodeCharacters(for: episode.characters)
+        dismissSelf()
+    }
+}
+

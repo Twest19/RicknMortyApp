@@ -23,4 +23,6 @@ enum DescriptorType {
     static let firstEpisode = "First seen in:"
     static let lastEpisode = "Last seen in:"
     static let origin = "Origin:"
+    static let onlyOneEpisode = "Only seen in:"
+    static let airDate = "Air Date:"
 }
