@@ -18,8 +18,6 @@ class RMSearchVC: UIViewController {
     
     var character: [RMCharacter] = []
     
-    private var totalPages = 1
-    private var currentPages = 1
     var currentPage = 1
     
     
@@ -45,7 +43,7 @@ class RMSearchVC: UIViewController {
             }
             
             if let character = character {
-                self.character.append(contentsOf: character)
+                self.character.append(contentsOf: character.results)
             }
 
 //            if let charArray = character?.results { self.character.append(contentsOf: charArray) }
@@ -95,40 +93,26 @@ extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // Cell that displays pictures, name, status
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCell.identifier, for: indexPath) as? RMCharacterCell else { return UICollectionViewCell()}
         
-        if currentPages < totalPages && indexPath.row == character.count - 1 {
-            // for the loading cell w/activity spinner
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadingCell.identifier, for: indexPath) as? LoadingCell else { return UICollectionViewCell() }
-            cell.beginActivityIndicator()
-            
-            return cell
-            
-        } else {
-            // Cell that displays pictures, name, status
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCell.identifier, for: indexPath) as? RMCharacterCell else { return UICollectionViewCell()}
-            
-            // ID used to prevent wrong picture in wrong cell
-            let character = character[indexPath.item]
-            cell.cellRepresentedIdentifier = character.id
-            cell.set(character: character, representedIdentifier: character.id)
-            
-            return cell
-        }
+        // ID used to prevent wrong picture in wrong cell
+        let character = character[indexPath.item]
+        cell.cellRepresentedIdentifier = character.id
+        cell.set(character: character, representedIdentifier: character.id)
+        
+        return cell
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if currentPages < totalPages && indexPath.row == character.count - 1 {
-            currentPages = currentPages + 1
-            
-            if let searchBarText = searchBar.text {
-                print("Search bar text: \(searchBarText)")
-                DispatchQueue.main.async {
-                    self.getCharacterData(pageNum: self.currentPages, searchBarText: searchBarText)
-                }
-            }
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        currentPage += 1
+//
+//        if let searchBarText = searchBar.text {
+//            print("Search bar text: \(searchBarText)")
+//            self.getCharacterData(pageNum: self.currentPage, searchBarText: searchBarText)
+//        }
+//    }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -187,19 +171,17 @@ extension RMSearchVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        self.searchSpinner.startAnimating()
-        self.searchBar.resignFirstResponder()
+        searchSpinner.startAnimating()
+        searchBar.resignFirstResponder()
         
-        print(character)
         character = []
-        print()
-        currentPages = 1
-        totalPages = 1
-        collectionView.reloadData()
+        currentPage = 1
         
         if let searchedItem = searchBar.text {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-                self.getCharacterData(pageNum: self.currentPage, searchBarText: searchedItem)
+            getCharacterData(pageNum: self.currentPage, searchBarText: searchedItem)
+            
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
             }
         }
         search(shouldShow: false)
