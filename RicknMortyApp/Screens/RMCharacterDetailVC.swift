@@ -40,10 +40,10 @@ class RMCharacterDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubviews(headerView, stackView)
+        view.addSubviews(headerView, episodeOneView)
         configNavBar()
         configureHeaderView()
-        configureStackView()
+        configureEpisodeOneView()
         getEpisodeInfo(episodes: Helper.getEpisodeNumber(from: character.episode.first!, character.episode.last!))
     }
     
@@ -58,11 +58,8 @@ class RMCharacterDetailVC: UIViewController {
             }
             
             if let episode = episode {
-                DispatchQueue.main.async {
-                    self.setUIElements(with: episode)
-    //                self.firstEpisodeLabel.setUp(description: DescriptorType.firstEpisode, info: episode?.first?.name ?? "N/A")
+                self.setUIElements(with: episode)
     //                self.lastEpisodeLabel.setUp(description: DescriptorType.lastEpisode, info: episode?.last?.name ?? "N/A")
-                }
             }
         }
     }
@@ -78,7 +75,6 @@ class RMCharacterDetailVC: UIViewController {
     
     private func configureHeaderView() {
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.backgroundColor = .systemPink
         
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -89,23 +85,30 @@ class RMCharacterDetailVC: UIViewController {
     }
     
     
-    private func configureStackView() {
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let descriptorViews = [firstEpisodeLabel, lastEpisodeLabel]
-        for view in descriptorViews {
-            stackView.addArrangedSubview(view)
-        }
+    private func configureEpisodeOneView() {
+        episodeOneView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 30),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
+            episodeOneView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 30),
+            episodeOneView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            episodeOneView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            episodeOneView.heightAnchor.constraint(equalToConstant: 191)
         ])
     }
+    
+    
+//    private func configureStackView() {
+//        stackView.axis = .vertical
+//        stackView.distribution = .fillEqually
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        NSLayoutConstraint.activate([
+//            stackView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 30),
+//            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+//            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+//            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
+//        ])
+//    }
     
     
     func add(childVC: UIViewController, to containerView: UIView) {
@@ -134,9 +137,9 @@ extension RMCharacterDetailVC: FirstEpisodeVCDelegate {
         guard episode.characters.count != 0 else {
             return
         }
-        
-        delegate.didRequestEpisodeCharacters(for: episode.characters)
-        dismissSelf()
+        print("DETAILVC FIRSTEPISODEDELEGATE")
+//        delegate.didRequestEpisodeCharacters(for: episode.characters)
+//        dismissSelf()
     }
 }
 
