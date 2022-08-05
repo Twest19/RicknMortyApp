@@ -17,8 +17,14 @@ class RMSearchVC: UIViewController {
     let networker = NetworkManager.shared
     
     var character: [RMCharacter] = []
+    var episode: Episode!
     
+    var totalPages = 0
     var currentPage = 1
+    
+    var moreCharacters = true
+    var isSearching = false
+    var isLoadingMoreCharacters = false
     
     
     override func viewDidLoad() {
@@ -27,16 +33,23 @@ class RMSearchVC: UIViewController {
         configureNavBar()
         configureSearchBar()
         configureSearchSpinner()
-        title = "Characters"
+        title = "All Characters"
         getCharacterData(pageNum: currentPage)
     }
     
     
     private func getCharacterData(pageNum: Int, searchBarText: String = "") {
+        isLoadingMoreCharacters = true
+        switch searchBarText {
+        case "", " ":
+            title = "All Characters"
+        default:
+            title = searchBarText
+        }
         networker.fetchCharacter(pageNum: pageNum, searchBarText: searchBarText) { [weak self] character, error in
             
             guard let self = self else { return }
-
+            
             if let error = error {
                 print("Error: ", error)
                 return
@@ -44,19 +57,37 @@ class RMSearchVC: UIViewController {
             
             if let character = character {
                 self.character.append(contentsOf: character.results)
+                self.totalPages = character.info.pages
             }
-
-//            if let charArray = character?.results { self.character.append(contentsOf: charArray) }
-//
-//            if let totalPages = character?.info.pages { self.totalPages = totalPages }
-//
-//            self.charResults = character
-
+            
+            
             DispatchQueue.main.async {
                 if self.searchSpinner.isAnimating == true {
                     self.searchSpinner.stopAnimating()
                 }
-                
+                self.collectionView.reloadData()
+            }
+            self.isLoadingMoreCharacters = false
+        }
+    }
+    
+    
+    private func getEpisodeCharacterData(with characterIDs: String) {
+        networker.getEpisodeCharacters(with: characterIDs) { [weak self] character, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Error: ", error)
+                return
+            }
+            
+            if let character = character {
+                self.character.append(contentsOf: character)
+            }
+            DispatchQueue.main.async {
+                if self.searchSpinner.isAnimating == true {
+                    self.searchSpinner.stopAnimating()
+                }
                 self.collectionView.reloadData()
             }
         }
@@ -105,24 +136,50 @@ extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        currentPage += 1
-//
-//        if let searchBarText = searchBar.text {
-//            print("Search bar text: \(searchBarText)")
-//            self.getCharacterData(pageNum: self.currentPage, searchBarText: searchBarText)
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if currentPage < totalPages && indexPath.row == character.count - 1 {
+            guard moreCharacters, !isLoadingMoreCharacters else { return }
+            currentPage += 1
+            if let searchBarText = searchBar.text {
+                print("Search bar text: \(searchBarText)")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.getCharacterData(pageNum: self.currentPage, searchBarText: searchBarText)
+                    print("FETCHING AGAIN...")
+                }
+            }
+        }
+    }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedCharacter = character[indexPath.item]
+        if !isSearching {
+            let selectedCharacter = character[indexPath.item]
+            
+            let detailVC = RMCharacterDetailVC(for: selectedCharacter)
+            detailVC.delegate = self
+            
+            let navController = UINavigationController(rootViewController: detailVC)
+            navController.modalPresentationStyle = .popover
+            present(navController, animated: true)
+        }
+    }
+}
+
+
+extension RMSearchVC: RMCharacterDetailVCDelegate {
+    func didRequestEpisodeCharacters(for episode: Episode) {
+        // reset screen
+        print("AYAYAYYAYA")
+        self.episode = episode
+        title = episode.name
+        currentPage = 1
+        totalPages = 1
         
-        let detailVC = RMCharacterDetailVC(for: selectedCharacter)
+        character.removeAll()
+
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
         
-        let navController = UINavigationController(rootViewController: detailVC)
-        navController.modalPresentationStyle = .popover
-        present(navController, animated: true)
+        getEpisodeCharacterData(with: Helper.getEpisodeNumber(from: episode.characters))
     }
 }
 
@@ -174,7 +231,7 @@ extension RMSearchVC: UISearchBarDelegate {
         searchSpinner.startAnimating()
         searchBar.resignFirstResponder()
         
-        character = []
+        character.removeAll()
         currentPage = 1
         
         if let searchedItem = searchBar.text {
