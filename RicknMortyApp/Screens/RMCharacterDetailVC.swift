@@ -8,7 +8,7 @@
 import UIKit
 
 protocol RMCharacterDetailVCDelegate: AnyObject {
-    func didRequestEpisodeCharacters(for episode: String)
+    func didRequestEpisodeCharacters(for episode: Episode)
 }
 
 class RMCharacterDetailVC: UIViewController {
@@ -43,8 +43,9 @@ class RMCharacterDetailVC: UIViewController {
         view.addSubviews(headerView, episodeOneView)
         configNavBar()
         configureHeaderView()
+        
+        getEpisodeInfo(episodes: Helper.getEpisodeNumber(from: [character.episode.first!, character.episode.last!]))
         configureEpisodeOneView()
-        getEpisodeInfo(episodes: Helper.getEpisodeNumber(from: character.episode.first!, character.episode.last!))
     }
     
     
@@ -138,8 +139,12 @@ extension RMCharacterDetailVC: FirstEpisodeVCDelegate {
             return
         }
         print("DETAILVC FIRSTEPISODEDELEGATE")
-//        delegate.didRequestEpisodeCharacters(for: episode.characters)
-//        dismissSelf()
+        print(episode)
+        
+        if let delegate = delegate {
+            delegate.didRequestEpisodeCharacters(for: episode)
+            dismissSelf()
+        }
     }
 }
 
