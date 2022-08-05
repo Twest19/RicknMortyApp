@@ -53,7 +53,7 @@ class NetworkManager {
     }
 
     
-    public func fetchCharacter(pageNum: Int, searchBarText: String = "", completion: @escaping ([RMCharacter]?, Error?) -> Void) {
+    public func fetchCharacter(pageNum: Int, searchBarText: String = "", completion: @escaping (RMResults?, Error?) -> Void) {
         var components = characterComponents()
         let pages = URLQueryItem(name: "page", value: String(pageNum))
         let userCharacterSearch = URLQueryItem(name: "name", value: searchBarText)
@@ -97,28 +97,20 @@ class NetworkManager {
             
             
             // Decode JSON into Model
+            let decoder = JSONDecoder()
+            
             do {
-                let response = try JSONDecoder().decode([RMCharacter].self, from: data)
+                let response = try decoder.decode(RMResults.self, from: data)
                 completion(response, nil)
             } catch let error {
+                print("ERROR DECODING")
                 print(error)
                 completion(nil, error)
             }
         }
         task.resume()
-        
     }
-    
-    public func testEpisodeURL(episodes: String) {
-        let components = episodeComponents(episodeNum: episodes)
-        
-        guard let url = components.url else {
-            print("BAD EPISODE URL")
-            return
-        }
-        
-        print(url)
-    }
+
     
     public func getEpisodeData(episodes: String, completion: @escaping ([Episode]?, Error?) -> (Void)) {
         let components = episodeComponents(episodeNum: episodes)

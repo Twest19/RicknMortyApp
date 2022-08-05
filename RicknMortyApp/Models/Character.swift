@@ -8,16 +8,15 @@
 import UIKit
 
 // MARK: - Info
-struct Info: Decodable {
-    let count: Int
-    var pages: Int
-    let next: String?
-    let prev: String?
-}
-
-
+//struct Info: Decodable {
+//    let count: Int
+//    var pages: Int
+//    let next: String?
+//    let prev: String?
+//}
+//
+//
 struct RMResults: Decodable {
-    var info: Info
     var results: [RMCharacter]
 }
 
