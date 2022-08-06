@@ -9,6 +9,10 @@ import UIKit
 
 class RMSearchVC: UIViewController {
     
+    private enum CharacterListSection: Int {
+        case main
+    }
+    
     private var collectionView: RMCharCollectionView!
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
@@ -17,7 +21,6 @@ class RMSearchVC: UIViewController {
     let networker = NetworkManager.shared
     
     var character: [RMCharacter] = []
-    var episode: Episode!
     
     var totalPages = 0
     var currentPage = 1
@@ -31,21 +34,16 @@ class RMSearchVC: UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         configureNavBar()
+        title = "All Characters"
         configureSearchBar()
         configureSearchSpinner()
-        title = "All Characters"
         getCharacterData(pageNum: currentPage)
     }
     
     
     private func getCharacterData(pageNum: Int, searchBarText: String = "") {
         isLoadingMoreCharacters = true
-        switch searchBarText {
-        case "", " ":
-            title = "All Characters"
-        default:
-            title = searchBarText
-        }
+
         networker.fetchCharacter(pageNum: pageNum, searchBarText: searchBarText) { [weak self] character, error in
             
             guard let self = self else { return }
@@ -84,6 +82,7 @@ class RMSearchVC: UIViewController {
             if let character = character {
                 self.character.append(contentsOf: character)
             }
+            
             DispatchQueue.main.async {
                 if self.searchSpinner.isAnimating == true {
                     self.searchSpinner.stopAnimating()
@@ -119,6 +118,9 @@ class RMSearchVC: UIViewController {
 extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print()
+        print("Count = \(character.count)")
+        print()
         return character.count
     }
     
@@ -127,17 +129,23 @@ extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
         // Cell that displays pictures, name, status
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCell.identifier, for: indexPath) as? RMCharacterCell else { return UICollectionViewCell()}
         
-        // ID used to prevent wrong picture in wrong cell
-        let character = character[indexPath.item]
-        cell.cellRepresentedIdentifier = character.id
-        cell.set(character: character, representedIdentifier: character.id)
+        // prevents occasional crash when viewing episode characters
+        if character.count > indexPath.item {
+            // ID used to prevent wrong picture in wrong cell
+            let character = character[indexPath.item]
+            
+            cell.cellRepresentedIdentifier = character.id
+            cell.set(character: character, representedIdentifier: character.id)
+        }
         
         return cell
     }
     
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if currentPage < totalPages && indexPath.row == character.count - 1 {
+        if currentPage < totalPages && indexPath.item == character.count - 1 {
+            print("ROW: \(indexPath.row)")
+            print("ITEM: \(indexPath.item)")
             guard moreCharacters, !isLoadingMoreCharacters else { return }
             currentPage += 1
             if let searchBarText = searchBar.text {
@@ -154,7 +162,10 @@ extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if !isSearching {
             let selectedCharacter = character[indexPath.item]
-            
+            print("DID SELECT")
+            print(character)
+            print(indexPath.item)
+            print()
             let detailVC = RMCharacterDetailVC(for: selectedCharacter)
             detailVC.delegate = self
             
@@ -165,12 +176,11 @@ extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 }
 
-
+// MARK: RMCHARACTERDETAILVCDELEGATE
 extension RMSearchVC: RMCharacterDetailVCDelegate {
     func didRequestEpisodeCharacters(for episode: Episode) {
         // reset screen
         print("AYAYAYYAYA")
-        self.episode = episode
         title = episode.name
         currentPage = 1
         totalPages = 1
@@ -232,9 +242,11 @@ extension RMSearchVC: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         
         character.removeAll()
+        totalPages = 0
         currentPage = 1
         
         if let searchedItem = searchBar.text {
+            
             getCharacterData(pageNum: self.currentPage, searchBarText: searchedItem)
             
             DispatchQueue.main.async {
