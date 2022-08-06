@@ -7,19 +7,19 @@
 
 import UIKit
 
-protocol FirstEpisodeVCDelegate: AnyObject {
+protocol EpisodeVCDelegate: AnyObject {
     func didTapSeeCharactersButton(for episode: Episode)
 }
 
 class FirstEpisodeVC: RMEpisodeInfoVC {
     
-    weak var delegate: FirstEpisodeVCDelegate!
+    weak var delegate: EpisodeVCDelegate!
     
     var codeAndName: String {
         return "\(episode.episode) - \(episode.name)"
     }
     
-    init(episode: Episode, delegate: FirstEpisodeVCDelegate) {
+    init(episode: Episode, delegate: EpisodeVCDelegate) {
         super.init(episode: episode)
         self.delegate = delegate
     }

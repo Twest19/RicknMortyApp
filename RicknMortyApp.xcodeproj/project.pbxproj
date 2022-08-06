@@ -35,6 +35,7 @@
 		F9BC0B2F2873E92000813100 /* RMCharCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BC0B2E2873E92000813100 /* RMCharCollectionView.swift */; };
 		F9D03D992896DCAE005D7517 /* RMStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D03D982896DCAE005D7517 /* RMStackView.swift */; };
 		F9D03D9B2896EF5C005D7517 /* RMStatusImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D03D9A2896EF5C005D7517 /* RMStatusImageView.swift */; };
+		F9E2BC74289DEB68001BDB37 /* SecondEpisodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		F9BC0B2E2873E92000813100 /* RMCharCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharCollectionView.swift; sourceTree = "<group>"; };
 		F9D03D982896DCAE005D7517 /* RMStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMStackView.swift; sourceTree = "<group>"; };
 		F9D03D9A2896EF5C005D7517 /* RMStatusImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMStatusImageView.swift; sourceTree = "<group>"; };
+		F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondEpisodeVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +181,7 @@
 			children = (
 				F94AD558289C7AAF00D640E2 /* RMEpisodeInfoVC.swift */,
 				F94AD55E289C81BE00D640E2 /* FirstEpisodeVC.swift */,
+				F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */,
 			);
 			path = EpisodeVCs;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				F903C2132865695F00BDC01C /* SceneDelegate.swift in Sources */,
 				F9B788BA2899CB3500980653 /* Episode.swift in Sources */,
 				F90E59902890DC5300D96750 /* RMTabBarController.swift in Sources */,
+				F9E2BC74289DEB68001BDB37 /* SecondEpisodeVC.swift in Sources */,
 				F91F4B092867F12100043A0D /* RMCharacterDetailVC.swift in Sources */,
 				F949DB9D28690DD200547ABC /* NetworkManager.swift in Sources */,
 				F95472902891BAE700940661 /* Constants.swift in Sources */,

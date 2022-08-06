@@ -66,25 +66,6 @@ class RMEpisodeInfoVC: UIViewController {
     }
     
     
-//    private func layoutUIItems() {
-//        view.addSubviews(stackView, actionButton)
-//
-//        let padding: CGFloat = 15
-//
-//        NSLayoutConstraint.activate([
-//            stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: padding),
-//            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-//            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-//            stackView.heightAnchor.constraint(equalToConstant: 50),
-//
-//            actionButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: padding),
-//            actionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-//            actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-//            actionButton.heightAnchor.constraint(equalToConstant: 46)
-//        ])
-//    }
-    
-    
     private func configureStackView() {
         stackView.addArrangedSubviews(descriptorViewOne, descriptorViewTwo)
         stackView.translatesAutoresizingMaskIntoConstraints = false

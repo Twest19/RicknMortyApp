@@ -21,7 +21,7 @@ struct RMResults: Decodable {
     var results: [RMCharacter]
 }
 
-struct RMCharacter: Decodable {
+struct RMCharacter: Identifiable, Decodable {
     var id: Int
     var name: String
     var status: String

@@ -225,13 +225,13 @@ class NetworkManager {
         
         // Checks if Image has been cached and passes it back if so...
         if let imageData = images.object(forKey: character.absoluteString as NSString) {
-            print("using cached image...")
+//            print("using cached image...")
             completion(imageData as Data, nil)
             return
         }
         
         let task = session.downloadTask(with: character) { localurl, urlresponse, error in
-            print("...Not a cached Image")
+//            print("...Not a cached Image")
             // Handle any errors here:
             if let error = error {
                 print("Error retrieving data, error: \(String(describing: error))")
@@ -272,7 +272,4 @@ class NetworkManager {
             downloadCharImage(character: url, completion: completion)
         }
     }
-    
-    
-    
 }
