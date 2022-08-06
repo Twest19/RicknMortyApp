@@ -13,10 +13,12 @@ protocol RMCharacterDetailVCDelegate: AnyObject {
 
 class RMCharacterDetailVC: UIViewController {
     
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    
     let headerView = UIView()
     let episodeOneView = UIView()
     let episodeTwoView = UIView()
-    let stackView = UIStackView()
     
     var views: [RMDescriptorView] = []
     
@@ -40,12 +42,14 @@ class RMCharacterDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubviews(headerView, episodeOneView)
+        view.addSubviews(scrollView)
         configNavBar()
+        configureScrollView()
         configureHeaderView()
+        configureEpisodeOneView()
+        configureEpisodeTwoView()
         
         getEpisodeInfo(episodes: Helper.getEpisodeNumber(from: [character.episode.first!, character.episode.last!]))
-        configureEpisodeOneView()
     }
     
     
@@ -60,7 +64,6 @@ class RMCharacterDetailVC: UIViewController {
             
             if let episode = episode {
                 self.setUIElements(with: episode)
-    //                self.lastEpisodeLabel.setUp(description: DescriptorType.lastEpisode, info: episode?.last?.name ?? "N/A")
             }
         }
     }
@@ -70,7 +73,22 @@ class RMCharacterDetailVC: UIViewController {
         DispatchQueue.main.async {
             self.add(childVC: RMDetailHeaderVC(character: self.character), to: self.headerView)
             self.add(childVC: FirstEpisodeVC(episode: episode.first!, delegate: self), to: self.episodeOneView)
+            self.add(childVC: SecondEpisodeVC(episode: episode.last!, delegate: self), to: self.episodeTwoView)
         }
+    }
+    
+    
+    private func configureScrollView() {
+        scrollView.addSubviews(contentView)
+        scrollView.pinToEdges(of: view)
+        
+        contentView.addSubviews(headerView, episodeOneView, episodeTwoView)
+        contentView.pinToEdges(of: scrollView)
+        
+        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 700)
+        ])
     }
     
     
@@ -78,9 +96,9 @@ class RMCharacterDetailVC: UIViewController {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 170)
         ])
     }
@@ -90,33 +108,23 @@ class RMCharacterDetailVC: UIViewController {
         episodeOneView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            episodeOneView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 30),
-            episodeOneView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-            episodeOneView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            episodeOneView.heightAnchor.constraint(equalToConstant: 191)
+            episodeOneView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20),
+            episodeOneView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            episodeOneView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            episodeOneView.heightAnchor.constraint(equalToConstant: 190)
         ])
     }
     
     
-//    private func configureStackView() {
-//        stackView.axis = .vertical
-//        stackView.distribution = .fillEqually
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        NSLayoutConstraint.activate([
-//            stackView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 30),
-//            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-//            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-//            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding)
-//        ])
-//    }
-    
-    
-    func add(childVC: UIViewController, to containerView: UIView) {
-        addChild(childVC)
-        containerView.addSubview(childVC.view)
-        childVC.view.frame = containerView.bounds
-        childVC.didMove(toParent: self)
+    private func configureEpisodeTwoView() {
+        episodeTwoView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            episodeTwoView.topAnchor.constraint(equalTo: episodeOneView.bottomAnchor, constant: 20),
+            episodeTwoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            episodeTwoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            episodeTwoView.heightAnchor.constraint(equalToConstant: 190)
+        ])
     }
     
     
@@ -127,24 +135,31 @@ class RMCharacterDetailVC: UIViewController {
     }
     
     
+    func add(childVC: UIViewController, to containerView: UIView) {
+        addChild(childVC)
+        containerView.addSubview(childVC.view)
+        childVC.view.frame = containerView.bounds
+        childVC.didMove(toParent: self)
+    }
+    
+    
     @objc func dismissSelf() {
         dismiss(animated: true)
     }
 }
 
-extension RMCharacterDetailVC: FirstEpisodeVCDelegate {
+extension RMCharacterDetailVC: EpisodeVCDelegate {
     
     func didTapSeeCharactersButton(for episode: Episode) {
         guard episode.characters.count != 0 else {
             return
         }
-        print("DETAILVC FIRSTEPISODEDELEGATE")
-        print(episode)
+        print("\nDETAILVC FIRSTEPISODEDELEGATE")
         
         if let delegate = delegate {
             delegate.didRequestEpisodeCharacters(for: episode)
             dismissSelf()
+            print("DETAILVC FIRSTEPISODEDELEGATE\n")
         }
     }
 }
-
