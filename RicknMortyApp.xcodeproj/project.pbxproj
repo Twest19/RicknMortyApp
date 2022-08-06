@@ -36,6 +36,7 @@
 		F9D03D992896DCAE005D7517 /* RMStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D03D982896DCAE005D7517 /* RMStackView.swift */; };
 		F9D03D9B2896EF5C005D7517 /* RMStatusImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D03D9A2896EF5C005D7517 /* RMStatusImageView.swift */; };
 		F9E2BC74289DEB68001BDB37 /* SecondEpisodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */; };
+		F9E2BC76289F1485001BDB37 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E2BC75289F1485001BDB37 /* DataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		F9D03D982896DCAE005D7517 /* RMStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMStackView.swift; sourceTree = "<group>"; };
 		F9D03D9A2896EF5C005D7517 /* RMStatusImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMStatusImageView.swift; sourceTree = "<group>"; };
 		F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondEpisodeVC.swift; sourceTree = "<group>"; };
+		F9E2BC75289F1485001BDB37 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +236,7 @@
 			children = (
 				F903C22828656B5C00BDC01C /* Character.swift */,
 				F9B788B92899CB3500980653 /* Episode.swift */,
+				F9E2BC75289F1485001BDB37 /* DataStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				F9D03D992896DCAE005D7517 /* RMStackView.swift in Sources */,
 				F949DB9B2868F07200547ABC /* LoadingCell.swift in Sources */,
 				F903C2132865695F00BDC01C /* SceneDelegate.swift in Sources */,
+				F9E2BC76289F1485001BDB37 /* DataStore.swift in Sources */,
 				F9B788BA2899CB3500980653 /* Episode.swift in Sources */,
 				F90E59902890DC5300D96750 /* RMTabBarController.swift in Sources */,
 				F9E2BC74289DEB68001BDB37 /* SecondEpisodeVC.swift in Sources */,

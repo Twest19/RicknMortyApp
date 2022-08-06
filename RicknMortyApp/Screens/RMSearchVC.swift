@@ -14,6 +14,8 @@ class RMSearchVC: UIViewController {
     }
     
     private var collectionView: RMCharCollectionView!
+    private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter.ID>!
+    
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
     private let searchSpinner = UIActivityIndicatorView()
@@ -38,6 +40,17 @@ class RMSearchVC: UIViewController {
         configureSearchBar()
         configureSearchSpinner()
         getCharacterData(pageNum: currentPage)
+        configureDataSource()
+    }
+    
+    
+    func character(with id: Int) -> RMCharacter? {
+        return character.first(where: { $0.id == id })
+    }
+    
+    
+    func characterIds() -> [RMCharacter.ID] {
+        return character.map { $0.id }
     }
     
     
@@ -54,8 +67,8 @@ class RMSearchVC: UIViewController {
             }
             
             if let character = character {
-                self.character.append(contentsOf: character.results)
                 self.totalPages = character.info.pages
+                self.updateUI(with: character.results)
             }
             
             
@@ -63,7 +76,6 @@ class RMSearchVC: UIViewController {
                 if self.searchSpinner.isAnimating == true {
                     self.searchSpinner.stopAnimating()
                 }
-                self.collectionView.reloadData()
             }
             self.isLoadingMoreCharacters = false
         }
@@ -80,14 +92,13 @@ class RMSearchVC: UIViewController {
             }
             
             if let character = character {
-                self.character.append(contentsOf: character)
+                self.updateUI(with: character)
             }
             
             DispatchQueue.main.async {
                 if self.searchSpinner.isAnimating == true {
                     self.searchSpinner.stopAnimating()
                 }
-                self.collectionView.reloadData()
             }
         }
     }
@@ -97,8 +108,38 @@ class RMSearchVC: UIViewController {
         collectionView = RMCharCollectionView(frame: view.bounds, collectionViewLayout: Helper.threeColumnCollectionView(in: view))
         view.addSubview(collectionView)
         collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
+    }
+    
+    
+    private func configureDataSource() {
+        let characterCellRegistration = UICollectionView.CellRegistration<RMCharacterCell, RMCharacter> { cell, indexPath, character in
+            cell.cellRepresentedIdentifier = character.id
+            cell.set(character: character, representedIdentifier: character.id)
+        }
+        
+        characterListDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier -> UICollectionViewCell in
+            let character = self.character(with: itemIdentifier)!
+            return collectionView.dequeueConfiguredReusableCell(using: characterCellRegistration, for: indexPath, item: character)
+        }
+    }
+    
+    
+    private func updateUI(with characters: [RMCharacter]) {
+        self.character.append(contentsOf: characters)
+        self.updateData(on: self.character)
+    }
+    
+    
+    private func updateData(on characters: [RMCharacter]) {
+        let charID = characterIds()
+        
+        var snapshot = NSDiffableDataSourceSnapshot<CharacterListSection, RMCharacter.ID>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(charID, toSection: .main)
+        DispatchQueue.main.async {
+            self.characterListDataSource.apply(snapshot, animatingDifferences: true)
+        }
     }
     
     
@@ -115,32 +156,7 @@ class RMSearchVC: UIViewController {
 }
 
 
-extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print()
-        print("Count = \(character.count)")
-        print()
-        return character.count
-    }
-    
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // Cell that displays pictures, name, status
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCell.identifier, for: indexPath) as? RMCharacterCell else { return UICollectionViewCell()}
-        
-        // prevents occasional crash when viewing episode characters
-        if character.count > indexPath.item {
-            // ID used to prevent wrong picture in wrong cell
-            let character = character[indexPath.item]
-            
-            cell.cellRepresentedIdentifier = character.id
-            cell.set(character: character, representedIdentifier: character.id)
-        }
-        
-        return cell
-    }
-    
+extension RMSearchVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if currentPage < totalPages && indexPath.item == character.count - 1 {
@@ -162,10 +178,7 @@ extension RMSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if !isSearching {
             let selectedCharacter = character[indexPath.item]
-            print("DID SELECT")
-            print(character)
-            print(indexPath.item)
-            print()
+           
             let detailVC = RMCharacterDetailVC(for: selectedCharacter)
             detailVC.delegate = self
             
@@ -246,12 +259,7 @@ extension RMSearchVC: UISearchBarDelegate {
         currentPage = 1
         
         if let searchedItem = searchBar.text {
-            
-            getCharacterData(pageNum: self.currentPage, searchBarText: searchedItem)
-            
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
+            getCharacterData(pageNum: currentPage, searchBarText: searchedItem)
         }
         search(shouldShow: false)
     }
