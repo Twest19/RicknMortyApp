@@ -15,6 +15,7 @@ class RMSearchVC: UIViewController {
     
     private var collectionView: RMCharCollectionView!
     private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter.ID>!
+//    private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter>!
     
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
@@ -109,6 +110,7 @@ class RMSearchVC: UIViewController {
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground
+//        collectionView.register(RMCharacterCell.self, forCellWithReuseIdentifier: RMCharacterCell.identifier)
     }
     
     
@@ -118,10 +120,16 @@ class RMSearchVC: UIViewController {
             cell.set(character: character, representedIdentifier: character.id)
         }
         
-        characterListDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier -> UICollectionViewCell in
+        characterListDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
             let character = self.character(with: itemIdentifier)!
+//            print("DATASOURCE CHARACTER= \(character)")
             return collectionView.dequeueConfiguredReusableCell(using: characterCellRegistration, for: indexPath, item: character)
-        }
+        })
+//        characterListDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, char) -> UICollectionViewCell? in
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCell.identifier, for: indexPath) as! RMCharacterCell
+//            cell.set(character: char, representedIdentifier: char.id)
+//            return cell
+//        })
     }
     
     
@@ -133,13 +141,21 @@ class RMSearchVC: UIViewController {
     
     private func updateData(on characters: [RMCharacter]) {
         let charID = characterIds()
-        
+
         var snapshot = NSDiffableDataSourceSnapshot<CharacterListSection, RMCharacter.ID>()
         snapshot.appendSections([.main])
         snapshot.appendItems(charID, toSection: .main)
         DispatchQueue.main.async {
+//            self.characterListDataSource.applySnapshotUsingReloadData(snapshot)
             self.characterListDataSource.apply(snapshot, animatingDifferences: true)
         }
+//        var snapshot = NSDiffableDataSourceSnapshot<CharacterListSection, RMCharacter>()
+//        snapshot.appendSections([.main])
+//        snapshot.appendItems(characters)
+//        DispatchQueue.main.async {
+//            self.characterListDataSource.apply(snapshot, animatingDifferences: true)
+//        }
+        
     }
     
     
@@ -194,7 +210,9 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
     func didRequestEpisodeCharacters(for episode: Episode) {
         // reset screen
         print("AYAYAYYAYA")
-        title = episode.name
+        
+        let id = Helper.getEpisodeNumber(from: episode.characters)
+        
         currentPage = 1
         totalPages = 1
         
@@ -202,7 +220,9 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
 
         collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
         
-        getEpisodeCharacterData(with: Helper.getEpisodeNumber(from: episode.characters))
+        getEpisodeCharacterData(with: id)
+        // Configuring this again seems to prevent occasional crash
+        configureDataSource()
     }
 }
 
