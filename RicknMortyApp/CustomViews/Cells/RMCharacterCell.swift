@@ -46,16 +46,17 @@ class RMCharacterCell: UICollectionViewCell {
     
     
     func set(character: RMCharacter, representedIdentifier: Int) {
-        startIndicator()
+        
         downloadCharacterImage(from: character.image, id: representedIdentifier)
         characterNameLabel.text = character.name
         statusImageView.setStatus(for: character.status)
         statusLabel.text = character.status
-        stopIndicator()
+        
     }
     
     
     func downloadCharacterImage(from url: String, id: Int) {
+        startIndicator()
         // Set cell's image, also caches
         NetworkManager.shared.downloadImageUsing(URLString: url) { [weak self] result in
             guard let self = self else { return }
@@ -69,9 +70,11 @@ class RMCharacterCell: UICollectionViewCell {
                     }
                 }
             case .failure(let error):
+                self.characterImageView.image = Images.placeHolder
                 print(error)
                 return
             }
+            self.stopIndicator()
         }
     }
     

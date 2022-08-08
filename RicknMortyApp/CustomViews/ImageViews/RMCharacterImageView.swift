@@ -51,6 +51,9 @@ class RMCharacterImageView: UIImageView {
                     self.image = img
                 }
             case .failure(let error):
+                DispatchQueue.main.async {
+                    self.image = self.placeHolderImage
+                }
                 print(error)
                 return
             }
