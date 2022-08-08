@@ -33,6 +33,10 @@
 		F9B788BA2899CB3500980653 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B788B92899CB3500980653 /* Episode.swift */; };
 		F9B788BC289A1CB400980653 /* RMDetailHeaderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B788BB289A1CB400980653 /* RMDetailHeaderVC.swift */; };
 		F9BC0B2F2873E92000813100 /* RMCharCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BC0B2E2873E92000813100 /* RMCharCollectionView.swift */; };
+		F9C6574928A0552E00EE562F /* RMError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C6574828A0552E00EE562F /* RMError.swift */; };
+		F9C6574B28A0636300EE562F /* RMURLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C6574A28A0636300EE562F /* RMURLManager.swift */; };
+		F9C6574D28A0878000EE562F /* RMDataLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C6574C28A0878000EE562F /* RMDataLoadingVC.swift */; };
+		F9C6574F28A087FE00EE562F /* RMErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C6574E28A087FE00EE562F /* RMErrorView.swift */; };
 		F9D03D992896DCAE005D7517 /* RMStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D03D982896DCAE005D7517 /* RMStackView.swift */; };
 		F9D03D9B2896EF5C005D7517 /* RMStatusImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D03D9A2896EF5C005D7517 /* RMStatusImageView.swift */; };
 		F9E2BC74289DEB68001BDB37 /* SecondEpisodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */; };
@@ -68,6 +72,10 @@
 		F9B788B92899CB3500980653 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		F9B788BB289A1CB400980653 /* RMDetailHeaderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMDetailHeaderVC.swift; sourceTree = "<group>"; };
 		F9BC0B2E2873E92000813100 /* RMCharCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharCollectionView.swift; sourceTree = "<group>"; };
+		F9C6574828A0552E00EE562F /* RMError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMError.swift; sourceTree = "<group>"; };
+		F9C6574A28A0636300EE562F /* RMURLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMURLManager.swift; sourceTree = "<group>"; };
+		F9C6574C28A0878000EE562F /* RMDataLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMDataLoadingVC.swift; sourceTree = "<group>"; };
+		F9C6574E28A087FE00EE562F /* RMErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMErrorView.swift; sourceTree = "<group>"; };
 		F9D03D982896DCAE005D7517 /* RMStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMStackView.swift; sourceTree = "<group>"; };
 		F9D03D9A2896EF5C005D7517 /* RMStatusImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMStatusImageView.swift; sourceTree = "<group>"; };
 		F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondEpisodeVC.swift; sourceTree = "<group>"; };
@@ -146,6 +154,7 @@
 			children = (
 				F90E59922890E03100D96750 /* Helper.swift */,
 				F954728F2891BAE700940661 /* Constants.swift */,
+				F9C6574828A0552E00EE562F /* RMError.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -174,6 +183,7 @@
 			children = (
 				F94AD55D289C817A00D640E2 /* EpisodeVCs */,
 				F9B788BB289A1CB400980653 /* RMDetailHeaderVC.swift */,
+				F9C6574C28A0878000EE562F /* RMDataLoadingVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -227,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				F949DB9C28690DD200547ABC /* NetworkManager.swift */,
+				F9C6574A28A0636300EE562F /* RMURLManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -247,6 +258,7 @@
 				F9D03D982896DCAE005D7517 /* RMStackView.swift */,
 				F9BC0B2E2873E92000813100 /* RMCharCollectionView.swift */,
 				F954729728922C3800940661 /* RMDescriptorView.swift */,
+				F9C6574E28A087FE00EE562F /* RMErrorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -328,6 +340,7 @@
 				F94AD55C289C7F0A00D640E2 /* StackView+Ext.swift in Sources */,
 				F94AD55F289C81BE00D640E2 /* FirstEpisodeVC.swift in Sources */,
 				F903C2112865695F00BDC01C /* AppDelegate.swift in Sources */,
+				F9C6574D28A0878000EE562F /* RMDataLoadingVC.swift in Sources */,
 				F954729828922C3800940661 /* RMDescriptorView.swift in Sources */,
 				F954728E2891BA0C00940661 /* RMSecondaryLabel.swift in Sources */,
 				F903C22D28656E8A00BDC01C /* RMCharacterCell.swift in Sources */,
@@ -336,6 +349,7 @@
 				F9BC0B2F2873E92000813100 /* RMCharCollectionView.swift in Sources */,
 				F94AD559289C7AAF00D640E2 /* RMEpisodeInfoVC.swift in Sources */,
 				F903C22728656AC500BDC01C /* RMSearchVC.swift in Sources */,
+				F9C6574F28A087FE00EE562F /* RMErrorView.swift in Sources */,
 				F903C22B28656D8B00BDC01C /* UIView-Extension.swift in Sources */,
 				F9B788BC289A1CB400980653 /* RMDetailHeaderVC.swift in Sources */,
 				F95472932891C7C500940661 /* RMCharacterImageView.swift in Sources */,
@@ -344,8 +358,10 @@
 				F903C2132865695F00BDC01C /* SceneDelegate.swift in Sources */,
 				F9E2BC76289F1485001BDB37 /* DataStore.swift in Sources */,
 				F9B788BA2899CB3500980653 /* Episode.swift in Sources */,
+				F9C6574928A0552E00EE562F /* RMError.swift in Sources */,
 				F90E59902890DC5300D96750 /* RMTabBarController.swift in Sources */,
 				F9E2BC74289DEB68001BDB37 /* SecondEpisodeVC.swift in Sources */,
+				F9C6574B28A0636300EE562F /* RMURLManager.swift in Sources */,
 				F91F4B092867F12100043A0D /* RMCharacterDetailVC.swift in Sources */,
 				F949DB9D28690DD200547ABC /* NetworkManager.swift in Sources */,
 				F95472902891BAE700940661 /* Constants.swift in Sources */,
@@ -492,6 +508,7 @@
 				INFOPLIST_FILE = RicknMortyApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -503,7 +520,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -519,6 +536,7 @@
 				INFOPLIST_FILE = RicknMortyApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -530,7 +548,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

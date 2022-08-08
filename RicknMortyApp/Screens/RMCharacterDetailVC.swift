@@ -54,16 +54,16 @@ class RMCharacterDetailVC: UIViewController {
     
     
     func getEpisodeInfo(episodes: String) {
-        NetworkManager.shared.getEpisodeData(episodes: episodes) { [weak self] episode, error in
+        NetworkManager.shared.getEpisodeData(episodes: episodes) { [weak self] result in
             guard let self = self else { return }
-
-            if let error = error {
+            
+            switch result {
+            case .success(let episode):
+                self.setUIElements(with: episode)
+                
+            case .failure(let error):
                 print("Error: ", error)
                 return
-            }
-            
-            if let episode = episode {
-                self.setUIElements(with: episode)
             }
         }
     }

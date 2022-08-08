@@ -41,11 +41,18 @@ class RMCharacterImageView: UIImageView {
     
     func downloadImage(from url: String) {
         // Set cell's image, also caches
-        NetworkManager.shared.image(name: url) { [weak self] data, error in
+        NetworkManager.shared.downloadImageUsing(URLString: url) { [weak self] result in
             guard let self = self else { return }
-            let img = self.makeImage(data: data)
-            DispatchQueue.main.async {
-                self.image = img
+            
+            switch result {
+            case .success(let data):
+                let img = self.makeImage(data: data)
+                DispatchQueue.main.async {
+                    self.image = img
+                }
+            case .failure(let error):
+                print(error)
+                return
             }
         }
     }

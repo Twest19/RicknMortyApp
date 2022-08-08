@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RMSearchVC: UIViewController {
+class RMSearchVC: RMDataLoadingVC {
     
     private enum CharacterListSection: Int {
         case main
@@ -19,7 +19,6 @@ class RMSearchVC: UIViewController {
     
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
-    private let searchSpinner = UIActivityIndicatorView()
     
     let networker = NetworkManager.shared
     
@@ -39,7 +38,6 @@ class RMSearchVC: UIViewController {
         configureNavBar()
         title = "All Characters"
         configureSearchBar()
-        configureSearchSpinner()
         getCharacterData(pageNum: currentPage)
         configureDataSource()
     }
@@ -56,27 +54,22 @@ class RMSearchVC: UIViewController {
     
     
     private func getCharacterData(pageNum: Int, searchBarText: String = "") {
+        showLoadingView()
         isLoadingMoreCharacters = true
 
-        networker.fetchCharacter(pageNum: pageNum, searchBarText: searchBarText) { [weak self] character, error in
+        networker.getCharacters(pageNum: pageNum, searchBarText: searchBarText) { [weak self] result in
             
             guard let self = self else { return }
             
-            if let error = error {
-                print("Error: ", error)
-                return
-            }
+            self.dismissLoadingView()
             
-            if let character = character {
+            switch result {
+            case .success(let character):
                 self.totalPages = character.info.pages
                 self.updateUI(with: character.results)
-            }
-            
-            
-            DispatchQueue.main.async {
-                if self.searchSpinner.isAnimating == true {
-                    self.searchSpinner.stopAnimating()
-                }
+
+            case .failure(let error):
+                print("Error: ", error.rawValue)
             }
             self.isLoadingMoreCharacters = false
         }
@@ -84,22 +77,18 @@ class RMSearchVC: UIViewController {
     
     
     private func getEpisodeCharacterData(with characterIDs: String) {
-        networker.getEpisodeCharacters(with: characterIDs) { [weak self] character, error in
+        showLoadingView()
+        networker.getEpisodeCharacters(with: characterIDs) { [weak self] result in
             guard let self = self else { return }
             
-            if let error = error {
+            self.dismissLoadingView()
+            
+            switch result {
+            case .success(let character):
+                self.updateUI(with: character)
+            case .failure(let error):
                 print("Error: ", error)
                 return
-            }
-            
-            if let character = character {
-                self.updateUI(with: character)
-            }
-            
-            DispatchQueue.main.async {
-                if self.searchSpinner.isAnimating == true {
-                    self.searchSpinner.stopAnimating()
-                }
             }
         }
     }
@@ -230,14 +219,6 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
 // MARK: SearchBar Stuff
 extension RMSearchVC: UISearchBarDelegate {
     
-    private func configureSearchSpinner() {
-        view.addSubview(searchSpinner)
-        searchSpinner.hidesWhenStopped = true
-        searchSpinner.style = .large
-        searchSpinner.center = collectionView.center
-    }
-    
-    
     private func configureSearchBar() {
         searchBar.delegate = self
         searchBar.sizeToFit()
@@ -271,7 +252,6 @@ extension RMSearchVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        searchSpinner.startAnimating()
         searchBar.resignFirstResponder()
         
         character.removeAll()
@@ -280,6 +260,7 @@ extension RMSearchVC: UISearchBarDelegate {
         
         if let searchedItem = searchBar.text {
             getCharacterData(pageNum: currentPage, searchBarText: searchedItem)
+            configureDataSource()
         }
         search(shouldShow: false)
     }
