@@ -38,3 +38,11 @@ enum Helper {
         return justNumbers.joined(separator: ",")
     }
 }
+
+
+public enum Status: String {
+    case alive = "alive"
+    case dead = "dead"
+    case unknown = "unknown"
+    case none = ""
+}
