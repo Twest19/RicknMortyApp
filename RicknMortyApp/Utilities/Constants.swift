@@ -14,7 +14,7 @@ enum SFSymbols {
 
 
 enum Images {
-    static let placeHolder = UIImage(systemName: "defaultRMImage")
+    static let placeHolder = UIImage(named: "rmImage")
 }
 
 

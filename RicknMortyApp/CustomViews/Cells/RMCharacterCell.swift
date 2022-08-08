@@ -70,7 +70,6 @@ class RMCharacterCell: UICollectionViewCell {
                     }
                 }
             case .failure(let error):
-                self.characterImageView.image = Images.placeHolder
                 print(error)
                 return
             }

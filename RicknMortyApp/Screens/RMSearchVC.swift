@@ -69,7 +69,11 @@ class RMSearchVC: RMDataLoadingVC {
                 self.updateUI(with: character.results)
 
             case .failure(let error):
-                print("Error: ", error.rawValue)
+                DispatchQueue.main.async {
+                    self.title = searchBarText
+                    self.showEmptyStateView(with: "Uh-Oh Something Went Wrong...", and: error, in: self.view)
+                    return
+                }
             }
             self.isLoadingMoreCharacters = false
         }
