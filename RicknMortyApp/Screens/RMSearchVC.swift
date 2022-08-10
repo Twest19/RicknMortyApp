@@ -56,6 +56,7 @@ class RMSearchVC: RMDataLoadingVC {
     private func getCharacterData(pageNum: Int, searchBarText: String = "") {
         showLoadingView()
         isLoadingMoreCharacters = true
+        dismissErrorView()
 
         networker.getCharacters(pageNum: pageNum, searchBarText: searchBarText) { [weak self] result in
             
@@ -99,7 +100,7 @@ class RMSearchVC: RMDataLoadingVC {
     
     
     private func configureCollectionView() {
-        collectionView = RMCharCollectionView(frame: view.bounds, collectionViewLayout: Helper.threeColumnCollectionView(in: view))
+        collectionView = RMCharCollectionView(frame: view.frame, collectionViewLayout: Helper.threeColumnCollectionView(in: view))
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground

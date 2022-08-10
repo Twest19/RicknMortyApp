@@ -39,6 +39,12 @@ class RMErrorView: UIView {
     }
     
     
+    public func setErrorView(with message: String, and error: RMError) {
+        messageLabel.text = message
+        errorLabel.text = error.rawValue
+    }
+    
+    
     private func configureMessageLabel() {
         messageLabel.lineBreakMode = .byWordWrapping
         messageLabel.numberOfLines = 2
@@ -72,15 +78,14 @@ class RMErrorView: UIView {
     
     
     private func configureErrorImageView() {
-        errorImageView.backgroundColor = .blue
-        errorImageView.image = Images.placeHolder
+        errorImageView.image = Images.rmOne
         errorImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            errorImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 80),
+            errorImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 45),
             errorImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            errorImageView.widthAnchor.constraint(equalToConstant: 400),
-            errorImageView.heightAnchor.constraint(equalToConstant: 400)
+            errorImageView.widthAnchor.constraint(equalToConstant: 350),
+            errorImageView.heightAnchor.constraint(equalToConstant: 350)
         ])
     }
 }

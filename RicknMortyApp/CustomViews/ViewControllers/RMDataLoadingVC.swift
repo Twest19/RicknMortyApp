@@ -10,6 +10,7 @@ import UIKit
 class RMDataLoadingVC: UIViewController {
     
     var containerView: UIView!
+    var errorView = RMErrorView()
 
     func showLoadingView() {
         containerView = UIView(frame: view.bounds)
@@ -43,9 +44,19 @@ class RMDataLoadingVC: UIViewController {
     
     
     func showEmptyStateView(with message: String, and error: RMError, in view: UIView) {
-        let emptyStateView = RMErrorView(message: message, error: error)
-        emptyStateView.frame = view.bounds
-        view.addSubview(emptyStateView)
+//        let emptyStateView = RMErrorView(message: message, error: error)
+//        emptyStateView.frame = view.bounds
+//        view.addSubview(emptyStateView)
+        errorView.setErrorView(with: message, and: error)
+        errorView.frame = view.bounds
+        view.addSubview(errorView)
+    }
+    
+    
+    func dismissErrorView() {
+        DispatchQueue.main.async {
+            self.errorView.removeFromSuperview()
+        }
     }
 }
 
