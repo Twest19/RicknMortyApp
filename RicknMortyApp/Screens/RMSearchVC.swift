@@ -20,6 +20,7 @@ class RMSearchVC: RMDataLoadingVC {
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
     
+    
     private let networker = NetworkManager.shared
     
     private var character: [RMCharacter] = []
