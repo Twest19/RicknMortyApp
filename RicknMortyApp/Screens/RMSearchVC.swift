@@ -20,23 +20,22 @@ class RMSearchVC: RMDataLoadingVC {
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
     
-    let networker = NetworkManager.shared
+    private let networker = NetworkManager.shared
     
-    var character: [RMCharacter] = []
+    private var character: [RMCharacter] = []
     
-    var totalPages = 0
-    var currentPage = 1
+    private var totalPages = 0
+    private var currentPage = 1
     
-    var moreCharacters = true
-    var isSearching = false
-    var isLoadingMoreCharacters = false
+    private var moreCharacters = true
+    private var isSearching = false
+    private var isLoadingMoreCharacters = false
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         configureNavBar()
-        title = "All Characters"
         configureSearchBar()
         getCharacterData(pageNum: currentPage)
         configureDataSource()
@@ -66,13 +65,12 @@ class RMSearchVC: RMDataLoadingVC {
             
             switch result {
             case .success(let character):
+                self.setTitle(with: searchBarText)
                 self.totalPages = character.info.pages
                 self.updateUI(with: character.results)
-
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self.title = searchBarText
-                    self.showEmptyStateView(with: "Uh-Oh Something Went Wrong...", and: error, in: self.view)
+                    self.showErrorView(with: error, in: self.view)
                     return
                 }
             }
@@ -85,14 +83,15 @@ class RMSearchVC: RMDataLoadingVC {
         showLoadingView()
         networker.getEpisodeCharacters(with: characterIDs) { [weak self] result in
             guard let self = self else { return }
-            
             self.dismissLoadingView()
             
             switch result {
             case .success(let character):
                 self.updateUI(with: character)
             case .failure(let error):
-                print("Error: ", error)
+                DispatchQueue.main.async {
+                    self.showErrorView(with: error, in: self.view)
+                }
                 return
             }
         }
@@ -155,13 +154,8 @@ class RMSearchVC: RMDataLoadingVC {
     
     private func configureNavBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .systemGreen
         showSearchBarButton(shouldShow: true)
-    }
-
-    
-    @objc func showSearchbar() {
-        search(shouldShow: true)
-        searchBar.becomeFirstResponder()
     }
 }
 
@@ -170,15 +164,11 @@ extension RMSearchVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if currentPage < totalPages && indexPath.item == character.count - 1 {
-            print("ROW: \(indexPath.row)")
-            print("ITEM: \(indexPath.item)")
             guard moreCharacters, !isLoadingMoreCharacters else { return }
             currentPage += 1
             if let searchBarText = searchBar.text {
-                print("Search bar text: \(searchBarText)")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.async {
                     self.getCharacterData(pageNum: self.currentPage, searchBarText: searchBarText)
-                    print("FETCHING AGAIN...")
                 }
             }
         }
@@ -202,24 +192,26 @@ extension RMSearchVC: UICollectionViewDelegate {
 // MARK: RMCHARACTERDETAILVCDELEGATE
 extension RMSearchVC: RMCharacterDetailVCDelegate {
     func didRequestEpisodeCharacters(for episode: Episode) {
-        // reset screen
-        print("AYAYAYYAYA")
-        
-        let id = Helper.getEpisodeNumber(from: episode.characters)
-        
-        currentPage = 1
-        totalPages = 1
-        
-        character.removeAll()
-
-        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
-        
-        getEpisodeCharacterData(with: id)
-        // Configuring this again seems to prevent occasional crash
-        configureDataSource()
+        // Since the title is set at each network call we check that
+        // the current title does not equal the new title that will be set
+        // This prevents unnecessary calls.
+        if self.title != episode.nameAndEpisode {
+            print("Making Network Call")
+            let id = Helper.getID(from: episode.characters)
+            // reset screen
+            currentPage = 1
+            totalPages = 1
+            character.removeAll()
+            // Scroll to top of collectionView
+            collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+            setTitle(with: episode.nameAndEpisode)
+            // Get all the characters from the episode
+            getEpisodeCharacterData(with: id)
+            // Configuring this again prevents occasional crash within datasource.
+            configureDataSource()
+        }
     }
 }
-
 
 // MARK: SearchBar Stuff
 extension RMSearchVC: UISearchBarDelegate {
@@ -258,16 +250,26 @@ extension RMSearchVC: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         searchBar.resignFirstResponder()
-        
-        character.removeAll()
-        totalPages = 0
-        currentPage = 1
-        
-        if let searchedItem = searchBar.text {
-            getCharacterData(pageNum: currentPage, searchBarText: searchedItem)
-            configureDataSource()
+        // Since the title is set at each network call we check that the searchBar text does not equal the current title.
+        // This prevents unnecessary calls
+        if searchBar.text != self.title {
+            // Reset Screen
+            character.removeAll()
+            totalPages = 0
+            currentPage = 1
+            
+            if let searchedItem = searchBar.text {
+                getCharacterData(pageNum: currentPage, searchBarText: searchedItem)
+                configureDataSource()
+            }
         }
         search(shouldShow: false)
+    }
+    
+    
+    @objc func showSearchbar() {
+        search(shouldShow: true)
+        searchBar.becomeFirstResponder()
     }
     
     
