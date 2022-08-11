@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 enum Helper {
     static func threeColumnCollectionView(in view: UIView) -> UICollectionViewFlowLayout {
         let width = view.bounds.width
@@ -30,12 +29,25 @@ enum Helper {
         for url in episodeURLs {
             let splitString = url.split(whereSeparator: { $0 == "/"} )
             
-            if let new = splitString.last {
-                justNumbers.append(String(new))
+            if let id = splitString.last {
+                justNumbers.append(String(id))
             }
         }
-        
         return justNumbers.joined(separator: ",")
+    }
+    
+//    // Condensed version of the above. Use this to create one mass query with ID numbers.
+//    static func getID(from url: [String]) -> String {
+//        // Takes in an array of url strings and gets the ID number off the end of each url.
+//        // Then adds all the ids to a string seperated by commas.
+//        print(url.map({ $0.split(whereSeparator: { $0 == "/"})}).map({ Int($0.last!)! }).sorted().map({ "\($0)"}).joined(separator: ","))
+//        return url.map({ $0.split(whereSeparator: { $0 == "/"})}).map({ "\($0.last!)"}).sorted().joined(separator: ",")
+//    }
+    
+    
+    static func getID(from url: [String]) -> String {
+        
+        return url.map({ $0.split(whereSeparator: { $0 == "/"})}).map({ Int($0.last!)! }).sorted().map({ "\($0)"}).joined(separator: ",")
     }
 }
 
