@@ -43,11 +43,9 @@ class RMDataLoadingVC: UIViewController {
     }
     
     
-    func showEmptyStateView(with message: String, and error: RMError, in view: UIView) {
-//        let emptyStateView = RMErrorView(message: message, error: error)
-//        emptyStateView.frame = view.bounds
-//        view.addSubview(emptyStateView)
-        errorView.setErrorView(with: message, and: error)
+    func showErrorView(with error: RMError, in view: UIView) {
+        setTitle(with: "OOH WEE!")
+        errorView.setErrorView(with: error)
         errorView.frame = view.bounds
         view.addSubview(errorView)
     }
@@ -56,6 +54,17 @@ class RMDataLoadingVC: UIViewController {
     func dismissErrorView() {
         DispatchQueue.main.async {
             self.errorView.removeFromSuperview()
+        }
+    }
+    
+    
+    func setTitle(with string: String) {
+        DispatchQueue.main.async {
+            if (string.trimmingCharacters(in: .whitespacesAndNewlines)).isEmpty {
+                self.title = "All Characters"
+            } else {
+                self.title = string
+            }
         }
     }
 }
