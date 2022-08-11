@@ -50,12 +50,12 @@ class RMDetailHeaderVC: UIViewController {
     }
     
     
-    func setUIElements() {
+    public func setUIElements() {
         characterImageView.downloadImage(from: character.image)
         statusImageView.setStatus(for: character.status)
         
         nameLabel.text = character.name
-        statusSpeciesGenderLabel.text = "\(character.status) - \(character.species) - \(character.gender)"
+        statusSpeciesGenderLabel.text = character.statusSpeciesGender
         
         lastLocationLabel.setUp(description: DescriptorType.location, info: character.location.name)
         originLabel.setUp(description: DescriptorType.origin, info: character.origin.name)
@@ -124,26 +124,4 @@ class RMDetailHeaderVC: UIViewController {
             statusSpeciesGenderLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
     }
-    
-    
-//    private func configureOriginLabel() {
-//
-//        NSLayoutConstraint.activate([
-//            originLabel.topAnchor.constraint(equalTo: statusSpeciesGenderLabel.bottomAnchor, constant: padding),
-//            originLabel.leadingAnchor.constraint(equalTo: characterImageView.trailingAnchor, constant: 8),
-//            originLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-//            originLabel.heightAnchor.constraint(equalToConstant: 40)
-//        ])
-//    }
-//
-//
-//    private func configureLastLocationLabel() {
-//
-//        NSLayoutConstraint.activate([
-//            lastLocationLabel.topAnchor.constraint(equalTo: originLabel.bottomAnchor, constant: padding),
-//            lastLocationLabel.leadingAnchor.constraint(equalTo: characterImageView.trailingAnchor, constant: 8),
-//            lastLocationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-//            lastLocationLabel.heightAnchor.constraint(equalToConstant: 40)
-//        ])
-//    }
 }

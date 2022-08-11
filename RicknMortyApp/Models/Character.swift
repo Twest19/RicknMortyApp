@@ -7,42 +7,37 @@
 
 import UIKit
 
-// MARK: - Info
-struct Info: Decodable {
-    let count: Int
-    var pages: Int
-    let next: String?
-    let prev: String?
-}
-
-
+// MARK: Character Models
 struct RMResults: Decodable {
-    var info: Info
-    var results: [RMCharacter]
+    let info: Info
+    let results: [RMCharacter]
 }
 
 struct RMCharacter: Identifiable, Decodable {
-    var id: Int
-    var name: String
-    var status: String
-    var species: String
-    var type: String
-    var gender: String
-    var origin: Origin
-    var location: Location
-    var image: String
-    var episode: [String]
+    let id: Int
+    let name: String
+    let status: String
+    let species: String
+    let type: String
+    let gender: String
+    let origin: Origin
+    let location: Location
+    let image: String
+    let episode: [String]
     
+    var statusSpeciesGender: String {
+        return "\(status) - \(species) - \(gender)"
+    }
 }
 
 struct Origin: Decodable {
-    var name: String
-    var url: String
+    let name: String
+    let url: String
 }
 
 struct Location: Decodable {
-    var name: String
-    var url: String
+    let name: String
+    let url: String
 }
 
 

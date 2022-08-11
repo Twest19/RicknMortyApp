@@ -148,7 +148,6 @@ class RMSearchVC: RMDataLoadingVC {
 //        DispatchQueue.main.async {
 //            self.characterListDataSource.apply(snapshot, animatingDifferences: true)
 //        }
-        
     }
     
     
@@ -270,18 +269,5 @@ extension RMSearchVC: UISearchBarDelegate {
     @objc func showSearchbar() {
         search(shouldShow: true)
         searchBar.becomeFirstResponder()
-    }
-    
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//        print("Did begin editing")
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//        print("Did end editing")
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        print("Search text is \(searchText)")
     }
 }

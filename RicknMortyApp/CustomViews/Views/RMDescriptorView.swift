@@ -24,7 +24,7 @@ class RMDescriptorView: UIView {
     }
     
     
-    func setUp(description: String, info: String) {
+    public func setUp(description: String, info: String) {
         descriptorLabel.text = description
         infoLabel.text = info
     }

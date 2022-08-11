@@ -11,7 +11,7 @@ class RMCharCollectionView: UICollectionView {
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
-//        registerRMCharCells()
+
     }
     
     required init?(coder: NSCoder) {
