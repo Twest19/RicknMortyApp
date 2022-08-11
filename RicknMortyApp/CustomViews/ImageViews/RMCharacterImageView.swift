@@ -10,11 +10,11 @@ import UIKit
 class RMCharacterImageView: UIImageView {
     
     let placeHolderImage = Images.placeHolder
-    
-    
+    var imageIncomingIndicator = UIActivityIndicatorView()
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
+        configureSpinner()
     }
     
     
@@ -28,6 +28,13 @@ class RMCharacterImageView: UIImageView {
         clipsToBounds = true
         image = placeHolderImage
         translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imageIncomingIndicator)
+    }
+    
+    
+    private func configureSpinner() {
+        imageIncomingIndicator.hidesWhenStopped = true
+        imageIncomingIndicator.pinToCenter(of: self)
     }
     
     
@@ -40,9 +47,11 @@ class RMCharacterImageView: UIImageView {
     
     
     func downloadImage(from url: String) {
+        startIndicator()
         // Set cell's image, also caches
         NetworkManager.shared.downloadImageUsing(URLString: url) { [weak self] result in
             guard let self = self else { return }
+            self.stopIndicator()
             
             switch result {
             case .success(let data):
@@ -50,13 +59,26 @@ class RMCharacterImageView: UIImageView {
                 DispatchQueue.main.async {
                     self.image = img
                 }
-            case .failure(let error):
+            case .failure(_):
                 DispatchQueue.main.async {
                     self.image = self.placeHolderImage
                 }
-                print(error)
                 return
             }
+        }
+    }
+    
+    
+    func startIndicator() {
+        DispatchQueue.main.async {
+            self.imageIncomingIndicator.startAnimating()
+        }
+    }
+    
+    
+    func stopIndicator() {
+        DispatchQueue.main.async {
+            self.imageIncomingIndicator.stopAnimating()
         }
     }
 }
