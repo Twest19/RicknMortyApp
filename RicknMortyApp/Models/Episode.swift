@@ -14,4 +14,8 @@ struct Episode: Decodable {
     let airDate: String
     let episode: String
     let characters: [String]
+    
+    var nameAndEpisode: String {
+        return "\(episode) - \(name)"
+    }
 }

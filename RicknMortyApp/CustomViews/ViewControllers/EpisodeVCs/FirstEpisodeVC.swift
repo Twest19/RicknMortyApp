@@ -15,9 +15,6 @@ class FirstEpisodeVC: RMEpisodeInfoVC {
     
     weak var delegate: EpisodeVCDelegate!
     
-    var codeAndName: String {
-        return "\(episode.episode) - \(episode.name)"
-    }
     
     init(episode: Episode, delegate: EpisodeVCDelegate) {
         super.init(episode: episode)
@@ -36,10 +33,11 @@ class FirstEpisodeVC: RMEpisodeInfoVC {
     
     
     private func configureItems() {
-        descriptorViewOne.setUp(description: DescriptorType.firstEpisode, info: codeAndName)
+        descriptorViewOne.setUp(description: DescriptorType.firstEpisode, info: episode.nameAndEpisode)
         descriptorViewTwo.setUp(description: DescriptorType.airDate, info: episode.airDate)
         actionButton.set(color: .systemGreen, title: "View Characters")
     }
+    
     
     override func actionButtonTapped() {
         delegate.didTapSeeCharactersButton(for: episode)
