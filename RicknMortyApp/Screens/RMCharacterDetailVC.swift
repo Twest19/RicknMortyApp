@@ -11,7 +11,7 @@ protocol RMCharacterDetailVCDelegate: AnyObject {
     func didRequestEpisodeCharacters(for episode: Episode)
 }
 
-class RMCharacterDetailVC: UIViewController {
+class RMCharacterDetailVC: RMDataLoadingVC {
     
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -19,8 +19,6 @@ class RMCharacterDetailVC: UIViewController {
     let headerView = UIView()
     let episodeOneView = UIView()
     let episodeTwoView = UIView()
-    
-    var views: [RMDescriptorView] = []
     
     var character: RMCharacter!
     
@@ -49,14 +47,15 @@ class RMCharacterDetailVC: UIViewController {
         configureEpisodeOneView()
         configureEpisodeTwoView()
         
-        getEpisodeInfo(episodes: Helper.getEpisodeNumber(from: [character.episode.first!, character.episode.last!]))
+        getEpisodeInfo(episodes: Helper.getID(from: [character.episode.first!, character.episode.last!]))
     }
     
     
     func getEpisodeInfo(episodes: String) {
+        showLoadingView()
         NetworkManager.shared.getEpisodeData(episodes: episodes) { [weak self] result in
             guard let self = self else { return }
-            
+            self.dismissLoadingView()
             switch result {
             case .success(let episode):
                 self.setUIElements(with: episode)
