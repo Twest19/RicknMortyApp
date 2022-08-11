@@ -10,7 +10,6 @@ import UIKit
 // View that displays when a searched character does not exisit
 class RMErrorView: UIView {
     
-    let messageLabel = RMPrimaryLabel(textAlignment: .left, fontSize: 30, weight: .heavy)
     let errorLabel = RMSecondaryLabel(fontSize: 24)
     let errorImageView = UIImageView()
     
@@ -20,16 +19,14 @@ class RMErrorView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubviews(messageLabel, errorLabel, errorImageView)
-        configureMessageLabel()
+        addSubviews(errorLabel, errorImageView)
         configureErrorLabel()
         configureErrorImageView()
     }
     
     
-    convenience init(message: String, error: RMError) {
+    convenience init(error: RMError) {
         self.init(frame: .zero)
-        messageLabel.text = message
         errorLabel.text = error.rawValue
     }
     
@@ -39,37 +36,16 @@ class RMErrorView: UIView {
     }
     
     
-    public func setErrorView(with message: String, and error: RMError) {
-        messageLabel.text = message
+    public func setErrorView(with error: RMError) {
         errorLabel.text = error.rawValue
-    }
-    
-    
-    private func configureMessageLabel() {
-        messageLabel.lineBreakMode = .byWordWrapping
-        messageLabel.numberOfLines = 2
-        
-//        NSLayoutConstraint.activate([
-//            messageLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 30),
-//            messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30),
-//            messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
-//            messageLabel.heightAnchor.constraint(equalToConstant: 200)
-//        ])
-        NSLayoutConstraint.activate([
-            messageLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
-            messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
-            messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            messageLabel.heightAnchor.constraint(equalToConstant: 80)
-        ])
     }
     
     
     private func configureErrorLabel() {
         errorLabel.lineBreakMode = .byWordWrapping
         errorLabel.numberOfLines = 4
-        
         NSLayoutConstraint.activate([
-            errorLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 5),
+            errorLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 5),
             errorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             errorLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             errorLabel.heightAnchor.constraint(equalToConstant: 130)
@@ -78,14 +54,14 @@ class RMErrorView: UIView {
     
     
     private func configureErrorImageView() {
-        errorImageView.image = Images.rmOne
+        errorImageView.image = Images.errorImage
         errorImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            errorImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 45),
+            errorImageView.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 10),
             errorImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            errorImageView.widthAnchor.constraint(equalToConstant: 350),
-            errorImageView.heightAnchor.constraint(equalToConstant: 350)
+            errorImageView.widthAnchor.constraint(equalToConstant: 97),
+            errorImageView.heightAnchor.constraint(equalToConstant: 284)
         ])
     }
 }
