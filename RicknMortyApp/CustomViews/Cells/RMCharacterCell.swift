@@ -46,21 +46,19 @@ class RMCharacterCell: UICollectionViewCell {
     
     
     func set(character: RMCharacter, representedIdentifier: Int) {
-        
         downloadCharacterImage(from: character.image, id: representedIdentifier)
         characterNameLabel.text = character.name
         statusImageView.setStatus(for: character.status)
         statusLabel.text = character.status
-        
     }
     
-    
+    // Downloads image and assigns it to the cell. Also caches the image.
     func downloadCharacterImage(from url: String, id: Int) {
         startIndicator()
-        // Set cell's image, also caches
+        // Need the network call inside the cell to prevent errors with wrong images loading!
         NetworkManager.shared.downloadImageUsing(URLString: url) { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let data):
                 let img = self.characterImageView.makeImage(data: data)
@@ -69,22 +67,24 @@ class RMCharacterCell: UICollectionViewCell {
                         self.characterImageView.image = img
                     }
                 }
-            case .failure(let error):
-                print(error)
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self.characterImageView.image = Images.placeHolder
+                }
                 return
             }
             self.stopIndicator()
         }
     }
-    
-    
+
+
     func startIndicator() {
         DispatchQueue.main.async {
             self.imageIncomingIndicator.startAnimating()
         }
     }
-    
-    
+
+
     func stopIndicator() {
         DispatchQueue.main.async {
             self.imageIncomingIndicator.stopAnimating()
