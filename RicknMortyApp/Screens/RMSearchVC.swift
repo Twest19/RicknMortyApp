@@ -15,7 +15,6 @@ class RMSearchVC: RMDataLoadingVC {
     
     private var collectionView: RMCharCollectionView!
     private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter.ID>!
-//    private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter>!
     
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
@@ -28,6 +27,7 @@ class RMSearchVC: RMDataLoadingVC {
     private var totalPages = 0
     private var currentPage = 1
     
+    private var searchedText: String = ""
     private var moreCharacters = true
     private var isSearching = false
     private var isLoadingMoreCharacters = false
@@ -40,6 +40,7 @@ class RMSearchVC: RMDataLoadingVC {
         configureSearchBar()
         getCharacterData(pageNum: currentPage)
         configureDataSource()
+        search(shouldShow: true)
     }
     
     
@@ -104,7 +105,6 @@ class RMSearchVC: RMDataLoadingVC {
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground
-//        collectionView.register(RMCharacterCell.self, forCellWithReuseIdentifier: RMCharacterCell.identifier)
     }
     
     
@@ -116,14 +116,8 @@ class RMSearchVC: RMDataLoadingVC {
         
         characterListDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
             let character = self.character(with: itemIdentifier)!
-//            print("DATASOURCE CHARACTER= \(character)")
             return collectionView.dequeueConfiguredReusableCell(using: characterCellRegistration, for: indexPath, item: character)
         })
-//        characterListDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { (collectionView, indexPath, char) -> UICollectionViewCell? in
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCell.identifier, for: indexPath) as! RMCharacterCell
-//            cell.set(character: char, representedIdentifier: char.id)
-//            return cell
-//        })
     }
     
     
@@ -140,15 +134,8 @@ class RMSearchVC: RMDataLoadingVC {
         snapshot.appendSections([.main])
         snapshot.appendItems(charID, toSection: .main)
         DispatchQueue.main.async {
-//            self.characterListDataSource.applySnapshotUsingReloadData(snapshot)
             self.characterListDataSource.apply(snapshot, animatingDifferences: true)
         }
-//        var snapshot = NSDiffableDataSourceSnapshot<CharacterListSection, RMCharacter>()
-//        snapshot.appendSections([.main])
-//        snapshot.appendItems(characters)
-//        DispatchQueue.main.async {
-//            self.characterListDataSource.apply(snapshot, animatingDifferences: true)
-//        }
     }
     
     
@@ -166,10 +153,8 @@ extension RMSearchVC: UICollectionViewDelegate {
         if currentPage < totalPages && indexPath.item == character.count - 1 {
             guard moreCharacters, !isLoadingMoreCharacters else { return }
             currentPage += 1
-            if let searchBarText = searchBar.text {
-                DispatchQueue.main.async {
-                    self.getCharacterData(pageNum: self.currentPage, searchBarText: searchBarText)
-                }
+            DispatchQueue.main.async {
+                self.getCharacterData(pageNum: self.currentPage, searchBarText: self.searchedText)
             }
         }
     }
@@ -202,6 +187,8 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
             currentPage = 1
             totalPages = 1
             character.removeAll()
+            searchBar.text = nil
+            search(shouldShow: false)
             // Scroll to top of collectionView
             collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
             setTitle(with: episode.nameAndEpisode)
@@ -212,6 +199,7 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
         }
     }
 }
+
 
 // MARK: SearchBar Stuff
 extension RMSearchVC: UISearchBarDelegate {
@@ -248,22 +236,23 @@ extension RMSearchVC: UISearchBarDelegate {
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+        search(shouldShow: false)
         searchBar.resignFirstResponder()
-        // Since the title is set at each network call we check that the searchBar text does not equal the current title.
-        // This prevents unnecessary calls
-        if searchBar.text != self.title {
-            // Reset Screen
-            character.removeAll()
-            totalPages = 0
-            currentPage = 1
-            
-            if let searchedItem = searchBar.text {
+        if let searchedItem = searchBar.text {
+            // Since the title is set at each network call we check that the searchBar text does not equal the current title.
+            // This prevents unnecessary calls
+            if searchBar.text != self.title {
+                // Reset Screen
+                character.removeAll()
+                totalPages = 0
+                currentPage = 1
+                searchBar.text = nil
+                
+                searchedText = searchedItem
                 getCharacterData(pageNum: currentPage, searchBarText: searchedItem)
                 configureDataSource()
             }
         }
-        search(shouldShow: false)
     }
     
     

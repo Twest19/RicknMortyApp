@@ -45,7 +45,7 @@ class RMErrorView: UIView {
         errorLabel.lineBreakMode = .byWordWrapping
         errorLabel.numberOfLines = 4
         NSLayoutConstraint.activate([
-            errorLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 5),
+            errorLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: padding),
             errorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding),
             errorLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
             errorLabel.heightAnchor.constraint(equalToConstant: 130)
