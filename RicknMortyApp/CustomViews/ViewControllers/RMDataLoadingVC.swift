@@ -9,10 +9,10 @@ import UIKit
 
 class RMDataLoadingVC: UIViewController {
     
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        configureNavBar()
-//    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureNavBar()
+    }
     
     var containerView: UIView!
     var errorView = RMErrorView()

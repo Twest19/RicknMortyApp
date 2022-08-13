@@ -32,15 +32,22 @@ class RMSearchVC: RMDataLoadingVC {
     private var isSearching = false
     private var isLoadingMoreCharacters = false
     
+    var biggestTopSafeAreaInset: CGFloat = 0
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        configureNavBar()
         configureSearchBar()
         getCharacterData(pageNum: currentPage)
         configureDataSource()
         search(shouldShow: true)
+    }
+    
+    
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        self.biggestTopSafeAreaInset = max(collectionView.safeAreaInsets.top, biggestTopSafeAreaInset)
     }
     
     
@@ -137,23 +144,22 @@ class RMSearchVC: RMDataLoadingVC {
             self.characterListDataSource.apply(snapshot, animatingDifferences: true)
         }
     }
-    
-    
-    private func configureNavBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .systemGreen
-        showSearchBarButton(shouldShow: true)
-    }
 }
 
 
 extension RMSearchVC: UICollectionViewDelegate {
     
+    func scrollToTop(animated: Bool) {
+        let point = CGPoint(x: 0, y: -biggestTopSafeAreaInset)
+        collectionView.setContentOffset(point, animated: animated)
+    }
+    
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if currentPage < totalPages && indexPath.item == character.count - 1 {
             guard moreCharacters, !isLoadingMoreCharacters else { return }
             currentPage += 1
-            DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.getCharacterData(pageNum: self.currentPage, searchBarText: self.searchedText)
             }
         }
@@ -190,13 +196,14 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
             searchBar.text = nil
             search(shouldShow: false)
             // Scroll to top of collectionView
-            collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+//            collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
             setTitle(with: episode.nameAndEpisode)
             // Get all the characters from the episode
             getEpisodeCharacterData(with: id)
             // Configuring this again prevents occasional crash within datasource.
             configureDataSource()
         }
+        scrollToTop(animated: false)
     }
 }
 
@@ -205,6 +212,7 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
 extension RMSearchVC: UISearchBarDelegate {
     
     private func configureSearchBar() {
+        showSearchBarButton(shouldShow: true)
         searchBar.delegate = self
         searchBar.sizeToFit()
         searchBar.placeholder = "Search Characters Here..."
@@ -250,6 +258,7 @@ extension RMSearchVC: UISearchBarDelegate {
                 
                 searchedText = searchedItem
                 getCharacterData(pageNum: currentPage, searchBarText: searchedItem)
+                scrollToTop(animated: false)
                 configureDataSource()
             }
         }
