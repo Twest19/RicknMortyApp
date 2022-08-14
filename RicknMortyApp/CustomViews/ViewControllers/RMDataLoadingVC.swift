@@ -9,11 +9,6 @@ import UIKit
 
 class RMDataLoadingVC: UIViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureNavBar()
-    }
-    
     var containerView: UIView!
     var errorView = RMErrorView()
 
@@ -71,12 +66,6 @@ class RMDataLoadingVC: UIViewController {
                 self.title = string
             }
         }
-    }
-    
-    
-    private func configureNavBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .systemGreen
     }
 }
 
