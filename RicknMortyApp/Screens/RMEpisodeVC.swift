@@ -70,7 +70,8 @@ class RMEpisodeVC: RMDataLoadingVC {
     private func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 120
+        tableView.rowHeight = UITableView.automaticDimension
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

@@ -9,9 +9,10 @@ import UIKit
 
 class EpisodeNameView: UIView {
     
-    let nameCodeLabel = RMPrimaryLabel(textAlignment: .left, fontSize: 25, weight: .bold)
+    let nameCodeLabel = RMPrimaryLabel(textAlignment: .left, fontSize: 25, weight: .semibold)
     private let padding: CGFloat = 10
 
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -26,6 +27,7 @@ class EpisodeNameView: UIView {
     public func set(label text: String) {
         nameCodeLabel.text = text
     }
+    
     
     private func configure() {
         addSubview(nameCodeLabel)

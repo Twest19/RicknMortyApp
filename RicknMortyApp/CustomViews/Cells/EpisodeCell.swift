@@ -53,6 +53,7 @@ class EpisodeCell: UITableViewCell {
         contentView.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
+        selectionStyle = .none
         episodeHiddenView.isHidden = true
         containerView.axis = .vertical
         containerView.spacing = 5
