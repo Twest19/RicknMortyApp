@@ -19,7 +19,6 @@ class RMSearchVC: RMDataLoadingVC {
     private let navBar = UINavigationBar()
     private let searchBar = UISearchBar()
     
-    
     private let networker = NetworkManager.shared
     
     private var character: [RMCharacter] = []
@@ -28,15 +27,13 @@ class RMSearchVC: RMDataLoadingVC {
     private var currentPage = 1
     
     private var searchedText: String = ""
-    private var moreCharacters = true
     private var isSearching = false
     private var isLoadingMoreCharacters = false
     
-    var biggestTopSafeAreaInset: CGFloat = 0
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpEpisodeDelegate()
         configureCollectionView()
         configureNavBar()
         configureSearchBar()
@@ -46,9 +43,13 @@ class RMSearchVC: RMDataLoadingVC {
     }
     
     
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-        self.biggestTopSafeAreaInset = max(collectionView.safeAreaInsets.top, biggestTopSafeAreaInset)
+    func setUpEpisodeDelegate() {
+        if let episodeNavVC = self.tabBarController?.viewControllers?.last(where: { $0 is UINavigationController}) as? UINavigationController {
+            if let episodeVC = episodeNavVC.viewControllers.first(where: { $0 is RMEpisodeVC}) as? RMEpisodeVC {
+                print("NICE")
+                episodeVC.delegate = self
+            }
+        }
     }
     
     
@@ -164,7 +165,7 @@ extension RMSearchVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if currentPage < totalPages && indexPath.item == character.count - 1 {
-            guard moreCharacters, !isLoadingMoreCharacters else { return }
+            guard !isLoadingMoreCharacters else { return }
             currentPage += 1
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.getCharacterData(pageNum: self.currentPage, searchBarText: self.searchedText)
@@ -203,7 +204,6 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
             searchBar.text = nil
             search(shouldShow: false)
             // Scroll to top of collectionView
-//            collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
             setTitle(with: episode.nameAndEpisode)
             // Get all the characters from the episode
             getEpisodeCharacterData(with: id)
