@@ -13,7 +13,6 @@ class RMTabBarController: UITabBarController {
         super.viewDidLoad()
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers = [configCharVCTab(), configEpisodeVCTab()]
-        selectedIndex = 1
     }
     
     

@@ -27,4 +27,5 @@ enum DescriptorType {
     static let origin = "Origin:"
     static let onlyOneEpisode = "Only seen in:"
     static let airDate = "Air Date:"
+    static let totalCharacters = "Total Characters:"
 }

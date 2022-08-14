@@ -148,13 +148,13 @@ class RMCharacterDetailVC: RMDataLoadingVC {
 }
 
 extension RMCharacterDetailVC: EpisodeVCDelegate {
-    
+
     func didTapSeeCharactersButton(for episode: Episode) {
         guard episode.characters.count != 0 else {
             return
         }
         print("\nDETAILVC FIRSTEPISODEDELEGATE")
-        
+
         if let delegate = delegate {
             delegate.didRequestEpisodeCharacters(for: episode)
             dismissSelf()
