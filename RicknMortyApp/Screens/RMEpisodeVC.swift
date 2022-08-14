@@ -10,6 +10,7 @@ import UIKit
 class RMEpisodeVC: RMDataLoadingVC {
     
     let tableView = RMEpisodeTableView()
+    weak var delegate: RMCharacterDetailVCDelegate!
     
     var episode: [Episode] = []
     
@@ -25,12 +26,6 @@ class RMEpisodeVC: RMDataLoadingVC {
         configureNavBar()
         configureTableView()
         getEpisodeData(pageNum: currentPage)
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
     }
     
     
@@ -128,7 +123,17 @@ extension RMEpisodeVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeCell.reuseID, for: indexPath) as! EpisodeCell
-        cell.updateCell(with: episode[indexPath.row])
+        cell.updateCell(with: episode[indexPath.row], delegate: self)
         return cell
+    }
+}
+
+
+extension RMEpisodeVC: EpisodeVCDelegate {
+    func didTapSeeCharactersButton(for episode: Episode) {
+        delegate.didRequestEpisodeCharacters(for: episode)
+        if let index = tabBarController?.viewControllers?.firstIndex(where: { $0 is UINavigationController }) {
+            tabBarController?.selectedIndex = index
+        }
     }
 }

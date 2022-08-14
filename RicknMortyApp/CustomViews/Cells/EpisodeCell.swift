@@ -43,9 +43,9 @@ class EpisodeCell: UITableViewCell {
     }
     
     
-    public func updateCell(with episode: Episode) {
+    public func updateCell(with episode: Episode, delegate: EpisodeVCDelegate) {
         episodeNameView.set(label: episode.nameAndEpisode)
-        episodeHiddenView.set(date: episode.airDate, characterNum: episode.characters.count)
+        episodeHiddenView.set(episode: episode, delegate: delegate)
     }
     
     
@@ -57,7 +57,6 @@ class EpisodeCell: UITableViewCell {
         episodeHiddenView.isHidden = true
         containerView.axis = .vertical
         containerView.spacing = 5
-        
         containerView.addArrangedSubviews(episodeNameView, episodeHiddenView)
         
         NSLayoutConstraint.activate([
@@ -75,6 +74,10 @@ class EpisodeCell: UITableViewCell {
     
     
     func hideEpisodeHiddenView() {
-        episodeHiddenView.isHidden = true
+        self.episodeHiddenView.isHidden = true
+//
+//        UIView.animate(withDuration: 0.3) {
+//            self.containerView.layoutIfNeeded()
+//        }
     }
 }
