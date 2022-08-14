@@ -116,6 +116,55 @@ class NetworkManager {
         }
         task.resume()
     }
+    
+    
+    // MARK: FETCHS ALL CHARACTERS AND ALLOWS FOR SEARCHING OF SPECIFICS
+    public func getEpisode(pageNum: Int, completion: @escaping (Result<EpisodeResults, RMError>) -> Void) {
+        let url = EpisodeURLManager.shared.createEpisodeURL(pageNum: pageNum)
+        
+        // Checks URL
+        guard let url = url else {
+            completion(.failure(.invalidCharacter))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            // Handle any errors here:
+            if let error = error {
+                print("Error retrieving data, error: \(String(describing: error))")
+                completion(.failure(.unableToComplete))
+                return
+            }
+
+            // Handle response errors here:
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                print("When enter invalid search")
+                completion(.failure(.responseError))
+                return
+            }
+            
+            // Handle data errors here:
+            guard let data = data else {
+                completion(.failure(.badDataError))
+                return
+            }
+            
+            // Decode JSON into Model
+            let decoder = JSONDecoder()
+            
+            do {
+                let response = try decoder.decode(EpisodeResults.self, from: data)
+                completion(.success(response))
+            } catch let error {
+                print("ERROR DECODING")
+                print(error)
+                completion(.failure(.badDataError))
+            }
+        }
+        task.resume()
+    }
+    
 
     // MARK: REQUEST FOR EPISODE DATA
     public func getEpisodeData(episodes: String, completion: @escaping (Result<[Episode], RMError>) -> Void) {
