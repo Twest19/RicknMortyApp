@@ -33,6 +33,9 @@
 		F9ABCBDF28A4BB34000507E9 /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9ABCBDE28A4BB34000507E9 /* Info.swift */; };
 		F9B3B43428A88E6600FC2F69 /* RMEpisodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B3B43328A88E6600FC2F69 /* RMEpisodeVC.swift */; };
 		F9B3B43628A88E9F00FC2F69 /* RMEpisodeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B3B43528A88E9F00FC2F69 /* RMEpisodeTableView.swift */; };
+		F9B3B43828A8AA3900FC2F69 /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B3B43728A8AA3900FC2F69 /* EpisodeCell.swift */; };
+		F9B3B43A28A8AB5A00FC2F69 /* EpisodeNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B3B43928A8AB5A00FC2F69 /* EpisodeNameView.swift */; };
+		F9B3B43C28A8ACB800FC2F69 /* EpisodeHiddenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B3B43B28A8ACB800FC2F69 /* EpisodeHiddenView.swift */; };
 		F9B788BA2899CB3500980653 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B788B92899CB3500980653 /* Episode.swift */; };
 		F9B788BC289A1CB400980653 /* RMDetailHeaderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B788BB289A1CB400980653 /* RMDetailHeaderVC.swift */; };
 		F9BC0B2F2873E92000813100 /* RMCharCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BC0B2E2873E92000813100 /* RMCharCollectionView.swift */; };
@@ -75,6 +78,9 @@
 		F9ABCBDE28A4BB34000507E9 /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 		F9B3B43328A88E6600FC2F69 /* RMEpisodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMEpisodeVC.swift; sourceTree = "<group>"; };
 		F9B3B43528A88E9F00FC2F69 /* RMEpisodeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMEpisodeTableView.swift; sourceTree = "<group>"; };
+		F9B3B43728A8AA3900FC2F69 /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
+		F9B3B43928A8AB5A00FC2F69 /* EpisodeNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeNameView.swift; sourceTree = "<group>"; };
+		F9B3B43B28A8ACB800FC2F69 /* EpisodeHiddenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeHiddenView.swift; sourceTree = "<group>"; };
 		F9B788B92899CB3500980653 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		F9B788BB289A1CB400980653 /* RMDetailHeaderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMDetailHeaderVC.swift; sourceTree = "<group>"; };
 		F9BC0B2E2873E92000813100 /* RMCharCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharCollectionView.swift; sourceTree = "<group>"; };
@@ -180,6 +186,7 @@
 			children = (
 				F949DB9A2868F07200547ABC /* LoadingCell.swift */,
 				F903C22C28656E8A00BDC01C /* RMCharacterCell.swift */,
+				F9B3B43728A8AA3900FC2F69 /* EpisodeCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -268,6 +275,8 @@
 				F954729728922C3800940661 /* RMDescriptorView.swift */,
 				F9C6574E28A087FE00EE562F /* RMErrorView.swift */,
 				F9B3B43528A88E9F00FC2F69 /* RMEpisodeTableView.swift */,
+				F9B3B43928A8AB5A00FC2F69 /* EpisodeNameView.swift */,
+				F9B3B43B28A8ACB800FC2F69 /* EpisodeHiddenView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -354,11 +363,14 @@
 				F954729828922C3800940661 /* RMDescriptorView.swift in Sources */,
 				F954728E2891BA0C00940661 /* RMSecondaryLabel.swift in Sources */,
 				F903C22D28656E8A00BDC01C /* RMCharacterCell.swift in Sources */,
+				F9B3B43C28A8ACB800FC2F69 /* EpisodeHiddenView.swift in Sources */,
 				F93CAB492866469700C94382 /* UIImageView-Ext.swift in Sources */,
 				F90E59932890E03100D96750 /* Helper.swift in Sources */,
 				F9BC0B2F2873E92000813100 /* RMCharCollectionView.swift in Sources */,
 				F94AD559289C7AAF00D640E2 /* RMEpisodeInfoVC.swift in Sources */,
 				F903C22728656AC500BDC01C /* RMSearchVC.swift in Sources */,
+				F9B3B43A28A8AB5A00FC2F69 /* EpisodeNameView.swift in Sources */,
+				F9B3B43828A8AA3900FC2F69 /* EpisodeCell.swift in Sources */,
 				F9C6574F28A087FE00EE562F /* RMErrorView.swift in Sources */,
 				F903C22B28656D8B00BDC01C /* UIView-Extension.swift in Sources */,
 				F9B788BC289A1CB400980653 /* RMDetailHeaderVC.swift in Sources */,

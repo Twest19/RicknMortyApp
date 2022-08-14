@@ -69,7 +69,7 @@ class NetworkManager {
     }
     
     // MARK: REQUEST FOR SPECIFIC EPISODES CHARACTER LIST
-    public func getEpisodeCharacters(with characterIDs: String, completion: @escaping (Result<[RMCharacter], RMError>) -> Void) {
+    public func getCharacters(using characterIDs: String, completion: @escaping (Result<[RMCharacter], RMError>) -> Void) {
         let components = CharacterURLManager.shared.characterComponents(with: characterIDs)
         
         // Checks URL
@@ -118,7 +118,7 @@ class NetworkManager {
     }
     
     
-    // MARK: FETCHS ALL CHARACTERS AND ALLOWS FOR SEARCHING OF SPECIFICS
+    // MARK: FETCHS ALL EPISODES
     public func getEpisode(pageNum: Int, completion: @escaping (Result<EpisodeResults, RMError>) -> Void) {
         let url = EpisodeURLManager.shared.createEpisodeURL(pageNum: pageNum)
         
@@ -152,6 +152,7 @@ class NetworkManager {
             
             // Decode JSON into Model
             let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
             
             do {
                 let response = try decoder.decode(EpisodeResults.self, from: data)

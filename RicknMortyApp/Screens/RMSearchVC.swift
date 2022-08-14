@@ -91,7 +91,7 @@ class RMSearchVC: RMDataLoadingVC {
     
     private func getEpisodeCharacterData(with characterIDs: String) {
         showLoadingView()
-        networker.getEpisodeCharacters(with: characterIDs) { [weak self] result in
+        networker.getCharacters(using: characterIDs) { [weak self] result in
             guard let self = self else { return }
             self.dismissLoadingView()
             
