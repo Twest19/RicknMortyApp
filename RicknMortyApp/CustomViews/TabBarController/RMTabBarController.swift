@@ -12,7 +12,7 @@ class RMTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UITabBar.appearance().tintColor = .systemGreen
-        viewControllers = [configCharVCTab()]
+        viewControllers = [configCharVCTab(), configEpisodeVCTab()]
     }
     
     
@@ -21,5 +21,13 @@ class RMTabBarController: UITabBarController {
         charVC.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 0)
         
         return UINavigationController(rootViewController: charVC)
+    }
+    
+    
+    private func configEpisodeVCTab() -> UINavigationController {
+        let episodeVC = RMEpisodeVC()
+        episodeVC.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 1)
+        
+        return UINavigationController(rootViewController: episodeVC)
     }
 }
