@@ -9,6 +9,7 @@ import UIKit
 
 class EpisodeHiddenView: UIView {
     
+    let labelStackView = UIStackView()
     let dateLabel = RMSecondaryLabel(fontSize: 20)
     let characterNumLabel = RMSecondaryLabel(fontSize: 20)
     let seeCharacterButton = RMButton(color: .systemCyan, title: "View Characters")
@@ -18,6 +19,10 @@ class EpisodeHiddenView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        translatesAutoresizingMaskIntoConstraints = false
+        self.addSubviews(labelStackView, seeCharacterButton)
+        self.backgroundColor = .secondarySystemBackground
+        configureStackView()
         configure()
         configureEpisodeButton()
     }
@@ -34,33 +39,41 @@ class EpisodeHiddenView: UIView {
     }
     
     
-    private func configure() {
-        translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(dateLabel, characterNumLabel)
+    private func configureStackView() {
+        labelStackView.translatesAutoresizingMaskIntoConstraints = false
+        labelStackView.addArrangedSubviews(dateLabel, characterNumLabel)
+        
+        labelStackView.axis = .vertical
+        labelStackView.alignment = .leading
+        labelStackView.spacing = 5
         
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: padding),
-            dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingPadding),
-            dateLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            dateLabel.bottomAnchor.constraint(equalTo: characterNumLabel.topAnchor, constant: -padding),
-            
-            characterNumLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: padding),
-            characterNumLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingPadding),
-            characterNumLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding),
-            characterNumLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding)
-                    
-//            seeCharacterButton.topAnchor.constraint(equalTo: characterNumLabel.bottomAnchor, constant: padding),
-//            seeCharacterButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingPadding),
-//            seeCharacterButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -leadingPadding),
-//            seeCharacterButton.heightAnchor.constraint(equalToConstant: 45),
-//            seeCharacterButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding)
+            labelStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: leadingPadding),
+            labelStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingPadding),
+            labelStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
+    }
+    
+    
+    private func configure() {
+        
+        NSLayoutConstraint.activate([
+            seeCharacterButton.topAnchor.constraint(equalTo: self.labelStackView.bottomAnchor, constant: padding),
+            seeCharacterButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingPadding),
+            seeCharacterButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -leadingPadding),
+            seeCharacterButton.heightAnchor.constraint(equalToConstant: 45)
+        ])
+        
+        let constraint = seeCharacterButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -leadingPadding)
+        constraint.priority = UILayoutPriority(999)
+        constraint.isActive = true
     }
     
     
     private func configureEpisodeButton() {
         seeCharacterButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
     }
+    
     
     @objc func actionButtonTapped() {
         print("TAPPED BUTTON")
