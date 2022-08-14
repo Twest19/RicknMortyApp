@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct EpisodeResults: Decodable {
+    let info: Info
+    let results: [Episode]
+}
+
 // Rick and Morty Episode Data
 struct Episode: Decodable {
     let id: Int
