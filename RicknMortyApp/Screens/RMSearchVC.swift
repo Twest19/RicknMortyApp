@@ -38,6 +38,7 @@ class RMSearchVC: RMDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
+        configureNavBar()
         configureSearchBar()
         getCharacterData(pageNum: currentPage)
         configureDataSource()
@@ -144,13 +145,19 @@ class RMSearchVC: RMDataLoadingVC {
             self.characterListDataSource.apply(snapshot, animatingDifferences: true)
         }
     }
+    
+    
+    private func configureNavBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .systemGreen
+    }
 }
 
 
 extension RMSearchVC: UICollectionViewDelegate {
     
     func scrollToTop(animated: Bool) {
-        let point = CGPoint(x: 0, y: -biggestTopSafeAreaInset)
+        let point = CGPoint(x: -collectionView.adjustedContentInset.left, y: -collectionView.adjustedContentInset.top)
         collectionView.setContentOffset(point, animated: animated)
     }
     
