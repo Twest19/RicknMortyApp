@@ -11,7 +11,9 @@ class RMDescriptorView: UIView {
     
     let descriptorLabel = RMSecondaryLabel(fontSize: 14)
     let infoLabel = RMPrimaryLabel(textAlignment: .left, fontSize: 16, weight: .semibold)
-
+    
+    var defaultDescriptorFontSize: CGFloat = 14
+    var defaultInfoFontSize: CGFloat = 16
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,6 +32,15 @@ class RMDescriptorView: UIView {
     }
     
     
+    public func changeFont(size: CGFloat) {
+        descriptorLabel.font = UIFont.systemFont(ofSize: size)
+        infoLabel.font = UIFont.systemFont(ofSize: size + 2)
+        
+        defaultInfoFontSize = size
+        defaultInfoFontSize = size
+    }
+    
+    
     private func configure() {
         addSubviews(descriptorLabel, infoLabel)
         
@@ -39,12 +50,12 @@ class RMDescriptorView: UIView {
             descriptorLabel.topAnchor.constraint(equalTo: self.topAnchor),
             descriptorLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             descriptorLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            descriptorLabel.heightAnchor.constraint(equalToConstant: 18),
+            descriptorLabel.heightAnchor.constraint(equalToConstant: defaultDescriptorFontSize + 4),
             
-            infoLabel.topAnchor.constraint(equalTo: descriptorLabel.bottomAnchor),
+            infoLabel.topAnchor.constraint(equalTo: descriptorLabel.bottomAnchor, constant: 3),
             infoLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             infoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            infoLabel.heightAnchor.constraint(equalToConstant: 20)
+            infoLabel.heightAnchor.constraint(equalToConstant: defaultInfoFontSize + 4)
         ])
     }
 }
