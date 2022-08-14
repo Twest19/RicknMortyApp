@@ -7,11 +7,9 @@
 
 import Foundation
 
-protocol RMApiBaseURL {
-    func components() -> URLComponents
-}
 
-extension RMApiBaseURL {
+
+class RMApiBaseURL {
     func components() -> URLComponents {
         var components = URLComponents()
         components.scheme = "https"
@@ -21,7 +19,7 @@ extension RMApiBaseURL {
 }
 
 
-struct CharacterURLManager: RMApiBaseURL {
+class CharacterURLManager: RMApiBaseURL {
     
     static var shared = CharacterURLManager()
     
@@ -48,13 +46,22 @@ struct CharacterURLManager: RMApiBaseURL {
 }
 
 
-struct EpisodeURLManager: RMApiBaseURL {
+class EpisodeURLManager: RMApiBaseURL {
     
     static var shared = EpisodeURLManager()
     
-    func episodeComponents(episodeNum: String) -> URLComponents {
+    func episodeComponents(episodeNum: String = "") -> URLComponents {
         var components = components()
         components.path = "/api/episode/\(episodeNum)"
         return components
+    }
+    
+    
+    func createEpisodeURL(pageNum: Int) -> URL? {
+        var components = episodeComponents()
+        let pageNum = URLQueryItem(name: "page", value: String(pageNum))
+        components.queryItems = [pageNum]
+        
+        return components.url
     }
 }
