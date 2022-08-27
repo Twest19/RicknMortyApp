@@ -49,12 +49,13 @@ enum Helper {
         
         return url.map({ $0.split(whereSeparator: { $0 == "/"})}).map({ Int($0.last!)! }).sorted().map({ "\($0)"}).joined(separator: ",")
     }
-}
-
-
-public enum Status: String {
-    case alive = "alive"
-    case dead = "dead"
-    case unknown = "unknown"
-    case none = ""
+    
+    
+    static func splitEpisodeCode(episode: String) -> [Substring] {
+        var episode = episode
+        let index = episode.index(episode.startIndex, offsetBy: 3)
+        episode.insert(" ", at: index)
+        
+        return episode.split(whereSeparator: { $0 == " " })
+    }
 }

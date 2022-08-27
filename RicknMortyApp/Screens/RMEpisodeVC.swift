@@ -13,7 +13,15 @@ class RMEpisodeVC: RMDataLoadingVC {
     weak var delegate: RMCharacterDetailVCDelegate!
     
     var episode: [Episode] = []
+//    var seasons: [String] = ["S01", "S02", "S03", "S04", "S05"]
+    var sortSeasons: [String: [Episode]] = [:]
+    var seasons: [String] = []
+//    var episodeCount = [11, 10, 10, 10]
     
+//    var seasonAndCount: [String: Int] = ["S01": 11, "S02": 10, "S03": 10, "S04": 10, "S05": 10]
+//    var filteredEpisodes = [String: [String]]()
+    var filteredEpisode = [Episode]()
+
     var totalPages = 0
     var currentPage = 1
     
@@ -55,9 +63,15 @@ class RMEpisodeVC: RMDataLoadingVC {
     
     
     private func updateUI(episode: [Episode]) {
-        self.episode.append(contentsOf: episode)
+        sortSeasons = Dictionary(grouping: episode, by: { $0.season })
+        seasons = sortSeasons.map{ $0.key }.sorted()
+//        self.episode.append(contentsOf: episode.sorted(by: { $0.id < $1.id }))
+//        self.filteredEpisode.append(contentsOf: episode.map({ $0.id < $1.id }))
         DispatchQueue.main.async {
             self.tableView.reloadData()
+            print()
+            print("RELOADING")
+            print()
         }
     }
     
@@ -101,9 +115,9 @@ extension RMEpisodeVC: UITableViewDelegate {
         }
     }
     
-    
+    //TODO: NEED TO FIX PAGINATION
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if currentPage < totalPages && indexPath.row == episode.count - 1 {
+        if currentPage < totalPages {
             guard !isLoadingEpisodeData else { return }
             currentPage += 1
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -116,14 +130,33 @@ extension RMEpisodeVC: UITableViewDelegate {
 
 extension RMEpisodeVC: UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return seasons.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return seasons[section]
+    }
+    
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return episode.count
+        let season = seasons[section]
+        
+        if let hasEpisodes = sortSeasons[season] {
+            return hasEpisodes.count
+        }
+        
+        return 0
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeCell.reuseID, for: indexPath) as! EpisodeCell
-        cell.updateCell(with: episode[indexPath.row], delegate: self)
+        let season = seasons[indexPath.section]
+        let items = sortSeasons[season]![indexPath.row]
+        cell.updateCell(with: items, delegate: self)
         return cell
     }
 }

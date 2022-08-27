@@ -23,4 +23,12 @@ struct Episode: Decodable {
     var nameAndEpisode: String {
         return "\(episode) - \(name)"
     }
+    
+    var season: String {
+        return String(Helper.splitEpisodeCode(episode: episode).first!)
+    }
+    
+    var episodeNumber: String {
+        return String(Helper.splitEpisodeCode(episode: episode).last!)
+    }
 }
