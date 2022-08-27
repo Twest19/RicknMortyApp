@@ -58,4 +58,21 @@ enum Helper {
         
         return episode.split(whereSeparator: { $0 == " " })
     }
+    
+    
+    static func sortingEpisodes(episode: [Episode]) -> [String: [Episode]] {
+        
+        var sortedEpisodes: [String: [Episode]] = [:]
+        
+        for ep in episode {
+            if sortedEpisodes[ep.season] != nil {
+                sortedEpisodes[ep.season]!.append(ep)
+                print("WORK")
+            } else {
+                sortedEpisodes[ep.season] = [ep]
+                print("NO")
+            }
+        }
+        return sortedEpisodes.mapValues({ $0.sorted(by: {$0.id < $1.id })})
+    }
 }
