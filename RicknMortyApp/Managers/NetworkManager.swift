@@ -156,6 +156,7 @@ class NetworkManager {
             
             do {
                 let response = try decoder.decode(EpisodeResults.self, from: data)
+                print(response)
                 completion(.success(response))
             } catch let error {
                 print("ERROR DECODING")
