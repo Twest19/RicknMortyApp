@@ -12,15 +12,9 @@ class RMEpisodeVC: RMDataLoadingVC {
     let tableView = RMEpisodeTableView()
     weak var delegate: RMCharacterDetailVCDelegate!
     
-    var episode: [Episode] = []
-//    var seasons: [String] = ["S01", "S02", "S03", "S04", "S05"]
-    var sortSeasons: [String: [Episode]] = [:]
+//    var episode: [Episode] = []
+    var episodesBySeason: [String: [Episode]] = [:]
     var seasons: [String] = []
-//    var episodeCount = [11, 10, 10, 10]
-    
-//    var seasonAndCount: [String: Int] = ["S01": 11, "S02": 10, "S03": 10, "S04": 10, "S05": 10]
-//    var filteredEpisodes = [String: [String]]()
-    var filteredEpisode = [Episode]()
 
     var totalPages = 0
     var currentPage = 1
@@ -63,10 +57,20 @@ class RMEpisodeVC: RMDataLoadingVC {
     
     
     private func updateUI(episode: [Episode]) {
-        sortSeasons = Dictionary(grouping: episode, by: { $0.season })
-        seasons = sortSeasons.map{ $0.key }.sorted()
-//        self.episode.append(contentsOf: episode.sorted(by: { $0.id < $1.id }))
-//        self.filteredEpisode.append(contentsOf: episode.map({ $0.id < $1.id }))
+        
+        for ep in episode {
+            if episodesBySeason[ep.season] != nil {
+                episodesBySeason[ep.season]!.append(ep)
+                print("WORK")
+            } else {
+                episodesBySeason[ep.season] = [ep]
+                print("NO")
+            }
+        }
+        
+        episodesBySeason = episodesBySeason.mapValues({ $0.sorted(by: {$0.id < $1.id })})
+        seasons = episodesBySeason.map{ $0.key }.sorted()
+
         DispatchQueue.main.async {
             self.tableView.reloadData()
             print()
@@ -93,8 +97,12 @@ class RMEpisodeVC: RMDataLoadingVC {
     
     private func configureNavBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .systemCyan
-        title = "Episodes"
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.systemCyan]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.systemCyan]
+        navigationItem.standardAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        navigationItem.title = "Episodes"
         view.backgroundColor = .systemBackground
     }
 }
@@ -115,13 +123,19 @@ extension RMEpisodeVC: UITableViewDelegate {
         }
     }
     
-    //TODO: NEED TO FIX PAGINATION
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if currentPage < totalPages {
-            guard !isLoadingEpisodeData else { return }
-            currentPage += 1
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.getEpisodeData(pageNum: self.currentPage)
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+        
+        if offsetY > contentHeight - height {
+            if currentPage < totalPages {
+                guard !isLoadingEpisodeData else { return }
+                currentPage += 1
+                DispatchQueue.main.async {
+                    self.getEpisodeData(pageNum: self.currentPage)
+                }
             }
         }
     }
@@ -144,7 +158,7 @@ extension RMEpisodeVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let season = seasons[section]
         
-        if let hasEpisodes = sortSeasons[season] {
+        if let hasEpisodes = episodesBySeason[season] {
             return hasEpisodes.count
         }
         
@@ -155,7 +169,7 @@ extension RMEpisodeVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeCell.reuseID, for: indexPath) as! EpisodeCell
         let season = seasons[indexPath.section]
-        let items = sortSeasons[season]![indexPath.row]
+        let items = episodesBySeason[season]![indexPath.row]
         cell.updateCell(with: items, delegate: self)
         return cell
     }
