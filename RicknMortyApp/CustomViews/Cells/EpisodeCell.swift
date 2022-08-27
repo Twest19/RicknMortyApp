@@ -75,9 +75,5 @@ class EpisodeCell: UITableViewCell {
     
     func hideEpisodeHiddenView() {
         self.episodeHiddenView.isHidden = true
-//
-//        UIView.animate(withDuration: 0.3) {
-//            self.containerView.layoutIfNeeded()
-//        }
     }
 }

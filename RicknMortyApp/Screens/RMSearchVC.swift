@@ -16,8 +16,7 @@ class RMSearchVC: RMDataLoadingVC {
     private var collectionView: RMCharCollectionView!
     private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter.ID>!
     
-    private let navBar = UINavigationBar()
-    private let searchBar = UISearchBar()
+    private let searchBar = RMSearchBar()
     
     private let networker = NetworkManager.shared
     
@@ -219,12 +218,8 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
 extension RMSearchVC: UISearchBarDelegate {
     
     private func configureSearchBar() {
-        showSearchBarButton(shouldShow: true)
         searchBar.delegate = self
-        searchBar.sizeToFit()
-        searchBar.placeholder = "Search Characters Here..."
-        searchBar.tintColor = .label
-        searchBar.searchBarStyle = .minimal
+        showSearchBarButton(shouldShow: true)
     }
     
     
