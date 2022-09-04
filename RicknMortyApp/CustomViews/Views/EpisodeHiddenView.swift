@@ -70,7 +70,7 @@ class EpisodeHiddenView: UIView {
             labelStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: leadingPadding),
             labelStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingPadding),
             labelStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            labelStackView.heightAnchor.constraint(equalToConstant: 57)
+            labelStackView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
@@ -81,7 +81,7 @@ class EpisodeHiddenView: UIView {
             seeCharacterButton.topAnchor.constraint(equalTo: self.labelStackView.bottomAnchor, constant: padding),
             seeCharacterButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingPadding),
             seeCharacterButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -leadingPadding),
-            seeCharacterButton.heightAnchor.constraint(equalToConstant: 46)
+            seeCharacterButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         // This constraint was causing issues. Setting priority to 999 solved those issues
         let constraint = seeCharacterButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -leadingPadding)

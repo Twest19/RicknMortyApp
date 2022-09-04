@@ -33,7 +33,7 @@ class EpisodeCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
+
         switch isEpisodeHiddenView && selected {
         case true:
             showEpisodeHiddenView()
@@ -57,23 +57,23 @@ class EpisodeCell: UITableViewCell {
         episodeHiddenView.isHidden = true
         containerView.axis = .vertical
         containerView.spacing = 5
-        containerView.addArrangedSubviews(episodeNameView, episodeHiddenView)
         
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
+        containerView.addArrangedSubviews(episodeNameView, episodeHiddenView)
     }
     
     
     func showEpisodeHiddenView() {
         episodeHiddenView.isHidden = false
     }
-    
+
     
     func hideEpisodeHiddenView() {
-        self.episodeHiddenView.isHidden = true
+        episodeHiddenView.isHidden = true
     }
 }

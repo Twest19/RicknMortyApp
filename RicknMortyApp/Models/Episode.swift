@@ -13,7 +13,7 @@ struct EpisodeResults: Decodable {
 }
 
 // Rick and Morty Episode Data
-struct Episode: Decodable {
+struct Episode: Identifiable, Decodable {
     let id: Int
     let name: String
     let airDate: String
