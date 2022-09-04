@@ -18,18 +18,14 @@ class RMTabBarController: UITabBarController {
     
     private func configCharVCTab() -> UINavigationController {
         let charVC = RMSearchVC()
-        charVC.tabBarItem.title = "Characters"
-        charVC.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 0)
-        
+        charVC.tabBarItem = UITabBarItem(title: "Character", image: SFSymbols.peopleFill, tag: 0)
         return UINavigationController(rootViewController: charVC)
     }
     
     
     private func configEpisodeVCTab() -> UINavigationController {
         let episodeVC = RMEpisodeVC()
-        episodeVC.tabBarItem.title = "Episode"
-        episodeVC.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 1)
-        
+        episodeVC.tabBarItem = UITabBarItem(title: "Episode", image: SFSymbols.film, tag: 1)
         return UINavigationController(rootViewController: episodeVC)
     }
 }
