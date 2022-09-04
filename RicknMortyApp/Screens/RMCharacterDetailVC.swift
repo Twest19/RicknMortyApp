@@ -26,9 +26,10 @@ class RMCharacterDetailVC: RMDataLoadingVC {
     private let padding: CGFloat = 10
     
     
-    init(for character: RMCharacter){
+    init(for character: RMCharacter, delegate: RMCharacterDetailVCDelegate){
         super.init(nibName: nil, bundle: nil)
         self.character = character
+        self.delegate = delegate
     }
     
     
