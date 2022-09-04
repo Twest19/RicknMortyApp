@@ -17,9 +17,7 @@ class RMSearchVC: RMDataLoadingVC {
     private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter.ID>!
     
     private let searchBar = RMSearchBar()
-    
-    private let networker = NetworkManager.shared
-    
+        
     private var character: [RMCharacter] = []
     
     private var totalPages = 0
@@ -45,7 +43,6 @@ class RMSearchVC: RMDataLoadingVC {
     func setUpEpisodeDelegate() {
         if let episodeNavVC = self.tabBarController?.viewControllers?.last(where: { $0 is UINavigationController}) as? UINavigationController {
             if let episodeVC = episodeNavVC.viewControllers.first(where: { $0 is RMEpisodeVC}) as? RMEpisodeVC {
-                print("NICE")
                 episodeVC.delegate = self
             }
         }
@@ -67,7 +64,7 @@ class RMSearchVC: RMDataLoadingVC {
         isLoadingMoreCharacters = true
         dismissErrorView()
 
-        networker.getCharacters(pageNum: pageNum, searchBarText: searchBarText) { [weak self] result in
+        NetworkManager.shared.getCharacters(pageNum: pageNum, searchBarText: searchBarText) { [weak self] result in
             
             guard let self = self else { return }
             
@@ -91,7 +88,7 @@ class RMSearchVC: RMDataLoadingVC {
     
     private func getEpisodeCharacterData(with characterIDs: String) {
         showLoadingView()
-        networker.getCharacters(using: characterIDs) { [weak self] result in
+        NetworkManager.shared.getCharacters(using: characterIDs) { [weak self] result in
             guard let self = self else { return }
             self.dismissLoadingView()
             
@@ -176,10 +173,7 @@ extension RMSearchVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if !isSearching {
             let selectedCharacter = character[indexPath.item]
-           
-            let detailVC = RMCharacterDetailVC(for: selectedCharacter)
-            detailVC.delegate = self
-            
+            let detailVC = RMCharacterDetailVC(for: selectedCharacter, delegate: self)
             let navController = UINavigationController(rootViewController: detailVC)
             navController.modalPresentationStyle = .popover
             present(navController, animated: true)
