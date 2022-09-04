@@ -10,6 +10,8 @@ import UIKit
 
 enum SFSymbols {
     static let circle = UIImage(systemName: "circle.fill")
+    static let peopleFill = UIImage(systemName: "person.3.fill")
+    static let film = UIImage(systemName: "film")
 }
 
 
@@ -37,12 +39,6 @@ enum Status: String {
     case unknown = "unknown"
     case none = ""
 }
-
-
-//enum Seasons: Int {
-//    case S01 = 11
-//    case S02, S03, S04, S05 = 10
-//}
 
 
 enum Seasons: String {
