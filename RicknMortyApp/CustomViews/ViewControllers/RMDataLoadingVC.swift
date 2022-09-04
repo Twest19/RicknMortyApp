@@ -61,9 +61,9 @@ class RMDataLoadingVC: UIViewController {
     func setTitle(with string: String) {
         DispatchQueue.main.async {
             if (string.trimmingCharacters(in: .whitespacesAndNewlines)).isEmpty {
-                self.title = "All Characters"
+                self.navigationItem.title = "All Characters"
             } else {
-                self.title = string
+                self.navigationItem.title = string
             }
         }
     }
