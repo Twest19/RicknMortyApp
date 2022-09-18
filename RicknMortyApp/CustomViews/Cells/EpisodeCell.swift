@@ -44,7 +44,7 @@ class EpisodeCell: UITableViewCell {
     
     
     public func updateCell(with episode: Episode, delegate: EpisodeVCDelegate) {
-        episodeNameView.set(label: episode.nameAndEpisode)
+        episodeNameView.set(label: episode.numberAndName)
         episodeHiddenView.set(episode: episode, delegate: delegate)
     }
     

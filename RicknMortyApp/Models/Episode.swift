@@ -31,4 +31,9 @@ struct Episode: Identifiable, Decodable {
     var episodeNumber: String {
         return String(Helper.splitEpisodeCode(episode: episode).last!)
     }
+    
+    var numberAndName: String {
+        return "\(episodeNumber) - \(name)"
+    }
+    
 }
