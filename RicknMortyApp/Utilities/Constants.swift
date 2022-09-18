@@ -41,10 +41,11 @@ enum Status: String {
 }
 
 
-enum Seasons: String {
+enum Seasons: String, CaseIterable {
     case S01 = "S01"
     case S02 = "S02"
     case S03 = "S03"
     case S04 = "S04"
     case S05 = "S05"
+    case S06 = "S06"
 }

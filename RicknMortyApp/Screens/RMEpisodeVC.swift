@@ -15,7 +15,7 @@ class RMEpisodeVC: RMDataLoadingVC {
     
     private let tableView = RMEpisodeTableView()
     public weak var delegate: RMCharacterDetailVCDelegate!
-        
+            
     private var episodesBySeason: [String: [Episode]] = [:]
     private var seasons: [String] = []
 
@@ -26,7 +26,6 @@ class RMEpisodeVC: RMDataLoadingVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(tableView)
         configureNavBar()
         configureTableView()
         getEpisodeData(pageNum: currentPage)
@@ -80,6 +79,7 @@ class RMEpisodeVC: RMDataLoadingVC {
     private func configureTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+        view.addSubview(tableView)
         tableView.estimatedRowHeight = 120
         tableView.rowHeight = UITableView.automaticDimension
         
@@ -110,14 +110,20 @@ extension RMEpisodeVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseIn) { [unowned self] in
             self.tableView.performBatchUpdates(nil)
-            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            
+            if let five = episodesBySeason["S05"] {
+                if indexPath.row >= five.count - 4 {
+                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                }
+            }
+            
+            
         }
     }
     
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if let cell = self.tableView.cellForRow(at: indexPath) as? EpisodeCell {
-            
             UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut) { [unowned self] in
                 self.tableView.performBatchUpdates(nil)
                 cell.hideEpisodeHiddenView()
@@ -145,7 +151,7 @@ extension RMEpisodeVC: UITableViewDelegate {
 
 
 extension RMEpisodeVC: UITableViewDataSource {
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return seasons.count
     }
