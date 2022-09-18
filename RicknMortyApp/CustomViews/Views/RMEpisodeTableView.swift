@@ -23,6 +23,7 @@ class RMEpisodeTableView: UITableView {
     
     private func configureTableView() {
         translatesAutoresizingMaskIntoConstraints = false
+        separatorStyle = .none
         self.register(EpisodeCell.self, forCellReuseIdentifier: EpisodeCell.reuseID)
     }
 }
