@@ -69,7 +69,7 @@ class EpisodeHiddenView: UIView {
         NSLayoutConstraint.activate([
             labelStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: leadingPadding),
             labelStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingPadding),
-            labelStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            labelStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -leadingPadding),
             labelStackView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
@@ -83,10 +83,10 @@ class EpisodeHiddenView: UIView {
             seeCharacterButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -leadingPadding),
             seeCharacterButton.heightAnchor.constraint(equalToConstant: 50)
         ])
-        // This constraint was causing issues. Setting priority to 999 solved those issues
-        let constraint = seeCharacterButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -leadingPadding)
-        constraint.priority = UILayoutPriority(999)
-        constraint.isActive = true
+//        // This constraint was causing issues. Setting priority to 999 solved those issues
+//        let constraint = seeCharacterButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -leadingPadding)
+//        constraint.priority = UILayoutPriority(999)
+//        constraint.isActive = true
     }
     
     

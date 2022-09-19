@@ -24,6 +24,10 @@ class RMEpisodeVC: RMDataLoadingVC {
     
     private var isLoadingEpisodeData: Bool = false
     
+    private var selectedIndex : IndexPath = IndexPath(row: -1, section: -1)
+    private var isCollapsed = false
+    private var notVisible = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavBar()
@@ -80,7 +84,7 @@ class RMEpisodeVC: RMDataLoadingVC {
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
-        tableView.estimatedRowHeight = 120
+        tableView.estimatedRowHeight = 220
         tableView.rowHeight = UITableView.automaticDimension
         
         NSLayoutConstraint.activate([
@@ -107,29 +111,54 @@ class RMEpisodeVC: RMDataLoadingVC {
 
 extension RMEpisodeVC: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if selectedIndex == indexPath && isCollapsed == true {
+            if tableView.indexPathsForVisibleRows?.contains(selectedIndex) == true {
+                print("Yes")
+                return 250
+            }
+//            isCollapsed = false
+        }
+        return 60
+    }
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseIn) { [unowned self] in
-            self.tableView.performBatchUpdates(nil)
-            
-            if let five = episodesBySeason["S05"] {
-                if indexPath.row >= five.count - 4 {
-                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-                }
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        if selectedIndex == indexPath {
+            switch isCollapsed {
+            case false:
+                isCollapsed = true
+                print("C")
+            case true:
+                isCollapsed = false
+                print("B")
             }
-            
-            
+        } else {
+            isCollapsed = true
+            print("A")
         }
+        
+        selectedIndex = indexPath
+
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        //tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+//        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseIn) { [unowned self] in
+//            self.tableView.performBatchUpdates(nil)
+//            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+//        }
     }
     
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if let cell = self.tableView.cellForRow(at: indexPath) as? EpisodeCell {
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut) { [unowned self] in
-                self.tableView.performBatchUpdates(nil)
-                cell.hideEpisodeHiddenView()
-            }
-        }
-    }
+//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+//        if let cell = self.tableView.cellForRow(at: indexPath) as? EpisodeCell {
+//            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut) { [unowned self] in
+//                self.tableView.performBatchUpdates(nil)
+//                cell.hideEpisodeHiddenView()
+//            }
+//        }
+//    }
     
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
