@@ -46,7 +46,6 @@ class RMEpisodeVC: RMDataLoadingVC {
             
             switch result {
             case .success(let episode):
-                print(episode.info.pages)
                 self.totalPages = episode.info.pages
                 self.updateUI(with: episode.results)
             case .failure(let error):
@@ -94,7 +93,7 @@ class RMEpisodeVC: RMDataLoadingVC {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
+
     
     private func configureNavBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -113,52 +112,34 @@ extension RMEpisodeVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if selectedIndex == indexPath && isCollapsed == true {
-            if tableView.indexPathsForVisibleRows?.contains(selectedIndex) == true {
-                print("Yes")
-                return 250
-            }
-//            isCollapsed = false
+            return 250
+            //isCollapsed = false
         }
         return 60
     }
     
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
-
+                
         if selectedIndex == indexPath {
             switch isCollapsed {
             case false:
                 isCollapsed = true
-                print("C")
             case true:
                 isCollapsed = false
-                print("B")
             }
         } else {
             isCollapsed = true
-            print("A")
         }
         
         selectedIndex = indexPath
-
+        
         tableView.reloadRows(at: [indexPath], with: .automatic)
-        //tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-//        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseIn) { [unowned self] in
-//            self.tableView.performBatchUpdates(nil)
-//            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-//        }
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
-    
-    
-//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        if let cell = self.tableView.cellForRow(at: indexPath) as? EpisodeCell {
-//            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut) { [unowned self] in
-//                self.tableView.performBatchUpdates(nil)
-//                cell.hideEpisodeHiddenView()
-//            }
-//        }
-//    }
     
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -193,9 +174,7 @@ extension RMEpisodeVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let season = seasons[section]
-        if let hasEpisodes = episodesBySeason[season] {
-            return hasEpisodes.count
-        }
+        if let hasEpisodes = episodesBySeason[season] { return hasEpisodes.count }
         return 0
     }
 
