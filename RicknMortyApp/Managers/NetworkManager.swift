@@ -77,9 +77,7 @@ class NetworkManager {
             completion(.failure(.invalidCharacter))
             return
         }
-        
-        print(url)
-        
+                
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             
             // Handle any errors here:
@@ -156,7 +154,7 @@ class NetworkManager {
             
             do {
                 let response = try decoder.decode(EpisodeResults.self, from: data)
-                print(response)
+                //print(response)
                 completion(.success(response))
             } catch let error {
                 print("ERROR DECODING")
