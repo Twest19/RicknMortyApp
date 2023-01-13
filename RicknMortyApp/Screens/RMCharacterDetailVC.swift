@@ -63,6 +63,9 @@ class RMCharacterDetailVC: RMDataLoadingVC {
                 
             case .failure(let error):
                 print("Error: ", error)
+                DispatchQueue.main.async {
+                    self.showErrorView(with: error, in: self.view)
+                }
                 return
             }
         }
