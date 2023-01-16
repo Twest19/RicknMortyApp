@@ -2,17 +2,16 @@
 //  RickMortyModel.swift
 //  RicknMortyApp
 //
-//  Created by Tim West on 6/23/22.
-//
 
 import UIKit
 
-// MARK: Character Models
+// MARK: RMResults Model
 struct RMResults: Decodable {
     let info: Info
     let results: [RMCharacter]
 }
 
+// MARK: RMCharacter Model
 struct RMCharacter: Identifiable, Decodable {
     let id: Int
     let name: String
@@ -30,14 +29,14 @@ struct RMCharacter: Identifiable, Decodable {
     }
 }
 
+// MARK: Origin Model
 struct Origin: Decodable {
     let name: String
     let url: String
 }
 
+// MARK: Location Model
 struct Location: Decodable {
     let name: String
     let url: String
 }
-
-

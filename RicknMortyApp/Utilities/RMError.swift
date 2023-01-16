@@ -14,5 +14,5 @@ enum RMError: String, Error {
     case unableToComplete = "Unable to complete your request. Please check your connection and try again."
     case responseError = "Invalid response from server. Check your connection and search entry, then try again."
     case badDataError = "Bad data received from the server. Please try again."
-    case badLocalUrl = "Bad url"
+    case badLocalUrl = "Bad url."
 }

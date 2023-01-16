@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Episode.swift
 //  RicknMortyApp
 //
 //  Created by Tim West on 8/2/22.
@@ -7,12 +7,14 @@
 
 import Foundation
 
+
+// MARK: EpisodeResults Model
 struct EpisodeResults: Decodable {
     let info: Info
     let results: [Episode]
 }
 
-// Rick and Morty Episode Data
+// MARK: Rick and Morty Episode Model
 struct Episode: Identifiable, Decodable {
     let id: Int
     let name: String
@@ -35,5 +37,4 @@ struct Episode: Identifiable, Decodable {
     var numberAndName: String {
         return "\(episodeNumber) - \(name)"
     }
-    
 }

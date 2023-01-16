@@ -3,7 +3,9 @@
 //  RicknMortyApp
 //
 //  Created by Tim West on 6/25/22.
-//
+
+//  Updated 1/16/23.
+
 
 import UIKit
 
@@ -151,6 +153,7 @@ class RMCharacterDetailVC: RMDataLoadingVC {
     }
 }
 
+// MARK: EpisodeVCDelegate
 extension RMCharacterDetailVC: EpisodeVCDelegate {
 
     func didTapSeeCharactersButton(for episode: Episode) {

@@ -12,7 +12,7 @@ class RMEpisodeVC: RMDataLoadingVC {
     private enum EpisodeListSection: Int {
         case main
     }
-    
+        
     private let tableView = RMEpisodeTableView()
     public weak var delegate: RMCharacterDetailVCDelegate!
             
@@ -83,6 +83,7 @@ class RMEpisodeVC: RMDataLoadingVC {
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
+        // Both row heights allow the differing size of expanded vs nonexpanded cells
         tableView.estimatedRowHeight = 220
         tableView.rowHeight = UITableView.automaticDimension
         
@@ -111,10 +112,11 @@ class RMEpisodeVC: RMDataLoadingVC {
 extension RMEpisodeVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // Creates a bigger cell size to reveal hidden details
         if selectedIndex == indexPath && isCollapsed == true {
             return 250
-            //isCollapsed = false
         }
+        // Not selected/expanded? Returns a default size of 60
         return 60
     }
     
@@ -123,7 +125,8 @@ extension RMEpisodeVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
-                
+        
+        // Collapses and opens the episode cells
         if selectedIndex == indexPath {
             switch isCollapsed {
             case false:
@@ -138,6 +141,7 @@ extension RMEpisodeVC: UITableViewDelegate {
         selectedIndex = indexPath
         
         tableView.reloadRows(at: [indexPath], with: .automatic)
+        // Helps prevent bottom most cells from being hidden when selected and expanded
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
     
@@ -147,6 +151,7 @@ extension RMEpisodeVC: UITableViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
         
+        // Pagination for episodes/seasons
         if offsetY > contentHeight - height {
             if currentPage < totalPages {
                 guard !isLoadingEpisodeData else { return }
@@ -192,6 +197,7 @@ extension RMEpisodeVC: UITableViewDataSource {
 extension RMEpisodeVC: EpisodeVCDelegate {
     func didTapSeeCharactersButton(for episode: Episode) {
         delegate.didRequestEpisodeCharacters(for: episode)
+        // Navigates back to the Character Tab to view the characters when tapping "view character" button for a selected episode
         if let index = tabBarController?.viewControllers?.firstIndex(where: { $0 is UINavigationController }) {
             tabBarController?.selectedIndex = index
         }

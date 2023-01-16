@@ -1,13 +1,13 @@
 //
-//  ApiCaller.swift
+//  NetworkManager.swift
 //  RicknMortyApp
-//
-//  Created by Tim West on 6/26/22.
 //
 
 import UIKit
 
+
 class NetworkManager {
+    // MARK: ALL network requests below use a completion handler with a result type!
     
     static var shared = NetworkManager()
     
@@ -21,8 +21,9 @@ class NetworkManager {
         session = URLSession(configuration: config)
     }
 
-    // MARK: FETCHS ALL CHARACTERS AND ALLOWS FOR SEARCHING OF SPECIFICS
+    // MARK: FETCHS ALL CHARACTERS AND ALLOWS FOR SEARCHING OF SPECIFIC CHARACTERS
     public func getCharacters(pageNum: Int, searchBarText: String = "", completion: @escaping (Result<RMResults, RMError>) -> Void) {
+        // Create the Character URL
         let url = CharacterURLManager.shared.createCharacterURL(pageNum: pageNum, searchBarText: searchBarText)
         
         // Checks URL
@@ -68,7 +69,7 @@ class NetworkManager {
         task.resume()
     }
     
-    // MARK: REQUEST FOR SPECIFIC EPISODES CHARACTER LIST
+    // MARK: REQUEST FOR A SPECIFIC EPISODE'S CHARACTER LIST
     public func getCharacters(using characterIDs: String, completion: @escaping (Result<[RMCharacter], RMError>) -> Void) {
         let components = CharacterURLManager.shared.characterComponents(with: characterIDs)
         
@@ -137,7 +138,7 @@ class NetworkManager {
 
             // Handle response errors here:
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                print("When enter invalid search")
+                print("Response Error \(String(describing: response))")
                 completion(.failure(.responseError))
                 return
             }
@@ -172,7 +173,7 @@ class NetworkManager {
 
         // Checks URL
         guard let url = components.url else {
-            print("NOT A CHARACTER!!!!!")
+            print("Invalid Character URL")
             completion(.failure(.invalidCharacter))
             return
         }
@@ -207,7 +208,7 @@ class NetworkManager {
                 let response = try decoder.decode([Episode].self, from: data)
                 completion(.success(response))
             } catch let error {
-                print(error)
+                print(error) // print error for debugging
                 completion(.failure(.badDataError))
             }
         }

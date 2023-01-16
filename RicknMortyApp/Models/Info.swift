@@ -7,7 +7,7 @@
 
 import Foundation
 
-// MARK: - Info
+// MARK: - Info Model
 struct Info: Decodable {
     let count: Int
     var pages: Int

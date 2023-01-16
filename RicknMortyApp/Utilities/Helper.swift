@@ -7,7 +7,12 @@
 
 import UIKit
 
+
+// MARK: Helper enum for various utility type functions
 enum Helper {
+    
+    
+    // MARK: Create a three column CollectionView as seen in the Character Screen
     static func threeColumnCollectionView(in view: UIView) -> UICollectionViewFlowLayout {
         let width = view.bounds.width
         let padding: CGFloat = 5
@@ -23,12 +28,14 @@ enum Helper {
     }
     
     
+    // MARK: Extracts the episode eumber so that a proper query can be made using the numbers.
+    // Shorter version below...
     static func getEpisodeNumber(from episodeURLs: [String]) -> String {
         var justNumbers: [String] = []
-        
+
         for url in episodeURLs {
             let splitString = url.split(whereSeparator: { $0 == "/"} )
-            
+
             if let id = splitString.last {
                 justNumbers.append(String(id))
             }
@@ -36,43 +43,23 @@ enum Helper {
         return justNumbers.joined(separator: ",")
     }
     
-//    // Condensed version of the above. Use this to create one mass query with ID numbers.
-//    static func getID(from url: [String]) -> String {
-//        // Takes in an array of url strings and gets the ID number off the end of each url.
-//        // Then adds all the ids to a string seperated by commas.
-//        print(url.map({ $0.split(whereSeparator: { $0 == "/"})}).map({ Int($0.last!)! }).sorted().map({ "\($0)"}).joined(separator: ","))
-//        return url.map({ $0.split(whereSeparator: { $0 == "/"})}).map({ "\($0.last!)"}).sorted().joined(separator: ",")
-//    }
     
-    
+    // MARK: Extracts the ID number off the end of the provided URLs.
+    // Then returns a String of all the IDS to be used in a network request
     static func getID(from url: [String]) -> String {
         
         return url.map({ $0.split(whereSeparator: { $0 == "/"})}).map({ Int($0.last!)! }).sorted().map({ "\($0)"}).joined(separator: ",")
     }
     
     
+    // MARK: Splits the episode code so that the season and episode number can be used
+    // EX: S01E01 -> using the below and .first on the end returns S01
+    // Using .last on the end returns the episode -> E01
     static func splitEpisodeCode(episode: String) -> [Substring] {
         var episode = episode
         let index = episode.index(episode.startIndex, offsetBy: 3)
         episode.insert(" ", at: index)
         
         return episode.split(whereSeparator: { $0 == " " })
-    }
-    
-    
-    static func sortingEpisodes(episode: [Episode]) -> [String: [Episode]] {
-        
-        var sortedEpisodes: [String: [Episode]] = [:]
-        
-        for ep in episode {
-            if sortedEpisodes[ep.season] != nil {
-                sortedEpisodes[ep.season]!.append(ep)
-                print("WORK")
-            } else {
-                sortedEpisodes[ep.season] = [ep]
-                print("NO")
-            }
-        }
-        return sortedEpisodes.mapValues({ $0.sorted(by: {$0.id < $1.id })})
     }
 }
