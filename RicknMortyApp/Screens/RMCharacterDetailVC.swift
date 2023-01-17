@@ -160,7 +160,6 @@ extension RMCharacterDetailVC: EpisodeVCDelegate {
         guard episode.characters.count != 0 else {
             return
         }
-        print("\nDETAILVC FIRSTEPISODEDELEGATE")
 
         if let delegate = delegate {
             delegate.didRequestEpisodeCharacters(for: episode)
