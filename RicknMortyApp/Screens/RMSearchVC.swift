@@ -39,7 +39,9 @@ class RMSearchVC: RMDataLoadingVC {
     private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter.ID>!
     
     private let searchBar = RMSearchBar()
-        
+    
+    
+    private let dataStore = RMDataStore.shared
     private var character: [RMCharacter] = []
     
     private var totalPages = 0
@@ -68,16 +70,6 @@ class RMSearchVC: RMDataLoadingVC {
                 episodeVC.delegate = self
             }
         }
-    }
-    
-    
-    func character(with id: Int) -> RMCharacter? {
-        return character.first(where: { $0.id == id })
-    }
-    
-    
-    func characterIds() -> [RMCharacter.ID] {
-        return character.map { $0.id }
     }
     
     
@@ -146,21 +138,21 @@ class RMSearchVC: RMDataLoadingVC {
         
         characterListDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView,
                                                                      cellProvider: { (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
-            let character = self.character(with: itemIdentifier)!
+            let character = self.dataStore.character(with: itemIdentifier)
             return collectionView.dequeueConfiguredReusableCell(using: characterCellRegistration, for: indexPath, item: character)
         })
     }
     
     // MARK: Update Screen
     private func updateUI(with characters: [RMCharacter]) {
+        dataStore.saveCharacters(characters)
         self.character.append(contentsOf: characters)
         self.updateData(on: self.character)
     }
     
     // MARK: Update DataSource
     private func updateData(on characters: [RMCharacter]) {
-        let charID = characterIds()
-
+        let charID = dataStore.getCharacterIds()
         var snapshot = NSDiffableDataSourceSnapshot<CharacterListSection, RMCharacter.ID>()
         snapshot.appendSections([.main])
         snapshot.appendItems(charID, toSection: .main)
@@ -189,7 +181,7 @@ extension RMSearchVC: UICollectionViewDelegate {
         if currentPage < totalPages && indexPath.item == character.count - 1 {
             guard !isLoadingMoreCharacters else { return }
             currentPage += 1
-            DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.getCharacterData(pageNum: self.currentPage, searchBarText: self.searchedText)
             }
         }
@@ -214,13 +206,14 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
         // Since the title is set at each network call we check that
         // the current title does not equal the new title that will be set.
         // This prevents unnecessary calls.
-        if self.title != episode.nameAndEpisode {
+        if self.navigationItem.title != episode.nameAndEpisode {
             print("Making Network Call")
             let id = Helper.getID(from: episode.characters)
             // reset screen
             currentPage = 1
             totalPages = 1
             character.removeAll()
+            dataStore.clearCharacters()
             searchBar.text = nil
             search(shouldShow: false)
             // Scroll to top of collectionView
@@ -275,6 +268,7 @@ extension RMSearchVC: UISearchBarDelegate {
             if searchBar.text != self.title {
                 // Reset Screen
                 character.removeAll()
+                dataStore.clearCharacters()
                 totalPages = 0
                 currentPage = 1
                 searchBar.text = nil

@@ -47,6 +47,7 @@
 		F9D03D992896DCAE005D7517 /* RMStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D03D982896DCAE005D7517 /* RMStackView.swift */; };
 		F9D03D9B2896EF5C005D7517 /* RMStatusImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D03D9A2896EF5C005D7517 /* RMStatusImageView.swift */; };
 		F9E2BC74289DEB68001BDB37 /* SecondEpisodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */; };
+		F9FDCA72297636FC00881FE9 /* RmDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FDCA71297636FC00881FE9 /* RmDataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		F9D03D982896DCAE005D7517 /* RMStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMStackView.swift; sourceTree = "<group>"; };
 		F9D03D9A2896EF5C005D7517 /* RMStatusImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMStatusImageView.swift; sourceTree = "<group>"; };
 		F9E2BC73289DEB68001BDB37 /* SecondEpisodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondEpisodeVC.swift; sourceTree = "<group>"; };
+		F9FDCA71297636FC00881FE9 /* RmDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RmDataStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				F903C21E2865696100BDC01C /* Info.plist */,
 				F903C2192865696100BDC01C /* Assets.xcassets */,
 				F903C21B2865696100BDC01C /* LaunchScreen.storyboard */,
+				F9FDCA71297636FC00881FE9 /* RmDataStore.swift */,
 			);
 			path = RicknMortyApp;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				F9D03D9B2896EF5C005D7517 /* RMStatusImageView.swift in Sources */,
 				F903C22928656B5D00BDC01C /* Character.swift in Sources */,
 				F9B3B43628A88E9F00FC2F69 /* RMEpisodeTableView.swift in Sources */,
+				F9FDCA72297636FC00881FE9 /* RmDataStore.swift in Sources */,
 				F954728C2891B77000940661 /* RMPrimaryLabel.swift in Sources */,
 				F94AD55C289C7F0A00D640E2 /* StackView+Ext.swift in Sources */,
 				F94AD55F289C81BE00D640E2 /* FirstEpisodeVC.swift in Sources */,
