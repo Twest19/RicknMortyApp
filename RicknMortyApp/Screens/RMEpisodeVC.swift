@@ -140,9 +140,14 @@ extension RMEpisodeVC: UITableViewDelegate {
         
         selectedIndex = indexPath
         
+        tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .automatic)
         // Helps prevent bottom most cells from being hidden when selected and expanded
-        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        tableView.endUpdates()
+        
+        if tableView.visibleCells.last?.isEqual(tableView.cellForRow(at: indexPath)) ?? false {
+            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
     
     
