@@ -15,9 +15,11 @@ The app relies on various Network calls made to a Rick and Morty REST like API, 
 
 ## Optimizations
 *Caching Images*
+
 Some minor optimizations were made via the use of a cache. Each of the character images are cached to allow seamless scrolling, preventing the wrong image from being loaded into a different cell. Using a cache also minimzes the need to constantly be redownloading the image from the web.
 
 *Expandable TableViewCell*
+
 A great quality of life optimzation was made by refactoring how the EpisodeTableView functions entirely. The original approach to expand the EpisodeTableViewCell was to utilize a StackView that contained two Views. As the user selected a TableViewCell, the cell would expand, revealing a hidden View or the second View in the StackView. However, this approach resulted in a very buggy experience when scolling the TableView. This was most noticeble when scrolling up rapidly as the TableView would stutter before returing to normal. I tried various things like reloading the TableViewCells in different ways, reloading the View, etc, but ultimately decided to redo the whole implementation. This new approach now just sets the height of the cell when it is selected and reloads the row. This resulted in a much smoother experience as a TableView should give, and no more stutters! It was also much less complicated as a StackView was not required, allowing the code to be slimmed down a bit. Hooray!
 
 
