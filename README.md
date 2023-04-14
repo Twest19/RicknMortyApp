@@ -1,9 +1,9 @@
-# Rick and Morty iOS App
+# Rick and Morty iOS App - README WORK IN PROGRESS
 An iOS app that allows fans of Rick and Morty to search for various characters and view information about them. They also have the option to view information about the various episodes which are sorted by season for ease of use. Internet connection is required!
 
-**Link to project:** LINK HERE
+**Link to project:** LINK COMING SOON
 
-ADD A VIDEO DEMO HERE
+VIDEO DEMO COMING SOON
 
 
 ## How It's Made:
