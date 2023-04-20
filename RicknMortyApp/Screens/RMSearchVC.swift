@@ -44,12 +44,12 @@ class RMSearchVC: RMDataLoadingVC {
     private let dataStore = RMDataStore.shared
     private var character: [RMCharacter] = []
     
-    private var totalPages = 0
-    private var currentPage = 1
+    var totalPages = 0
+    var currentPage = 1
     
     private var searchedText: String = ""
     private var isSearching = false
-    private var isLoadingMoreCharacters = false
+    var isLoadingMoreCharacters = false
     
     
     override func viewDidLoad() {
@@ -58,7 +58,7 @@ class RMSearchVC: RMDataLoadingVC {
         configureCollectionView()
         configureNavBar()
         configureSearchBar()
-        getCharacterData(pageNum: currentPage)
+        fetchCharacterData(pageNum: currentPage)
         configureDataSource()
         search(shouldShow: true)
     }
@@ -68,55 +68,6 @@ class RMSearchVC: RMDataLoadingVC {
         if let episodeNavVC = self.tabBarController?.viewControllers?.last(where: { $0 is UINavigationController}) as? UINavigationController {
             if let episodeVC = episodeNavVC.viewControllers.first(where: { $0 is RMEpisodeVC}) as? RMEpisodeVC {
                 episodeVC.delegate = self
-            }
-        }
-    }
-    
-    
-    // MARK: Standard Character or Search Character Request
-    private func getCharacterData(pageNum: Int, searchBarText: String = "") {
-        showLoadingView()
-        isLoadingMoreCharacters = true
-        dismissErrorView()
-
-        NetworkManager.shared.getCharacters(pageNum: pageNum, searchBarText: searchBarText) { [weak self] result in
-            
-            guard let self = self else { return }
-            
-            self.dismissLoadingView()
-            
-            switch result {
-            case .success(let character):
-                self.setTitle(with: searchBarText)
-                self.totalPages = character.info.pages
-                self.updateUI(with: character.results)
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.showErrorView(with: error, in: self.view)
-                    return
-                }
-            }
-            self.isLoadingMoreCharacters = false
-        }
-    }
-    
-    
-    // MARK: Character from Episode Request
-    // No pagination required with this request hence why the above request is not reused
-    private func getEpisodeCharacterData(with characterIDs: String) {
-        showLoadingView()
-        NetworkManager.shared.getCharacters(using: characterIDs) { [weak self] result in
-            guard let self = self else { return }
-            self.dismissLoadingView()
-            
-            switch result {
-            case .success(let character):
-                self.updateUI(with: character)
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.showErrorView(with: error, in: self.view)
-                }
-                return
             }
         }
     }
@@ -144,7 +95,7 @@ class RMSearchVC: RMDataLoadingVC {
     }
     
     // MARK: Update Screen
-    private func updateUI(with characters: [RMCharacter]) {
+    func updateUI(with characters: [RMCharacter]) {
         dataStore.saveCharacters(characters)
 //        self.character.append(contentsOf: characters)
         self.character = dataStore.getCharacters()
@@ -183,7 +134,7 @@ extension RMSearchVC: UICollectionViewDelegate {
             guard !isLoadingMoreCharacters else { return }
             currentPage += 1
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.getCharacterData(pageNum: self.currentPage, searchBarText: self.searchedText)
+                self.fetchCharacterData(pageNum: self.currentPage, searchBarText: self.searchedText)
             }
         }
     }
@@ -220,7 +171,7 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
             // Scroll to top of collectionView
             setTitle(with: episode.nameAndEpisode)
             // Get all the characters from the episode
-            getEpisodeCharacterData(with: id)
+            fetchEpisodeCharacterData(with: id)
             // Configuring this again prevents occasional crash within datasource.
             configureDataSource()
         }
@@ -275,7 +226,7 @@ extension RMSearchVC: UISearchBarDelegate {
                 searchBar.text = nil
                 
                 searchedText = searchedItem
-                getCharacterData(pageNum: currentPage, searchBarText: searchedItem)
+                fetchCharacterData(pageNum: currentPage, searchBarText: searchedItem)
                 scrollToTop(animated: false)
                 configureDataSource()
             }
