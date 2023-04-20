@@ -146,7 +146,8 @@ class RMSearchVC: RMDataLoadingVC {
     // MARK: Update Screen
     private func updateUI(with characters: [RMCharacter]) {
         dataStore.saveCharacters(characters)
-        self.character.append(contentsOf: characters)
+//        self.character.append(contentsOf: characters)
+        self.character = dataStore.getCharacters()
         self.updateData(on: self.character)
     }
     

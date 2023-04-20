@@ -132,12 +132,12 @@
 				F90E598D2890DC1300D96750 /* CustomViews */,
 				F95472942892203100940661 /* Screens */,
 				F90F48B328726EDD005BD6A4 /* Extensions */,
+				F9FDCA71297636FC00881FE9 /* RmDataStore.swift */,
 				F903C2122865695F00BDC01C /* SceneDelegate.swift */,
 				F903C2102865695F00BDC01C /* AppDelegate.swift */,
 				F903C21E2865696100BDC01C /* Info.plist */,
 				F903C2192865696100BDC01C /* Assets.xcassets */,
 				F903C21B2865696100BDC01C /* LaunchScreen.storyboard */,
-				F9FDCA71297636FC00881FE9 /* RmDataStore.swift */,
 			);
 			path = RicknMortyApp;
 			sourceTree = "<group>";
