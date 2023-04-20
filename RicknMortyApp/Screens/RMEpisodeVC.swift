@@ -8,18 +8,11 @@
 import UIKit
 
 class RMEpisodeVC: RMDataLoadingVC {
-    
-    private enum EpisodeListSection: Int {
-        case main
-    }
         
     private let tableView = RMEpisodeTableView()
     public weak var delegate: RMCharacterDetailVCDelegate!
     
-    
     let dataStore = RMDataStore.shared
-    
-    private var seasons: [String] = []
 
     var totalPages = 0
     var currentPage = 1
@@ -38,8 +31,7 @@ class RMEpisodeVC: RMDataLoadingVC {
     }
     
     
-    func updateUI(with episodes: [Episode]) {
-        seasons = dataStore.getEpisodesBySeason().map{ $0.key }.sorted()
+    func updateUI() {
         DispatchQueue.main.async { self.tableView.reloadData() }
     }
 
@@ -137,17 +129,17 @@ extension RMEpisodeVC: UITableViewDelegate {
 extension RMEpisodeVC: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return seasons.count
+        return dataStore.getSeasons().count
     }
 
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return seasons[section]
+        return dataStore.getSeasons(by: section)
     }
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let season = seasons[section]
+        let season = dataStore.getSeasons(by: section)
         if let hasEpisodes = dataStore.getEpisodeArray(from: season) { return hasEpisodes.count }
         return 0
     }
@@ -155,7 +147,7 @@ extension RMEpisodeVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeCell.reuseID, for: indexPath) as! EpisodeCell
-        let season = seasons[indexPath.section]
+        let season = dataStore.getSeasons(by: indexPath.section)
         let items = dataStore.getEpisode(from: season, index: indexPath.row)
         cell.updateCell(with: items, delegate: self)
         return cell

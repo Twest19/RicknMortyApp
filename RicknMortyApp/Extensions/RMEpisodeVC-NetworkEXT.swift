@@ -21,7 +21,7 @@ extension RMEpisodeVC {
             case .success(let episode):
                 self.totalPages = episode.info.pages
                 self.dataStore.saveEpisodesBySeason(episodes: episode.results)
-                self.updateUI(with: self.dataStore.getEpisodes())
+                self.updateUI()
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.showErrorView(with: error, in: self.view)
@@ -32,5 +32,4 @@ extension RMEpisodeVC {
             self.isLoadingEpisodeData = false
         }
     }
-    
 }
