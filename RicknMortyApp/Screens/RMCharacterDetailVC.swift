@@ -4,8 +4,6 @@
 //
 //  Created by Tim West on 6/25/22.
 
-//  Updated 1/16/23.
-
 
 import UIKit
 
@@ -164,7 +162,7 @@ extension RMCharacterDetailVC: EpisodeVCDelegate {
         if let delegate = delegate {
             delegate.didRequestEpisodeCharacters(for: episode)
             dismissSelf()
-            print("DETAILVC FIRSTEPISODEDELEGATE\n")
+//            print("DETAILVC FIRSTEPISODEDELEGATE\n")
         }
     }
 }

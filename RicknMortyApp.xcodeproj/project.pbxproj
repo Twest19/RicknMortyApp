@@ -184,8 +184,6 @@
 				F903C22A28656D8B00BDC01C /* UIView-Extension.swift */,
 				F93CAB482866469700C94382 /* UIImageView-Ext.swift */,
 				F94AD55B289C7F0A00D640E2 /* StackView+Ext.swift */,
-				F9D8BD3529E110FF00B95F33 /* RMSearchVC-NetworkEXT.swift */,
-				F9A0F14B29F1A6CE0094DF9C /* RMEpisodeVC-NetworkEXT.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -249,6 +247,7 @@
 		F95472942892203100940661 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				F9A0F14D29F1CAE00094DF9C /* VC-Extensions */,
 				F903C22628656AC500BDC01C /* RMSearchVC.swift */,
 				F91F4B082867F12100043A0D /* RMCharacterDetailVC.swift */,
 				F9B3B43328A88E6600FC2F69 /* RMEpisodeVC.swift */,
@@ -273,6 +272,15 @@
 				F9ABCBDE28A4BB34000507E9 /* Info.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		F9A0F14D29F1CAE00094DF9C /* VC-Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F9D8BD3529E110FF00B95F33 /* RMSearchVC-NetworkEXT.swift */,
+				F9A0F14B29F1A6CE0094DF9C /* RMEpisodeVC-NetworkEXT.swift */,
+			);
+			path = "VC-Extensions";
 			sourceTree = "<group>";
 		};
 		F9BC0B2D2873E8F100813100 /* Views */ = {

@@ -19,6 +19,7 @@ class RMEpisodeVC: RMDataLoadingVC {
     
     var isLoadingEpisodeData: Bool = false
     
+    
     private var selectedIndex : IndexPath = IndexPath(row: -1, section: -1)
     private var isCollapsed = false
     private var notVisible = false
@@ -140,8 +141,9 @@ extension RMEpisodeVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let season = dataStore.getSeasons(by: section)
-        if let hasEpisodes = dataStore.getEpisodeArray(from: season) { return hasEpisodes.count }
-        return 0
+//        if let hasEpisodes = dataStore.getEpisodeArray(from: season) { return hasEpisodes.count }
+//        return 0
+        return dataStore.getEpisodeArray(from: season)?.count ?? 0
     }
 
 

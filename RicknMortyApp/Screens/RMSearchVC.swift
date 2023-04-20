@@ -41,6 +41,7 @@ class RMSearchVC: RMDataLoadingVC {
     private let searchBar = RMSearchBar()
     
     private let dataStore = RMDataStore.shared
+    private let loadDelay: TimeInterval = 1
     
     var totalPages = 0
     var currentPage = 1
@@ -52,7 +53,7 @@ class RMSearchVC: RMDataLoadingVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpEpisodeDelegate()
+        setupEpisodeDelegate()
         configureCollectionView()
         configureNavBar()
         configureSearchBar()
@@ -62,7 +63,7 @@ class RMSearchVC: RMDataLoadingVC {
     }
     
     
-    func setUpEpisodeDelegate() {
+    func setupEpisodeDelegate() {
         if let episodeNavVC = self.tabBarController?.viewControllers?.last(where: { $0 is UINavigationController}) as? UINavigationController {
             if let episodeVC = episodeNavVC.viewControllers.first(where: { $0 is RMEpisodeVC}) as? RMEpisodeVC {
                 episodeVC.delegate = self
@@ -120,8 +121,9 @@ class RMSearchVC: RMDataLoadingVC {
 extension RMSearchVC: UICollectionViewDelegate {
     
     func scrollToTop(animated: Bool) {
-        let point = CGPoint(x: -collectionView.adjustedContentInset.left, y: -collectionView.adjustedContentInset.top)
-        collectionView.setContentOffset(point, animated: animated)
+//        let point = CGPoint(x: -collectionView.adjustedContentInset.left, y: -collectionView.adjustedContentInset.top)
+//        collectionView.setContentOffset(point, animated: animated)
+        collectionView.setContentOffset(.zero, animated: animated)
     }
     
     // MARK: Pagination
@@ -130,7 +132,7 @@ extension RMSearchVC: UICollectionViewDelegate {
         if currentPage < totalPages && indexPath.item == self.dataStore.getCharacters().count - 1 {
             guard !isLoadingMoreCharacters else { return }
             currentPage += 1
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + loadDelay) {
                 self.fetchCharacterData(pageNum: self.currentPage, searchBarText: self.searchedText)
             }
         }
@@ -156,7 +158,7 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
         // the current title does not equal the new title that will be set.
         // This prevents unnecessary calls.
         if self.navigationItem.title != episode.nameAndEpisode {
-            print("Making Network Call")
+//            print("Making Network Call")
             let id = Helper.getID(from: episode.characters)
             // reset screen
             currentPage = 1
