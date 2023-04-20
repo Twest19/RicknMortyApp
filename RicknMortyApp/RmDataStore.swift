@@ -14,6 +14,7 @@ class RMDataStore {
     
     private var rmCharacters: [RMCharacter] = []
     private var rmEpisodes: [Episode] = []
+    private var episodesBySeason: [String: [Episode]] = [:]
     
     private init() {}
     
@@ -45,8 +46,35 @@ class RMDataStore {
     
     
     // MARK: Episodes
+    func saveEpisodesBySeason(episodes: [Episode]) {
+        for episode in episodes {
+            if episodesBySeason[episode.season] != nil {
+                sortEpisodesInOrder(episode, in: &episodesBySeason[episode.season]!)
+            } else {
+                episodesBySeason[episode.season] = [episode]
+            }
+        }
+    }
+    
+    private func sortEpisodesInOrder(_ episode: Episode, in seasonEpisodes: inout [Episode]) {
+        let index = seasonEpisodes.firstIndex { $0.id > episode.id } ?? seasonEpisodes.endIndex
+        seasonEpisodes.insert(episode, at: index)
+    }
+    
     func saveEpisodes(_ episodes: [Episode]) {
         rmEpisodes = episodes
+    }
+    
+    func getEpisodesBySeason() -> [String: [Episode]] {
+        return episodesBySeason
+    }
+    
+    func getEpisode(from season: String, index: Int) -> Episode {
+        return episodesBySeason[season]![index]
+    }
+    
+    func getEpisodeArray(from season: String) -> [Episode]? {
+        return episodesBySeason[season]
     }
     
     func getEpisodes() -> [Episode] {
@@ -55,5 +83,9 @@ class RMDataStore {
     
     func clearEpisodes() {
         rmEpisodes = []
+    }
+    
+    func clearSeasonsAndEpisodes() {
+        episodesBySeason = [:]
     }
 }

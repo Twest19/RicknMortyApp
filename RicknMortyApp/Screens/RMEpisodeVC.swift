@@ -15,14 +15,16 @@ class RMEpisodeVC: RMDataLoadingVC {
         
     private let tableView = RMEpisodeTableView()
     public weak var delegate: RMCharacterDetailVCDelegate!
-            
-    private var episodesBySeason: [String: [Episode]] = [:]
+    
+    
+    let dataStore = RMDataStore.shared
+    
     private var seasons: [String] = []
 
-    private var totalPages = 0
-    private var currentPage = 1
+    var totalPages = 0
+    var currentPage = 1
     
-    private var isLoadingEpisodeData: Bool = false
+    var isLoadingEpisodeData: Bool = false
     
     private var selectedIndex : IndexPath = IndexPath(row: -1, section: -1)
     private var isCollapsed = false
@@ -32,52 +34,15 @@ class RMEpisodeVC: RMDataLoadingVC {
         super.viewDidLoad()
         configureNavBar()
         configureTableView()
-        getEpisodeData(pageNum: currentPage)
+        fetchEpisodeData(pageNum: currentPage)
     }
     
     
-    func getEpisodeData(pageNum: Int) {
-        isLoadingEpisodeData = true
-        showLoadingView()
-        
-        NetworkManager.shared.getEpisode(pageNum: pageNum) { [weak self] result in
-            guard let self = self else { return }
-            self.dismissLoadingView()
-            
-            switch result {
-            case .success(let episode):
-                self.totalPages = episode.info.pages
-                self.updateUI(with: episode.results)
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.showErrorView(with: error, in: self.view)
-                    self.isLoadingEpisodeData = false
-                }
-                return
-            }
-            self.isLoadingEpisodeData = false
-        }
-    }
-    
-    
-    private func updateUI(with episodes: [Episode]) {
-        sort(episodes: episodes)
-        episodesBySeason = episodesBySeason.mapValues({ $0.sorted(by: {$0.id < $1.id })})
-        seasons = episodesBySeason.map{ $0.key }.sorted()
+    func updateUI(with episodes: [Episode]) {
+        seasons = dataStore.getEpisodesBySeason().map{ $0.key }.sorted()
         DispatchQueue.main.async { self.tableView.reloadData() }
     }
-    
-    
-    private func sort(episodes: [Episode]) {
-        for episode in episodes {
-            if episodesBySeason[episode.season] != nil {
-                episodesBySeason[episode.season]!.append(episode)
-            } else {
-                episodesBySeason[episode.season] = [episode]
-            }
-        }
-    }
-    
+
     
     private func configureTableView() {
         tableView.delegate = self
@@ -121,7 +86,6 @@ extension RMEpisodeVC: UITableViewDelegate {
     }
     
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -162,7 +126,7 @@ extension RMEpisodeVC: UITableViewDelegate {
                 guard !isLoadingEpisodeData else { return }
                 currentPage += 1
                 DispatchQueue.main.async {
-                    self.getEpisodeData(pageNum: self.currentPage)
+                    self.fetchEpisodeData(pageNum: self.currentPage)
                 }
             }
         }
@@ -184,7 +148,7 @@ extension RMEpisodeVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let season = seasons[section]
-        if let hasEpisodes = episodesBySeason[season] { return hasEpisodes.count }
+        if let hasEpisodes = dataStore.getEpisodeArray(from: season) { return hasEpisodes.count }
         return 0
     }
 
@@ -192,7 +156,7 @@ extension RMEpisodeVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeCell.reuseID, for: indexPath) as! EpisodeCell
         let season = seasons[indexPath.section]
-        let items = episodesBySeason[season]![indexPath.row]
+        let items = dataStore.getEpisode(from: season, index: indexPath.row)
         cell.updateCell(with: items, delegate: self)
         return cell
     }
