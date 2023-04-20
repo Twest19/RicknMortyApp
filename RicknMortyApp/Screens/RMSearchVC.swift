@@ -26,7 +26,7 @@ import UIKit
 // MARK: Searching
 // A search for a specific character or a name of a character can be made. If the Character does not exist,
 // then an error screen will appear giving further instructions.
-// YOU CAN ONLY SEARCH FOR CHARACTERS, NOT EPISODES OR LOCATIONS FROM THE SHOW!!!
+// You can only search for characters as of right now.
 
 
 class RMSearchVC: RMDataLoadingVC {
@@ -40,9 +40,7 @@ class RMSearchVC: RMDataLoadingVC {
     
     private let searchBar = RMSearchBar()
     
-    
     private let dataStore = RMDataStore.shared
-    private var character: [RMCharacter] = []
     
     var totalPages = 0
     var currentPage = 1
@@ -97,9 +95,7 @@ class RMSearchVC: RMDataLoadingVC {
     // MARK: Update Screen
     func updateUI(with characters: [RMCharacter]) {
         dataStore.saveCharacters(characters)
-//        self.character.append(contentsOf: characters)
-        self.character = dataStore.getCharacters()
-        self.updateData(on: self.character)
+        self.updateData(on: self.dataStore.getCharacters())
     }
     
     // MARK: Update DataSource
@@ -130,7 +126,8 @@ extension RMSearchVC: UICollectionViewDelegate {
     
     // MARK: Pagination
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if currentPage < totalPages && indexPath.item == character.count - 1 {
+        
+        if currentPage < totalPages && indexPath.item == self.dataStore.getCharacters().count - 1 {
             guard !isLoadingMoreCharacters else { return }
             currentPage += 1
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -142,7 +139,7 @@ extension RMSearchVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if !isSearching { // Checks to make sure a network request is not in progress
-            let selectedCharacter = character[indexPath.item]
+            let selectedCharacter = dataStore.getCharactersAt(index: indexPath.item)
             let detailVC = RMCharacterDetailVC(for: selectedCharacter, delegate: self)
             let navController = UINavigationController(rootViewController: detailVC)
             navController.modalPresentationStyle = .popover
@@ -164,7 +161,6 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
             // reset screen
             currentPage = 1
             totalPages = 1
-            character.removeAll()
             dataStore.clearCharacters()
             searchBar.text = nil
             search(shouldShow: false)
@@ -219,7 +215,6 @@ extension RMSearchVC: UISearchBarDelegate {
             // This prevents unnecessary calls
             if searchBar.text != self.title {
                 // Reset Screen
-                character.removeAll()
                 dataStore.clearCharacters()
                 totalPages = 0
                 currentPage = 1

@@ -10,7 +10,6 @@ import Foundation
 
 class RMDataStore {
     
-    
     public static let shared = RMDataStore()
     
     private var rmCharacters: [RMCharacter] = []
@@ -22,6 +21,10 @@ class RMDataStore {
     // MARK: Characters
     func saveCharacters(_ character: [RMCharacter]) {
         rmCharacters.append(contentsOf: character)
+    }
+   
+    func getCharactersAt(index: Int) -> RMCharacter {
+        return rmCharacters[index]
     }
     
     func getCharacters() -> [RMCharacter] {
