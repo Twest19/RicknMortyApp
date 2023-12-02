@@ -20,7 +20,7 @@ Dive into the intricate world of Rick and Morty with this character explorer app
 **Note**: As the app uses a REST API, ensure you have an active internet connection for the best user experience. A picture of a fan-favorite character, Mr. Poopybutthole, will appear if an error ever occurs at any time!
 
 ## Screenshots:
-![Character Screen Dark](rmScreenshots/iPhone 14-Character CollectionView Screen_framedDark.png)
+![Character Screen Dark](../rmScreenshots/iPhone 14-Character CollectionView Screen_framedDark.png)
 
 ## Credits:
 This app is inspired by and based on characters and episodes from the TV show "Rick and Morty." All content rights belong to their respective owners. This project is for fun and is not endorsed by the creators of Rick and Morty.
