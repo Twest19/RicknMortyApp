@@ -19,7 +19,7 @@ Dive into the intricate world of Rick and Morty with this character explorer app
 
 **Note**: As the app uses a REST API, ensure you have an active internet connection for the best user experience. A picture of a fan-favorite character, Mr. Poopybutthole, will appear if an error ever occurs at any time!
 
-## Screenshots:
+## Screenshots - Created Using Fastlane
 <p float="left">
   <img src="rmScreenshots/iPhone%2014-Character%20CollectionView%20Screen_framed.png" width="250" />
   <img src="rmScreenshots/iPhone%2014-Character%20Detail%20Screen_framed.png" width="250" />
