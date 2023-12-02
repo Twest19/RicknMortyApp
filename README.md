@@ -12,15 +12,15 @@ Dive into the intricate world of Rick and Morty with this character explorer app
 ## Usage:
 
 **Navigating the App**:
-- **Home Tab**: Browse through characters with an easy-to-use collection view. Get quick information such as character picture, name, and their status like alive or dead.
-- **Search**: Use the search bar to find specific characters. Enter the character name and the app will retrieve relevant information, if available. Entering even partial names will retrieve all characters with that sequence of letters in their name. EX: Rick will return all variations of Rick...
-- **Character Details**: Clicking on a character cell will bring up a modal or card-style view with more detailed information about the character. From here slide the card down to go back, click done, or choose an episode the character was in to view others in that episode as well.
+- **Character Tab**: Browse through characters with an easy-to-use collection view. Get quick information such as character picture, name, and status, such as whether they are alive or dead.
+- **Search**: Use the search bar to find specific characters. Enter the character name, and the app will retrieve relevant information, if available. Entering even partial names will retrieve all characters with that sequence of letters in their name. EX: Rick will return all variations of Rick...
+- **Character Details**: Clicking on a character cell will bring up a modal or card-style view with more detailed information about the character. From here, slide the card down to go back, click done, or choose an episode the character was in to view others in that episode as well.
 - **Episode Tab**: Navigate through different episodes, sorted and organized by season, with the convenience of a tableview with expandable cells. Click on an episode for additional details and a button to view all the characters from that episode.
 
-**Note**: As the app uses a REST API, ensure you have an active internet connection for the best user experience. A picture of a fan favorite character Mr. Poopybutthole will appear if an error ever occurs at anytime!
+**Note**: As the app uses a REST API, ensure you have an active internet connection for the best user experience. A picture of a fan-favorite character, Mr. Poopybutthole, will appear if an error ever occurs at any time!
 
 ## Screenshots:
-COMING SOON
+![Character Screen Dark][rmScreenshots/iPhone 14-Character CollectionView Screen_framedDark.png]
 
 ## Credits:
-This app is inspired by and based on characters and episodes from the TV show "Rick and Morty". All content rights belong to their respective owners. This project is for fun and is not endorsed by the creators of Rick and Morty.
+This app is inspired by and based on characters and episodes from the TV show "Rick and Morty." All content rights belong to their respective owners. This project is for fun and is not endorsed by the creators of Rick and Morty.
