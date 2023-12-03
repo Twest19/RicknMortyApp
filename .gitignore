@@ -101,6 +101,11 @@ Carthage/Build/
 Dependencies/
 .accio/
 
+# Ignore specific Fastlane files and related
+Gemfile
+fastlane/
+RicknMortyAppUITests/SnapshotHelper.swift
+
 # fastlane
 # It is recommended to not store the screenshots in the git repo.
 # Instead, use fastlane to re-generate the screenshots whenever they are needed.
