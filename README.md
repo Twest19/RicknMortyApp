@@ -26,6 +26,7 @@ Dive into the intricate world of Rick and Morty with this character explorer app
   <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Episode%20TableView%20Screen_framed.png" width="250" />
   <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Expanded%20TableView%20Cell_framed.png" width="250" />
   <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-After%20Tapping%20View%20Characters_framed.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Error%20screen%20example_framed.png" width="250" />
 </p>
 
 <p float="left">
@@ -34,6 +35,7 @@ Dive into the intricate world of Rick and Morty with this character explorer app
   <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Episode%20TableView%20Screen_framedDark.png" width="250" />
   <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Expanded%20TableView%20Cell_framedDark.png" width="250" />
   <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-After%20Tapping%20View%20Characters_framedDark.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Error%20screen%20example_framedDark.png" width="250" />
 </p>
 
 
