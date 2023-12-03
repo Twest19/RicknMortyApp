@@ -21,19 +21,19 @@ Dive into the intricate world of Rick and Morty with this character explorer app
 
 ## Screenshots - Created Using Fastlane
 <p float="left">
-  <img src="rmScreenshots/iPhone%2014-Character%20CollectionView%20Screen_framed.png" width="250" />
-  <img src="rmScreenshots/iPhone%2014-Character%20Detail%20Screen_framed.png" width="250" />
-  <img src="rmScreenshots/iPhone%2014-Episode%20TableView%20Screen_framed.png" width="250" />
-  <img src="rmScreenshots/iPhone%2014-Expanded%20TableView%20Cell_framed.png" width="250" />
-  <img src="rmScreenshots/iPhone%2014-After%20Tapping%20View%20Characters_framed.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Character%20CollectionView%20Screen_framed.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Character%20Detail%20Screen_framed.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Episode%20TableView%20Screen_framed.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Expanded%20TableView%20Cell_framed.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-After%20Tapping%20View%20Characters_framed.png" width="250" />
 </p>
 
 <p float="left">
-  <img src="rmScreenshots/iPhone%2014-Character%20CollectionView%20Screen_framedDark.png" width="250" />
-  <img src="rmScreenshots/iPhone%2014-Character%20Detail%20Screen_framedDark.png" width="250" />
-  <img src="rmScreenshots/iPhone%2014-Episode%20TableView%20Screen_framedDark.png" width="250" />
-  <img src="rmScreenshots/iPhone%2014-Expanded%20TableView%20Cell_framedDark.png" width="250" />
-  <img src="rmScreenshots/iPhone%2014-After%20Tapping%20View%20Characters_framedDark.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Character%20CollectionView%20Screen_framedDark.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Character%20Detail%20Screen_framedDark.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Episode%20TableView%20Screen_framedDark.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-Expanded%20TableView%20Cell_framedDark.png" width="250" />
+  <img src="https://github.com/Twest19/RMScreenshots/blob/main/iPhone%2014-After%20Tapping%20View%20Characters_framedDark.png" width="250" />
 </p>
 
 
