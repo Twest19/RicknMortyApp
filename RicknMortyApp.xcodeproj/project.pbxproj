@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		89B7B1BB2B19B51600C174AF /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B7B1BA2B19B51600C174AF /* SnapshotHelper.swift */; };
+		89F669072B196D7C00B274D3 /* RicknMortyAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F669062B196D7C00B274D3 /* RicknMortyAppUITests.swift */; };
+		89F669092B196D7C00B274D3 /* RicknMortyAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F669082B196D7C00B274D3 /* RicknMortyAppUITestsLaunchTests.swift */; };
 		F903C2112865695F00BDC01C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903C2102865695F00BDC01C /* AppDelegate.swift */; };
 		F903C2132865695F00BDC01C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F903C2122865695F00BDC01C /* SceneDelegate.swift */; };
 		F903C21A2865696100BDC01C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F903C2192865696100BDC01C /* Assets.xcassets */; };
@@ -52,7 +55,21 @@
 		F9FDCA72297636FC00881FE9 /* RmDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FDCA71297636FC00881FE9 /* RmDataStore.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		89F6690A2B196D7C00B274D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F903C2052865695F00BDC01C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F903C20C2865695F00BDC01C;
+			remoteInfo = RicknMortyApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		89B7B1BA2B19B51600C174AF /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		89F669042B196D7C00B274D3 /* RicknMortyAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RicknMortyAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		89F669062B196D7C00B274D3 /* RicknMortyAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RicknMortyAppUITests.swift; sourceTree = "<group>"; };
+		89F669082B196D7C00B274D3 /* RicknMortyAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RicknMortyAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		F903C20D2865695F00BDC01C /* RicknMortyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RicknMortyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F903C2102865695F00BDC01C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F903C2122865695F00BDC01C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +118,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		89F669012B196D7C00B274D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F903C20A2865695F00BDC01C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -111,10 +135,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		89F669052B196D7C00B274D3 /* RicknMortyAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				89B7B1BA2B19B51600C174AF /* SnapshotHelper.swift */,
+				89F669062B196D7C00B274D3 /* RicknMortyAppUITests.swift */,
+				89F669082B196D7C00B274D3 /* RicknMortyAppUITestsLaunchTests.swift */,
+			);
+			path = RicknMortyAppUITests;
+			sourceTree = "<group>";
+		};
 		F903C2042865695F00BDC01C = {
 			isa = PBXGroup;
 			children = (
 				F903C20F2865695F00BDC01C /* RicknMortyApp */,
+				89F669052B196D7C00B274D3 /* RicknMortyAppUITests */,
 				F903C20E2865695F00BDC01C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -123,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				F903C20D2865695F00BDC01C /* RicknMortyApp.app */,
+				89F669042B196D7C00B274D3 /* RicknMortyAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -301,6 +337,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		89F669032B196D7C00B274D3 /* RicknMortyAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 89F6690E2B196D7C00B274D3 /* Build configuration list for PBXNativeTarget "RicknMortyAppUITests" */;
+			buildPhases = (
+				89F669002B196D7C00B274D3 /* Sources */,
+				89F669012B196D7C00B274D3 /* Frameworks */,
+				89F669022B196D7C00B274D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				89F6690B2B196D7C00B274D3 /* PBXTargetDependency */,
+			);
+			name = RicknMortyAppUITests;
+			productName = RicknMortyAppUITests;
+			productReference = 89F669042B196D7C00B274D3 /* RicknMortyAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		F903C20C2865695F00BDC01C /* RicknMortyApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F903C2212865696100BDC01C /* Build configuration list for PBXNativeTarget "RicknMortyApp" */;
@@ -325,9 +379,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
+					89F669032B196D7C00B274D3 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = F903C20C2865695F00BDC01C;
+					};
 					F903C20C2865695F00BDC01C = {
 						CreatedOnToolsVersion = 13.3.1;
 					};
@@ -347,11 +405,19 @@
 			projectRoot = "";
 			targets = (
 				F903C20C2865695F00BDC01C /* RicknMortyApp */,
+				89F669032B196D7C00B274D3 /* RicknMortyAppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		89F669022B196D7C00B274D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F903C20B2865695F00BDC01C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -364,6 +430,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		89F669002B196D7C00B274D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				89F669092B196D7C00B274D3 /* RicknMortyAppUITestsLaunchTests.swift in Sources */,
+				89F669072B196D7C00B274D3 /* RicknMortyAppUITests.swift in Sources */,
+				89B7B1BB2B19B51600C174AF /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F903C2092865695F00BDC01C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,6 +490,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		89F6690B2B196D7C00B274D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F903C20C2865695F00BDC01C /* RicknMortyApp */;
+			targetProxy = 89F6690A2B196D7C00B274D3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		F903C21B2865696100BDC01C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -426,6 +510,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		89F6690C2B196D7C00B274D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 522L437282;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.timwest.RicknMortyAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RicknMortyApp;
+			};
+			name = Debug;
+		};
+		89F6690D2B196D7C00B274D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 522L437282;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.timwest.RicknMortyAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RicknMortyApp;
+			};
+			name = Release;
+		};
 		F903C21F2865696100BDC01C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -476,7 +598,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -530,7 +652,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -553,8 +675,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -581,8 +702,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -599,6 +719,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		89F6690E2B196D7C00B274D3 /* Build configuration list for PBXNativeTarget "RicknMortyAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89F6690C2B196D7C00B274D3 /* Debug */,
+				89F6690D2B196D7C00B274D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F903C2082865695F00BDC01C /* Build configuration list for PBXProject "RicknMortyApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
