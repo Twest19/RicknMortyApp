@@ -8,10 +8,11 @@
 import UIKit
 
 class RMCharCollectionView: UICollectionView {
-    
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(frame: frame, collectionViewLayout: layout)
 
+    init(in view: UIView) {
+        let layout = Helper.threeColumnCollectionView(in: view)
+        super.init(frame: view.bounds, collectionViewLayout: layout)
+        configure()
     }
     
     required init?(coder: NSCoder) {
@@ -22,5 +23,9 @@ class RMCharCollectionView: UICollectionView {
         // Register Cells
         register(RMCharacterCell.self, forCellWithReuseIdentifier: RMCharacterCell.identifier)
         register(LoadingCell.self, forCellWithReuseIdentifier: LoadingCell.identifier)
+    }
+    
+    private func configure() {
+        backgroundColor = .systemBackground
     }
 }

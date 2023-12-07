@@ -35,19 +35,21 @@ class RMSearchVC: RMDataLoadingVC {
         case main
     }
     
-    private var collectionView: RMCharCollectionView!
+    var collectionView: RMCharCollectionView!
     private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter.ID>!
+    var collectionViewDelegate: RMSearchCollectionViewDelegate!
+    private var rmSearchBarDelegate: RMSearchBarDelegate!
     
-    private let searchBar = RMSearchBar()
+    let searchBar = RMSearchBar()
     
-    private let dataStore = RMDataStore.shared
-    private let loadDelay: TimeInterval = 1
+    let dataStore = RMDataStore.shared
+    let loadDelay: TimeInterval = 1
     
-    var totalPages = 0
+    var totalPages = 1
     var currentPage = 1
     
-    private var searchedText: String = ""
-    private var isSearching = false
+    var searchedText: String = ""
+    var isSearching = false
     var isLoadingMoreCharacters = false
     
     
@@ -59,7 +61,7 @@ class RMSearchVC: RMDataLoadingVC {
         configureSearchBar()
         fetchCharacterData(pageNum: currentPage)
         configureDataSource()
-        search(shouldShow: true)
+        rmSearchBarDelegate.search(shouldShow: true)
     }
     
     
@@ -73,14 +75,14 @@ class RMSearchVC: RMDataLoadingVC {
     
     // MARK: CollectionView Config
     private func configureCollectionView() {
-        collectionView = RMCharCollectionView(frame: view.frame, collectionViewLayout: Helper.threeColumnCollectionView(in: view))
+        collectionView = RMCharCollectionView(in: view)
         view.addSubview(collectionView)
-        collectionView.delegate = self
-        collectionView.backgroundColor = .systemBackground
+        collectionViewDelegate = RMSearchCollectionViewDelegate(parentVC: self)
+        collectionView.delegate = collectionViewDelegate
     }
     
     // MARK: CollectionView DataSource
-    private func configureDataSource() {
+    func configureDataSource() {
         let characterCellRegistration = UICollectionView.CellRegistration<RMCharacterCell, RMCharacter> { cell, indexPath, character in
             cell.cellRepresentedIdentifier = character.id
             cell.set(character: character, representedIdentifier: character.id)
@@ -112,41 +114,21 @@ class RMSearchVC: RMDataLoadingVC {
     
     // MARK: Config Nav Bar
     private func configureNavBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.tintColor = .systemGreen
     }
-}
-
-
-extension RMSearchVC: UICollectionViewDelegate {
     
-    func scrollToTop(animated: Bool) {
-//        let point = CGPoint(x: -collectionView.adjustedContentInset.left, y: -collectionView.adjustedContentInset.top)
-//        collectionView.setContentOffset(point, animated: animated)
-        collectionView.setContentOffset(.zero, animated: animated)
+    private func configureSearchBar() {
+        rmSearchBarDelegate = RMSearchBarDelegate(parentVC: self)
+        searchBar.delegate = rmSearchBarDelegate
+        rmSearchBarDelegate.showSearchBarButton(shouldShow: true)
     }
     
-    // MARK: Pagination
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        if currentPage < totalPages && indexPath.item == self.dataStore.getCharacters().count - 1 {
-            guard !isLoadingMoreCharacters else { return }
-            currentPage += 1
-            DispatchQueue.main.asyncAfter(deadline: .now() + loadDelay) {
-                self.fetchCharacterData(pageNum: self.currentPage, searchBarText: self.searchedText)
-            }
-        }
-    }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if !isSearching { // Checks to make sure a network request is not in progress
-            let selectedCharacter = dataStore.getCharactersAt(index: indexPath.item)
-            let detailVC = RMCharacterDetailVC(for: selectedCharacter, delegate: self)
-            let navController = UINavigationController(rootViewController: detailVC)
-            navController.modalPresentationStyle = .popover
-            present(navController, animated: true)
-        }
+    func resetScreen() {
+        dataStore.clearCharacters()
+        totalPages = 1
+        currentPage = 1
+        searchBar.text = nil
     }
 }
 
@@ -160,12 +142,8 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
         if self.navigationItem.title != episode.nameAndEpisode {
 //            print("Making Network Call")
             let id = Helper.getID(from: episode.characters)
-            // reset screen
-            currentPage = 1
-            totalPages = 1
-            dataStore.clearCharacters()
-            searchBar.text = nil
-            search(shouldShow: false)
+            resetScreen()
+            rmSearchBarDelegate.search(shouldShow: false)
             // Scroll to top of collectionView
             setTitle(with: episode.nameAndEpisode)
             // Get all the characters from the episode
@@ -173,66 +151,9 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
             // Configuring this again prevents occasional crash within datasource.
             configureDataSource()
         }
-        scrollToTop(animated: false)
+        
+        collectionViewDelegate.scrollToTop(animated: false)
     }
 }
 
 
-// MARK: SearchBar Stuff
-extension RMSearchVC: UISearchBarDelegate {
-    
-    private func configureSearchBar() {
-        searchBar.delegate = self
-        showSearchBarButton(shouldShow: true)
-    }
-    
-    // Determines if the search bar should be showing
-    private func showSearchBarButton(shouldShow: Bool) {
-        switch shouldShow {
-        case true:
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchbar))
-        case false:
-            navigationItem.rightBarButtonItem = nil
-        }
-    }
-    
-    
-    private func search(shouldShow: Bool) {
-        showSearchBarButton(shouldShow: !shouldShow)
-        searchBar.showsCancelButton = shouldShow
-        navigationItem.titleView = shouldShow ? searchBar : nil
-    }
-    
-    // Cancel is clicked the search bar should not be showing
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        search(shouldShow: false)
-    }
-    
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        search(shouldShow: false)
-        searchBar.resignFirstResponder()
-        if let searchedItem = searchBar.text {
-            // Since the title is set at each network call we check that the searchBar text does not equal the current title.
-            // This prevents unnecessary calls
-            if searchBar.text != self.title {
-                // Reset Screen
-                dataStore.clearCharacters()
-                totalPages = 0
-                currentPage = 1
-                searchBar.text = nil
-                
-                searchedText = searchedItem
-                fetchCharacterData(pageNum: currentPage, searchBarText: searchedItem)
-                scrollToTop(animated: false)
-                configureDataSource()
-            }
-        }
-    }
-    
-    
-    @objc func showSearchbar() {
-        search(shouldShow: true)
-        searchBar.becomeFirstResponder()
-    }
-}

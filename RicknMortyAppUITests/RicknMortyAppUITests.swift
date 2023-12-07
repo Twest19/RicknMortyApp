@@ -25,7 +25,9 @@ final class RicknMortyAppUITests: XCTestCase {
         setupSnapshot(app)
         app.launch()
         XCUIDevice.shared.orientation = .portrait
-        try testEntireAppNavigation(app: app)
+//        try testEntireAppNavigation(app: app)
+        try errorScreenShot(app: app)
+        
     }
     
     
@@ -56,6 +58,18 @@ final class RicknMortyAppUITests: XCTestCase {
         XCTAssertTrue(tester.exists)
         tester.tap()
         snapshot("After Tapping View Characters")
+    }
+    
+    
+    @MainActor func errorScreenShot(app: XCUIApplication) throws {
+        let searchField = app.navigationBars["All Characters"]/*@START_MENU_TOKEN@*/.searchFields["Search Characters Here..."]/*[[".staticTexts.matching(identifier: \"All Characters\").searchFields[\"Search Characters Here...\"]",".searchFields[\"Search Characters Here...\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        XCTAssertTrue(searchField.exists)
+        searchField.tap()
+        searchField.typeText("asdgahsdhgas")
+        let searchBTN = app/*@START_MENU_TOKEN@*/.buttons["Search"]/*[[".keyboards",".buttons[\"search\"]",".buttons[\"Search\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/
+        XCTAssertTrue(searchBTN.exists)
+        searchBTN.tap()
+        snapshot("Error screen example")
     }
     
     

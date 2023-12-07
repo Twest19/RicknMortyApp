@@ -13,13 +13,17 @@ class RMTabBarController: UITabBarController {
         super.viewDidLoad()
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers = [configCharVCTab(), configEpisodeVCTab()]
+        
     }
     
     
     private func configCharVCTab() -> UINavigationController {
         let charVC = RMSearchVC()
         charVC.tabBarItem = UITabBarItem(title: "Character", image: SFSymbols.peopleFill, tag: 0)
-        return UINavigationController(rootViewController: charVC)
+        
+        let navController = UINavigationController(rootViewController: charVC)
+        navController.navigationBar.prefersLargeTitles = true
+        return navController
     }
     
     

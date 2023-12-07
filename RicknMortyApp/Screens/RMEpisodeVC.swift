@@ -41,16 +41,7 @@ class RMEpisodeVC: RMDataLoadingVC {
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
-        // Both row heights allow the differing size of expanded vs nonexpanded cells
-        tableView.estimatedRowHeight = 220
-        tableView.rowHeight = UITableView.automaticDimension
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        tableView.setupConstraints(in: view)
     }
 
     
