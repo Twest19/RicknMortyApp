@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8950369C2B240A2600B8346C /* RMSearchVCDiffCVDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950369B2B240A2600B8346C /* RMSearchVCDiffCVDatasource.swift */; };
+		8950369E2B24160900B8346C /* UIViewController+EXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950369D2B24160900B8346C /* UIViewController+EXT.swift */; };
+		895036A12B24187100B8346C /* RMDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895036A02B24187100B8346C /* RMDetailView.swift */; };
 		895BB17E2B2172D3009F950F /* RMSearchCollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895BB17D2B2172D3009F950F /* RMSearchCollectionViewDelegate.swift */; };
 		895BB1812B217CE3009F950F /* RMSearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895BB1802B217CE3009F950F /* RMSearchBarDelegate.swift */; };
 		89B7B1BB2B19B51600C174AF /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B7B1BA2B19B51600C174AF /* SnapshotHelper.swift */; };
@@ -70,6 +72,8 @@
 
 /* Begin PBXFileReference section */
 		8950369B2B240A2600B8346C /* RMSearchVCDiffCVDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSearchVCDiffCVDatasource.swift; sourceTree = "<group>"; };
+		8950369D2B24160900B8346C /* UIViewController+EXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+EXT.swift"; sourceTree = "<group>"; };
+		895036A02B24187100B8346C /* RMDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMDetailView.swift; sourceTree = "<group>"; };
 		895BB17D2B2172D3009F950F /* RMSearchCollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSearchCollectionViewDelegate.swift; sourceTree = "<group>"; };
 		895BB1802B217CE3009F950F /* RMSearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSearchBarDelegate.swift; sourceTree = "<group>"; };
 		89B7B1BA2B19B51600C174AF /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
@@ -141,6 +145,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8950369F2B24183F00B8346C /* RMDetailVCDelegates */ = {
+			isa = PBXGroup;
+			children = (
+				895036A02B24187100B8346C /* RMDetailView.swift */,
+			);
+			path = RMDetailVCDelegates;
+			sourceTree = "<group>";
+		};
 		895BB17F2B217CA0009F950F /* RMSearchVCDelegates */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +248,7 @@
 				F903C22A28656D8B00BDC01C /* UIView-Extension.swift */,
 				F93CAB482866469700C94382 /* UIImageView-Ext.swift */,
 				F94AD55B289C7F0A00D640E2 /* StackView+Ext.swift */,
+				8950369D2B24160900B8346C /* UIViewController+EXT.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -299,6 +312,7 @@
 		F95472942892203100940661 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				8950369F2B24183F00B8346C /* RMDetailVCDelegates */,
 				F9A0F14D29F1CAE00094DF9C /* VC-Extensions */,
 				895BB17F2B217CA0009F950F /* RMSearchVCDelegates */,
 				F903C22628656AC500BDC01C /* RMSearchVC.swift */,
@@ -471,6 +485,7 @@
 				F954728C2891B77000940661 /* RMPrimaryLabel.swift in Sources */,
 				F94AD55C289C7F0A00D640E2 /* StackView+Ext.swift in Sources */,
 				F94AD55F289C81BE00D640E2 /* FirstEpisodeVC.swift in Sources */,
+				895036A12B24187100B8346C /* RMDetailView.swift in Sources */,
 				F903C2112865695F00BDC01C /* AppDelegate.swift in Sources */,
 				F9C6574D28A0878000EE562F /* RMDataLoadingVC.swift in Sources */,
 				F954729828922C3800940661 /* RMDescriptorView.swift in Sources */,
@@ -485,6 +500,7 @@
 				F903C22728656AC500BDC01C /* RMSearchVC.swift in Sources */,
 				F9B3B43A28A8AB5A00FC2F69 /* EpisodeNameView.swift in Sources */,
 				F9B3B43828A8AA3900FC2F69 /* EpisodeCell.swift in Sources */,
+				8950369E2B24160900B8346C /* UIViewController+EXT.swift in Sources */,
 				F9C6574F28A087FE00EE562F /* RMErrorView.swift in Sources */,
 				F903C22B28656D8B00BDC01C /* UIView-Extension.swift in Sources */,
 				F9B788BC289A1CB400980653 /* RMDetailHeaderVC.swift in Sources */,
