@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8950369C2B240A2600B8346C /* RMSearchVCDiffCVDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950369B2B240A2600B8346C /* RMSearchVCDiffCVDatasource.swift */; };
 		895BB17E2B2172D3009F950F /* RMSearchCollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895BB17D2B2172D3009F950F /* RMSearchCollectionViewDelegate.swift */; };
 		895BB1812B217CE3009F950F /* RMSearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 895BB1802B217CE3009F950F /* RMSearchBarDelegate.swift */; };
 		89B7B1BB2B19B51600C174AF /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B7B1BA2B19B51600C174AF /* SnapshotHelper.swift */; };
@@ -68,6 +69,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8950369B2B240A2600B8346C /* RMSearchVCDiffCVDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSearchVCDiffCVDatasource.swift; sourceTree = "<group>"; };
 		895BB17D2B2172D3009F950F /* RMSearchCollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSearchCollectionViewDelegate.swift; sourceTree = "<group>"; };
 		895BB1802B217CE3009F950F /* RMSearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSearchBarDelegate.swift; sourceTree = "<group>"; };
 		89B7B1BA2B19B51600C174AF /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			children = (
 				895BB17D2B2172D3009F950F /* RMSearchCollectionViewDelegate.swift */,
 				895BB1802B217CE3009F950F /* RMSearchBarDelegate.swift */,
+				8950369B2B240A2600B8346C /* RMSearchVCDiffCVDatasource.swift */,
 			);
 			path = RMSearchVCDelegates;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				F90E59932890E03100D96750 /* Helper.swift in Sources */,
 				F9BC0B2F2873E92000813100 /* RMCharCollectionView.swift in Sources */,
 				F94AD559289C7AAF00D640E2 /* RMEpisodeInfoVC.swift in Sources */,
+				8950369C2B240A2600B8346C /* RMSearchVCDiffCVDatasource.swift in Sources */,
 				F903C22728656AC500BDC01C /* RMSearchVC.swift in Sources */,
 				F9B3B43A28A8AB5A00FC2F69 /* EpisodeNameView.swift in Sources */,
 				F9B3B43828A8AA3900FC2F69 /* EpisodeCell.swift in Sources */,

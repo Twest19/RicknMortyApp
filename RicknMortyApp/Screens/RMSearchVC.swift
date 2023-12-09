@@ -30,27 +30,17 @@ import UIKit
 
 
 class RMSearchVC: RMDataLoadingVC {
-    
-    private enum CharacterListSection: Int {
-        case main
-    }
-    
+        
     var collectionView: RMCharCollectionView!
-    private var characterListDataSource: UICollectionViewDiffableDataSource<CharacterListSection, RMCharacter.ID>!
+    var collectionViewDatasource: RMSearchVCDiffCVDatasource!
     var collectionViewDelegate: RMSearchCollectionViewDelegate!
-    private var rmSearchBarDelegate: RMSearchBarDelegate!
-    
+    var rmSearchBarDelegate: RMSearchBarDelegate!
     let searchBar = RMSearchBar()
     
     let dataStore = RMDataStore.shared
-    let loadDelay: TimeInterval = 1
-    
+    var isLoadingMoreCharacters = false
     var totalPages = 1
     var currentPage = 1
-    
-    var searchedText: String = ""
-    var isSearching = false
-    var isLoadingMoreCharacters = false
     
     
     override func viewDidLoad() {
@@ -60,56 +50,23 @@ class RMSearchVC: RMDataLoadingVC {
         configureNavBar()
         configureSearchBar()
         fetchCharacterData(pageNum: currentPage)
-        configureDataSource()
+        configureCVDatasource()
         rmSearchBarDelegate.search(shouldShow: true)
     }
-    
-    
-    func setupEpisodeDelegate() {
-        if let episodeNavVC = self.tabBarController?.viewControllers?.last(where: { $0 is UINavigationController}) as? UINavigationController {
-            if let episodeVC = episodeNavVC.viewControllers.first(where: { $0 is RMEpisodeVC}) as? RMEpisodeVC {
-                episodeVC.delegate = self
-            }
-        }
-    }
-    
+        
     // MARK: CollectionView Config
     private func configureCollectionView() {
         collectionView = RMCharCollectionView(in: view)
         view.addSubview(collectionView)
+        
         collectionViewDelegate = RMSearchCollectionViewDelegate(parentVC: self)
         collectionView.delegate = collectionViewDelegate
     }
     
-    // MARK: CollectionView DataSource
-    func configureDataSource() {
-        let characterCellRegistration = UICollectionView.CellRegistration<RMCharacterCell, RMCharacter> { cell, indexPath, character in
-            cell.cellRepresentedIdentifier = character.id
-            cell.set(character: character, representedIdentifier: character.id)
-        }
-        
-        characterListDataSource = UICollectionViewDiffableDataSource(collectionView: collectionView,
-                                                                     cellProvider: { (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
-            let character = self.dataStore.character(with: itemIdentifier)
-            return collectionView.dequeueConfiguredReusableCell(using: characterCellRegistration, for: indexPath, item: character)
-        })
-    }
-    
-    // MARK: Update Screen
-    func updateUI(with characters: [RMCharacter]) {
-        dataStore.saveCharacters(characters)
-        self.updateData(on: self.dataStore.getCharacters())
-    }
-    
-    // MARK: Update DataSource
-    private func updateData(on characters: [RMCharacter]) {
-        let charID = dataStore.getCharacterIds()
-        var snapshot = NSDiffableDataSourceSnapshot<CharacterListSection, RMCharacter.ID>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(charID, toSection: .main)
-        DispatchQueue.main.async {
-            self.characterListDataSource.apply(snapshot, animatingDifferences: true)
-        }
+    // MARK: Datasource config
+    func configureCVDatasource() {
+        collectionViewDatasource = RMSearchVCDiffCVDatasource(parentVC: self)
+        collectionViewDatasource.configureDataSource()
     }
     
     // MARK: Config Nav Bar
@@ -118,17 +75,28 @@ class RMSearchVC: RMDataLoadingVC {
         navigationController?.navigationBar.tintColor = .systemGreen
     }
     
+    // MARK: Config Search Bar
     private func configureSearchBar() {
         rmSearchBarDelegate = RMSearchBarDelegate(parentVC: self)
         searchBar.delegate = rmSearchBarDelegate
         rmSearchBarDelegate.showSearchBarButton(shouldShow: true)
     }
     
+    // Resets screen to default values
     func resetScreen() {
         dataStore.clearCharacters()
         totalPages = 1
         currentPage = 1
         searchBar.text = nil
+    }
+    
+    // MARK: For changing tabs in app when finding chars by episode
+    func setupEpisodeDelegate() {
+        if let episodeNavVC = self.tabBarController?.viewControllers?.last(where: { $0 is UINavigationController}) as? UINavigationController {
+            if let episodeVC = episodeNavVC.viewControllers.first(where: { $0 is RMEpisodeVC}) as? RMEpisodeVC {
+                episodeVC.delegate = self
+            }
+        }
     }
 }
 
@@ -149,11 +117,8 @@ extension RMSearchVC: RMCharacterDetailVCDelegate {
             // Get all the characters from the episode
             fetchEpisodeCharacterData(with: id)
             // Configuring this again prevents occasional crash within datasource.
-            configureDataSource()
+            collectionViewDatasource.configureDataSource()
         }
-        
         collectionViewDelegate.scrollToTop(animated: false)
     }
 }
-
-

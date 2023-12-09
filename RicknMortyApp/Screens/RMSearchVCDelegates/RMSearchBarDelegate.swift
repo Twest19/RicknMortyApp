@@ -10,14 +10,41 @@ import UIKit
 
 class RMSearchBarDelegate: NSObject, UISearchBarDelegate {
     
+    var searchedText: String = ""
     weak var parentVC: RMSearchVC?
     
     init(parentVC: RMSearchVC) {
         self.parentVC = parentVC
     }
 
+    // SearchBarDelegate Method
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        search(shouldShow: false)
+    }
     
-    // Determines if the search bar should be showing
+    // SearchBarDelegate Method
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let parentVC = parentVC else { return }
+        search(shouldShow: false)
+        searchBar.resignFirstResponder()
+        if let searchedItem = searchBar.text {
+            // Since the title is set at each network call we check that the searchBar text does not equal the current title.
+            // This prevents unnecessary calls
+            if searchBar.text != parentVC.title {
+                parentVC.resetScreen()
+                searchedText = searchedItem
+                parentVC.fetchCharacterData(pageNum: parentVC.currentPage, searchBarText: searchedItem)
+                parentVC.collectionViewDelegate.scrollToTop(animated: false)
+                parentVC.collectionViewDatasource.configureDataSource()
+            }
+        }
+    }
+}
+
+
+extension RMSearchBarDelegate {
+    
+    // Determines if the search bar magnifying glass symbol should show
     func showSearchBarButton(shouldShow: Bool) {
         guard let parentVC = parentVC else { return }
         
@@ -29,7 +56,7 @@ class RMSearchBarDelegate: NSObject, UISearchBarDelegate {
         }
     }
     
-    
+    // Applying the showing/hiding of search bar
     func search(shouldShow: Bool) {
         guard let parentVC = parentVC else { return }
         
@@ -37,30 +64,6 @@ class RMSearchBarDelegate: NSObject, UISearchBarDelegate {
         parentVC.searchBar.showsCancelButton = shouldShow
         parentVC.navigationItem.titleView = shouldShow ? parentVC.searchBar : nil
     }
-    
-    // Cancel is clicked the search bar should not be showing
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        search(shouldShow: false)
-    }
-    
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let parentVC = parentVC else { return }
-        search(shouldShow: false)
-        searchBar.resignFirstResponder()
-        if let searchedItem = searchBar.text {
-            // Since the title is set at each network call we check that the searchBar text does not equal the current title.
-            // This prevents unnecessary calls
-            if searchBar.text != parentVC.title {
-                parentVC.resetScreen()
-                parentVC.searchedText = searchedItem
-                parentVC.fetchCharacterData(pageNum: parentVC.currentPage, searchBarText: searchedItem)
-                parentVC.collectionViewDelegate.scrollToTop(animated: false)
-                parentVC.configureDataSource()
-            }
-        }
-    }
-    
     
     @objc func showSearchbar() {
         guard let parentVC = parentVC else { return }
