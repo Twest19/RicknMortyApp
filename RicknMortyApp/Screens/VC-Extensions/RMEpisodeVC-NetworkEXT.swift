@@ -27,7 +27,6 @@ extension RMEpisodeVC {
                     self.showErrorView(with: error, in: self.view)
                     self.isLoadingEpisodeData = false
                 }
-                return
             }
             self.isLoadingEpisodeData = false
         }
